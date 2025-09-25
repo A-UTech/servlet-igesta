@@ -20,30 +20,61 @@ public class Empresas extends Usuarios{
     }
 
     //Completo
+    public Empresas(int id, String nome, String email, String cnpj, String senha, int id_planos,  Byte[] foto) {
+        super(id, nome, email, senha, foto);
+        this.cnpj = cnpj;
+        this.id_planos = id_planos;
+    }
+
+    //Sem Id
     public Empresas(String nome, String email, String cnpj, String senha, int id_planos,  Byte[] foto) {
         super(nome, email, senha, foto);
         this.cnpj = cnpj;
         this.id_planos = id_planos;
     }
 
-    //Sem Foto
+    //Sem foto
+    public Empresas(int id, String nome, String email, String cnpj, String senha, int id_planos) {
+        super(id, nome, email, senha);
+        this.cnpj = cnpj;
+        this.id_planos = id_planos;
+    }
+
+    //Sem id_planos
+    public Empresas(int id, String nome, String email, String cnpj, String senha, Byte[] foto) {
+        super(id, nome, email, senha, foto);
+        this.cnpj = cnpj;
+    }
+
+    //Sem foto nem Id
     public Empresas(String nome, String email, String cnpj, String senha, int id_planos) {
         super(nome, email, senha);
         this.cnpj = cnpj;
         this.id_planos = id_planos;
     }
 
-    //Sem id_planos
+    //Sem id_planos nem Id
     public Empresas(String nome, String email, String cnpj, String senha, Byte[] foto) {
         super(nome, email, senha, foto);
         this.cnpj = cnpj;
     }
 
     //Sem foto nem id_planos
+    public Empresas(int id, String nome, String email, String cnpj, String senha) {
+        super(id, nome, email, senha);
+        this.cnpj = cnpj;
+    }
+
+
+
+
+
+    //Sem foto, id_planos e Id
     public Empresas(String nome, String email, String cnpj, String senha) {
         super(nome, email, senha);
         this.cnpj = cnpj;
     }
+
 
 //=======================MÉTODOS GET=======================\\
 
@@ -65,7 +96,9 @@ public class Empresas extends Usuarios{
 
     @Override
     public String toString() {
-        return "Empresas{ cnpj: "+cnpj+
+        return "Empresas{ " +
+                "id: " +super.getId()+
+                " | cnpj: "+cnpj+
                 " | id_planos: "+id_planos+
                 " | nome: "+super.getNome()+
                 " | email: "+super.getEmail()+

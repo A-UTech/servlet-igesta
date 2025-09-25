@@ -6,6 +6,7 @@ package com.example.model;
 public abstract class Usuarios {
 //=======================ATRIBUTOS=======================\\
 
+    private int id;
     private String nome;
     private String email;
     private String senha;
@@ -22,7 +23,8 @@ public abstract class Usuarios {
     }
 
     //Completo
-    public Usuarios(String nome, String email, String senha, Byte[] foto) {
+    public Usuarios(int id, String nome, String email, String senha, Byte[] foto) {
+        this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
@@ -30,13 +32,33 @@ public abstract class Usuarios {
     }
 
     //Sem foto
-    public Usuarios(String nome, String email, String senha) {
+    public Usuarios(int id, String nome, String email, String senha) {
+        this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
     }
 
-//=======================METODOS GET=======================\\
+    //Sem Id
+    public Usuarios(String nome, String email, String senha, Byte[] foto) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.foto = foto;
+    }
+
+    //Sem ID nem Foto
+    public Usuarios(String nome, String email, String senha) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+    }
+    //=======================METODOS GET=======================\\
+
+
+    public int getId() {
+        return id;
+    }
 
     public String getNome() {
         return nome;
@@ -76,7 +98,8 @@ public abstract class Usuarios {
 
     public String toString() {
         return "Usuario{ " +
-                "nome: "+nome+
+                "id: " +id+
+                " | nome: "+nome+
                 " | email: "+email+
                 " | senha: "+senha+
                 " }";

@@ -26,13 +26,24 @@ public class Cargo {
         this.descricao = descricao;
     }
 
+    //Sem Id
+    public Cargo(String nome, String descricao) {
+        this.nome = nome;
+        this.descricao = descricao;
+    }
+
     //Sem descricao
     public Cargo(int id, String nome) {
         this.id = id;
         this.nome = nome;
     }
 
-//=======================MÉTODOS GET=======================\\
+    //Sem Id nem Descricao
+    public Cargo(String nome) {
+        this.nome = nome;
+    }
+
+    //=======================MÉTODOS GET=======================\\
 
     public int getId() {
         return id;
@@ -62,9 +73,9 @@ public class Cargo {
     @Override
     public String toString() {
         return "Cargo{" +
-                " id: " + id +
-                " | nome: " + nome +
-                " | descricao: " + descricao +
-                " }";
+                " id:" + id +
+                "| nome:" + nome +
+                "| descricao:" + descricao +
+                '}';
     }
 }

@@ -6,7 +6,7 @@ package com.example.model;
 // com mais facilidade.
 public class Admin extends Usuarios{
 //=======================ATRIBUTOS=======================\\
-    private int id;
+
     private String sobrenome;
 
 //=======================MÉTODOS DA CLASSE=======================\\
@@ -20,16 +20,14 @@ public class Admin extends Usuarios{
     }
 
     //Completo
-    public Admin(String nome, String sobrenome, String email, String senha, Byte[] foto, int id) {
-        super(nome, email, senha, foto);
-        this.id = id;
+    public Admin(int id, String nome, String sobrenome, String email, String senha, Byte[] foto) {
+        super(id, nome, email, senha, foto);
         this.sobrenome = sobrenome;
     }
 
     //Sem Foto
-    public Admin(String nome, String sobrenome, String email, String senha, int id) {
-        super(nome, email, senha);
-        this.id = id;
+    public Admin(int id, String nome, String sobrenome, String email, String senha) {
+        super(id, nome, email, senha);
         this.sobrenome = sobrenome;
     }
 
@@ -47,10 +45,6 @@ public class Admin extends Usuarios{
 
 //=======================MÉTODOS GET=======================\\
 
-    public int getId() {
-        return id;
-    }
-
     public String getSobrenome() {
         return sobrenome;
     }
@@ -64,11 +58,9 @@ public class Admin extends Usuarios{
 //=======================TO STRING=======================\\
 
     public String toString() {
-        return "Admin{ id: "+id+
-            " | nome e sobrenome: "+super.getNome()+" "+sobrenome+
-            " | email: "+super.getEmail()+
-            " | senha: "+super.getSenha()+
-            " }";
+        return "Admin{ id: "+super.getId()+" | nome e sobrenome: "+super.getNome()+" "+
+                sobrenome+" | email: "+super.getEmail()+" | senha: "+super.getSenha()+
+                " }";
     }
 
 }

@@ -5,7 +5,6 @@ import java.time.LocalTime;
 //Classe criada por Artur ;)
 public class Funcionarios extends Usuarios{
 //=======================ATRIBUTOS=======================\\
-    private int id;
     private LocalTime turno;
     private String cpf;
     private String sobrenome;
@@ -23,9 +22,19 @@ public class Funcionarios extends Usuarios{
     }
 
     //Completo
-    public Funcionarios(String nome, String sobrenome, String email, String cpf, String senha, int id, int id_empresa, int id_cargo, int id_permissoes, LocalTime turno ,Byte[] foto) {
+    public Funcionarios(int id ,String nome, String sobrenome, String email, String cpf, String senha, int id_empresa, int id_cargo, int id_permissoes, LocalTime turno ,Byte[] foto) {
+        super(id, nome, email, senha, foto);
+        this.turno = turno;
+        this.cpf = cpf;
+        this.sobrenome = sobrenome;
+        this.id_empresa = id_empresa;
+        this.id_cargo = id_cargo;
+        this.id_permissoes = id_permissoes;
+    }
+
+    //Sem Id
+    public Funcionarios(String nome, String sobrenome, String email, String cpf, String senha, int id_empresa, int id_cargo, int id_permissoes, LocalTime turno ,Byte[] foto) {
         super(nome, email, senha, foto);
-        this.id = id;
         this.turno = turno;
         this.cpf = cpf;
         this.sobrenome = sobrenome;
@@ -35,9 +44,19 @@ public class Funcionarios extends Usuarios{
     }
 
     //Sem foto
-    public Funcionarios(String nome, String sobrenome, String email, String cpf, String senha, int id, int id_empresa, int id_cargo, int id_permissoes, LocalTime turno) {
+    public Funcionarios(int id ,String nome, String sobrenome, String email, String cpf, String senha, int id_empresa, int id_cargo, int id_permissoes, LocalTime turno) {
+        super(id, nome, email, senha);
+        this.turno = turno;
+        this.cpf = cpf;
+        this.sobrenome = sobrenome;
+        this.id_empresa = id_empresa;
+        this.id_cargo = id_cargo;
+        this.id_permissoes = id_permissoes;
+    }
+
+    //Sem Foto nem Id
+    public Funcionarios(String nome, String sobrenome, String email, String cpf, String senha, int id_empresa, int id_cargo, int id_permissoes, LocalTime turno) {
         super(nome, email, senha);
-        this.id = id;
         this.turno = turno;
         this.cpf = cpf;
         this.sobrenome = sobrenome;
@@ -47,11 +66,6 @@ public class Funcionarios extends Usuarios{
     }
 
 //=======================MÉTODOS GET=======================\\
-
-
-    public int getId() {
-        return id;
-    }
 
     public LocalTime getTurno() {
         return turno;
@@ -98,16 +112,16 @@ public class Funcionarios extends Usuarios{
     @Override
     public String toString() {
         return "Funcionarios{" +
-                " id: " + id +
-                " | nome: " + super.getNome()+
-                " | email: " + super.getEmail()+
-                " | senha: " + super.getSenha()+
-                " | turno: " + turno +
-                " | cpf: " + cpf +
-                " | sobrenome: " + sobrenome +
-                " | id_empresa: " + id_empresa +
-                " | id_cargo: " + id_cargo +
-                " | id_permissoes: " + id_permissoes +
+                " id: " + super.getId() +
+                " | nome: "+super.getNome()+
+                " | email: "+super.getEmail()+
+                " | senha: "+super.getSenha()+
+                " | turno:" + turno +
+                " | cpf:" + cpf +
+                " | sobrenome:" + sobrenome +
+                " | id_empresa:" + id_empresa +
+                " | id_cargo:" + id_cargo +
+                " | id_permissoes:" + id_permissoes +
                 " }";
     }
 }
