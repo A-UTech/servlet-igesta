@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+::-webkit-scrollbar {display: none;}
+::selection {background: var(--corVE);}
+
+:root {
+    --corCinza: #2F3034;    /* Cinza */
+    --corBranco: #FCFCFC;   /* Branco */
+    --corVE: #1A7B66;       /* Verde escuro */
+    --corVC: #A1E1D3;       /* Verde claro */
+    --corPreto: #141414;    /* Preto */
+
+    --fontText: 'Poppins';
+    --fontTitle: 'Anton';
+}
+
+* {
+    margin: 0;
+    padding: 0;
+
+    font: 0.95em var(--fontText);
+    color: var(--corBranco);
+    text-decoration: none;
+    text-align: center;
+    border: 0;
+}
+
+body {
+    background: var(--corCinza);
+}
+
+/* --- main config ------ */
+
+section {
+    width: 100%;
+    height: 85vh;
+    background: var(--corBranco);
+    margin-top: 15vh;
+    border-radius: 50px 50px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    transition: 1s;
+    animation: subirMob 1s;
+}
+
+h1 {
+    font: 2em var(--fontTitle);
+    color: var(--corPreto);
+}
+
+section > form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input, textarea, button{
+    border-radius: 10px;
+    width: 260px;
+    height: 58px;
+    transition: 500ms;
+    color: var(--corPreto);
+}
+
+input, textarea {
+    border: 2px solid #1A7B66;
+    text-align: left;
+    padding-left: 20px;
+}
+
+input::placeholder, textarea::placeholder {
+    color: #bbb;
+}
+
+button {
+    width: 280px;
+    background: var(--corVE);
+    color: var(--corBranco);
+}
+
+#buttonRegister {
+    border: 2px solid var(--corPreto);
+    border-radius: 100px;
+    height: 40px;
+    width: 150px;
+    background-color: transparent;
+}
+
+#registerLogin {
+    top: 670px;
+    margin: auto;
+    position: absolute;
+}
+
+#registerLogin > label,
+#registerLogin > a button {
+    color: var(--corPreto);
+    text-decoration: none;
+}
+
+#registerLogin > label {
+    margin-right: 10px;
+}
+
+input:hover, textarea:hover {
+    box-shadow: 0 0 3px .15vw rgba(0, 0, 0, 0.3);
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    box-shadow: 0 0 5px .15vw rgba(0, 0, 0, 0.3);
+}
+
+textarea {
+    width: 240px;
+    height: 120px;
+    resize: none;
+    padding: 20px;
+}
+
+div.mens, div.contactMens {
+    display: none;
+}
+
+div.back {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+div.back > a{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+div.back > a > img {
+    height: 100%;
+}
+
+
+/* --- token ------ */
+
+.token > input, .token > button{
+    border-radius: 10px;
+    height: 60px;
+    transition: 500ms;
+}
+
+.token > div > input {
+    width: 60px;
+    text-align: center;
+    font-size: 25px;
+    padding: 0;
+    color: var(--corPreto);
+}
+
+.token > button {
+    margin: auto;
+}
+
+.tokenBack {
+    position: absolute;
+    left: 15px;
+    top: 10px;
+}
+
+.tokenBack > a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tokenBack > a > img {
+    height: 100%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+section p {
+    color: var(--corPreto);
+    width: 300px;
+}
+
+
+@media screen and (min-width: 768px) {
+    body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+    }
+
+    section {
+        margin-top: 0;
+        height: 100vh;
+        width: 60vw;
+        border-radius: 0 80px 80px 0;
+        animation: subir 1s;
+    }
+
+    h1 {
+        font-size: 3em;
+    }
+
+    div.mens {
+        display: block;
+        animation: subirMens 1s;
+    }
+
+    div.mens > div {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h2 {
+        font-weight: bold;
+        font: 4em var(--fontTitle)
+    }
+
+    p {
+        font-size: 1.3em;
+    }
+
+    section.token {
+        border-radius: 100px 0 0 100px;
+    }
+}
+@keyframes subir {
+    from {
+        margin-top: 10dvh;
+        opacity: 0;
+    } 
+    to {
+        margin-top: 0dvh;
+        opacity: 1;
+    }
+}
+@keyframes subirMob {
+    from {
+        margin-top: 50dvh;
+        opacity: 0;
+    } 
+    to {
+        margin-top: 15dvh;
+        opacity: 1;
+    }
+}
+@keyframes subirMens {
+    from {
+        margin-top: 40dvh;
+        opacity: 0;
+    } 
+    to {
+        margin-top: 0dvh;
+        opacity: 1;
+    }
+}
