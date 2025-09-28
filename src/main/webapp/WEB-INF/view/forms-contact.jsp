@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/popups.css">
     <title>IGesta</title>
     <%
-        String chegou = (String) request.getAttribute("chegou");
+        String status = (String) request.getAttribute("status");
     %>
 </head>
 <body>
@@ -19,7 +19,7 @@
             <input type="email" name="email" class="inputs" id="iEmail" placeholder="E-Mail" required minlength="10" autocomplete="email" autofocus>
             <input type="text" name="nome" class="inputs" id="iName" placeholder="Nome" required>
             <textarea name="message" id="iMes" class="inputs" placeholder="Mensagem" required></textarea>
-            <button class="buttons" type="submit">Entrar</button>
+            <button class="buttons" type="submit">Enviar</button>
         </form>
     </section>
     <div class="mens">
@@ -34,25 +34,17 @@
         </div>
     </div>
     <div class="back">
-        <a href="../../index.html">
+        <a href="${pageContext.request.contextPath}/index.jsp">
             <img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png">
             <p>Voltar</p>
         </a>
     </div>
-    <% if ("true".equals(chegou)) { %>
+    <% if (status != null) { %>
         <div id="popupCheck">
-            <a href="${pageContext.request.contextPath}/index.jsp" class="overlay"></a>
-            <div class="popup check">
-                <img src="${pageContext.request.contextPath}/assets/icons/check.svg">
-                <p>Seu email foi enviado com sucesso!</p>
-            </div>
-        </div>
-    <% } else if ("false".equals(chegou)) { %>
-        <div id="popupCheck">
-            <a href="#popupCheck" class="overlay"></a>
-            <div class="popup wrong">
-                <img src="${pageContext.request.contextPath}/assets/icons/wrong.svg">
-                <p>Seu email não foi enviado, tente novamente mais tarde</p>
+            <a href="<%="true".equals(status) ? "index.jsp" : "#popupCheck"%>" class="overlay"></a>
+            <div class="popup <%="true".equals(status) ? "check" : "wrong"%>">
+                <img src="${pageContext.request.contextPath}/assets/icons/<%="true".equals(status) ? "check.svg" : "wrong.svg"%>">
+                <p><%="true".equals(status) ? "Seu email foi enviado com sucesso!" : "Seu email não foi enviado, tente novamente mais tarde"%></p>
             </div>
         </div>
     <% } %>

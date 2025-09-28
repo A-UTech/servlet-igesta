@@ -38,14 +38,10 @@ public class Email extends HttpServlet {
         String mensagem = request.getParameter("message");
 
         // Usando método da classe JavaMail
-        boolean mandou = javaMail.enviarEmail(nome,email,mensagem);
+        boolean status = javaMail.enviarEmail(nome,email,mensagem);
 
         // Preparando resposta que será retornada para a pagína forms-contact.jsp
-        if (mandou) {
-            request.setAttribute("chegou","true");
-        } else {
-            request.setAttribute("chegou","false");
-        }
+        request.setAttribute("status",status ? "true" : "false");
 
         // Enviando cliente para a pagina forms-contact.jsp
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/forms-contact.jsp");

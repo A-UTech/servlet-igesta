@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class JavaMail {
 
-    private Dotenv dotenv = Dotenv.load();
+    private Dotenv dotenv = Dotenv.configure().directory("/").filename(".env").load();
     private String senha = dotenv.get("SENHA_EMAIL");
 
     public boolean enviarEmail(String nome,String email, String mensagem) {
