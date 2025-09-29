@@ -20,14 +20,14 @@ public class Empresas extends Usuarios{
     }
 
     //Completo
-    public Empresas(int id, String nome, String email, String cnpj, String senha, int id_planos,  Byte[] foto) {
+    public Empresas(int id, String nome, String email, String cnpj, String senha, int id_planos,  byte[] foto) {
         super(id, nome, email, senha, foto);
         this.cnpj = cnpj;
         this.id_planos = id_planos;
     }
 
     //Sem Id
-    public Empresas(String nome, String email, String cnpj, String senha, int id_planos,  Byte[] foto) {
+    public Empresas(String nome, String email, String cnpj, String senha, int id_planos,  byte[] foto) {
         super(nome, email, senha, foto);
         this.cnpj = cnpj;
         this.id_planos = id_planos;
@@ -41,7 +41,7 @@ public class Empresas extends Usuarios{
     }
 
     //Sem id_planos
-    public Empresas(int id, String nome, String email, String cnpj, String senha, Byte[] foto) {
+    public Empresas(int id, String nome, String email, String cnpj, String senha, byte[] foto) {
         super(id, nome, email, senha, foto);
         this.cnpj = cnpj;
     }
@@ -54,7 +54,7 @@ public class Empresas extends Usuarios{
     }
 
     //Sem id_planos nem Id
-    public Empresas(String nome, String email, String cnpj, String senha, Byte[] foto) {
+    public Empresas(String nome, String email, String cnpj, String senha, byte[] foto) {
         super(nome, email, senha, foto);
         this.cnpj = cnpj;
     }
@@ -64,10 +64,6 @@ public class Empresas extends Usuarios{
         super(id, nome, email, senha);
         this.cnpj = cnpj;
     }
-
-
-
-
 
     //Sem foto, id_planos e Id
     public Empresas(String nome, String email, String cnpj, String senha) {
@@ -103,6 +99,7 @@ public class Empresas extends Usuarios{
                 " | nome: "+super.getNome()+
                 " | email: "+super.getEmail()+
                 " | senha: "+super.getSenha()+
+                " | Tem foto: " + (super.getFoto()!=null ? "sim":"não") +
                 " }";
     }
 }

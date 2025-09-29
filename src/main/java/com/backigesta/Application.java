@@ -1,20 +1,33 @@
 package com.backigesta;
 
+import com.backigesta.dao.AdminDAO;
+import com.backigesta.dao.EmpresasDAO;
+import com.backigesta.model.Admin;
+import com.backigesta.model.Empresas;
+
+import java.util.ArrayList;
+import java.util.List;
+
 //Essa classe Application é apenas para testar as classes.
 
 public class Application {
     public static void main(String[] args) {
-//        Usuarios user = new Admin();
-//        Admin adm = new Admin("Artur", "Silva", "aoasilva12200@hotmail.com", "12banana34", 1);
-//        Empresas empresa = new Empresas("IGesta", "igesta.inovacao@gmail.com", "1122334455", "12342", 3);
-//        LocalTime turno = LocalTime.now();
-//        Funcionarios funcionarios = new Funcionarios("Artur", "Alves", "aoasilva12@gmail.com", "50315923890", "12toSemIdeia34", 1, 3, 2, 3, turno);
-//        Cargo lider = new Cargo(1, "lider", "Lider das linhas da Area Quente");
-//
-//        System.out.println(user);
-//        System.out.println(adm);
-//        System.out.println(empresa);
-//        System.out.println(funcionarios);
-//        System.out.println(lider);
+        EmpresasDAO dao = new EmpresasDAO();
+
+        Empresas aeutech = new Empresas("A&UTech", "AeuechInovacao@gmail.com", "12345678910123", "autechinovacao");
+//        Empresas igesta = new Empresas("Igesta", "igesta@org.br", "12345678912345", "123igestinhosforever");
+
+        dao.inserir(aeutech);
+//        dao.inserir(igesta);
+
+//        Empresas igesta = dao.selecionarPorId(2);
+//        igesta.setFoto("src/main/webapp/assets/logos/logo-branca.png");
+//        dao.atualizar(igesta);
+//        System.out.println(igesta);
+
+        List<Empresas> empresas = dao.selecionarTodos();
+        for(Empresas empresa : empresas) {
+            System.out.println(empresa);
+        }
     }
 }
