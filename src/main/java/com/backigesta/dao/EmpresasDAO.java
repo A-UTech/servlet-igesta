@@ -48,13 +48,13 @@ public class EmpresasDAO {
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
                 empresa = new Empresas(
-                        rs.getInt(1), //id
-                        rs.getString(2), //cnpj
-                        rs.getString(3), //nome
-                        rs.getString(4), //email
-                        rs.getString(5), //senha
-                        rs.getInt(6), //id_planos
-                        rs.getBytes(7) //foto
+                        rs.getInt("id"),
+                        rs.getString("cnpj"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getInt("id_planos"),
+                        rs.getBytes("foto")
                 );
             }
             conn.close();
@@ -78,13 +78,13 @@ public class EmpresasDAO {
 
             while(rs.next()) {
                 empresa.add(new Empresas(
-                        rs.getInt(1), //id
-                        rs.getString(2), //cnpj
-                        rs.getString(3), //nome
-                        rs.getString(4), //email
-                        rs.getString(5), //senha
-                        rs.getInt(6), //id_planos
-                        rs.getBytes(7) //foto
+                        rs.getInt("id"),
+                        rs.getString("cnpj"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getInt("id_planos"),
+                        rs.getBytes("foto")
                 ));
             }
             conn.close();
@@ -95,6 +95,28 @@ public class EmpresasDAO {
         }
         finally {
             return empresa;
+        }
+    }
+
+    public byte[] selecionarFotoPorId(int id){
+        Connection conn = banco.conexao();
+        byte[] foto = null;
+        try{
+            String sql = "SELECT foto FROM empresas WHERE id=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                foto = rs.getBytes(1);
+            }
+            conn.close();
+        }
+        catch(SQLException sqle){
+            System.out.println("!!SQLException ao chamar EmpresasDAO.selecionarFotoPorId(int)!!");
+            sqle.printStackTrace();
+        }
+        finally {
+            return foto;
         }
     }
 
@@ -117,7 +139,7 @@ public class EmpresasDAO {
             conn.close();
         }
         catch(SQLException sqle){
-            System.out.println("!!SQLException ao chamar EmpresasDAO.atualizar(Admin)!!");
+            System.out.println("!!SQLException ao chamar EmpresasDAO.atualizar(Empresas)!!");
             sqle.printStackTrace();
         }
         finally {

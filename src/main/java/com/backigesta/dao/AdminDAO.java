@@ -52,12 +52,12 @@ public class AdminDAO {
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
                 adm = new Admin(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getBytes(6)
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("sobrenome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getBytes("foto")
                 );
             }
             conn.close();
@@ -81,12 +81,12 @@ public class AdminDAO {
 
             while(rs.next()){
                 admins.add(new Admin(
-                    rs.getInt(1),
-                    rs.getString(2),
-                    rs.getString(3),
-                    rs.getString(4),
-                    rs.getString(5),
-                    rs.getBytes(6)
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("sobrenome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getBytes("foto")
                 ));
             }
 
@@ -111,12 +111,12 @@ public class AdminDAO {
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 admins.add(new Admin(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getBytes(6)
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("sobrenome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getBytes("foto")
                 ));
             }
 
