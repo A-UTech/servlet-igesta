@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../../assets/logos/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/forms.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/popups.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/forms.css">
     <title>IGesta</title>
     <%
         String status = (String) request.getAttribute("status");
@@ -39,14 +39,24 @@
             <p>Voltar</p>
         </a>
     </div>
-    <% if (status != null) { %>
-        <div id="popupCheck">
-            <a href="<%="true".equals(status) ? "index.jsp" : "#popupCheck"%>" class="overlay"></a>
-            <div class="popup <%="true".equals(status) ? "check" : "wrong"%>">
-                <img src="${pageContext.request.contextPath}/assets/icons/<%="true".equals(status) ? "check.svg" : "wrong.svg"%>">
-                <p><%="true".equals(status) ? "Seu email foi enviado com sucesso!" : "Seu email não foi enviado, tente novamente mais tarde"%></p>
+    <div class="overlay" id="popupOverlay">
+        <div class="popup">
+            <div class="icon">
+                <img id="icon" src="${pageContext.request.contextPath}/assets/icons/" alt="">
             </div>
+            <h2 id="title"></h2>
+            <p id="text"></p>
+            <button onclick="fecharPopupInformacoes()">Ok</button>
         </div>
-    <% } %>
+    </div>
+    <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
+    <script>
+        <% if (status != null) { %>
+            <%
+                boolean isStatus = Boolean.parseBoolean(status);
+            %>
+            abrirPopupInformacoes("<%=isStatus ? "check.svg" : "wrong.svg"%>","<%=isStatus ? "Mensagem enviada!" : "Erro no envio"%>","<%=isStatus ? "Seu e-mail foi enviado com sucesso. Em breve entraremos em contato." : "Não foi possível enviar sua mensagem. Tente novamente mais tarde."%>")
+        <% } %>
+    </script>
 </body>
 </html>
