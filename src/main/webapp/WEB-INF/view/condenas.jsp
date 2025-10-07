@@ -16,6 +16,9 @@
         String adicionado = (String) request.getAttribute("adicionado");
         String alterado = (String) request.getAttribute("alterado");
         String deletado = (String) request.getAttribute("deletado");
+
+        // Aqui preciso mudar depois porque ainda não estamos criando um HttpSession para salvar a pessoa que está usando a pagina
+        int id = 7;
     %>
 </head>
 <body>
@@ -26,7 +29,10 @@
             <a href="condemn.html"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"></a>
             <a href="payment.html"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"></a>
         </div>
-        <a href=""><img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg"></a>
+        <a href="">
+            <%-- Nessa parte tenho que arrumar porque preciso colocar um if se a pessoa não tiver uma foto--%>
+            <img id="fotoPerfil" src="admin-foto?id=<%=id%>">
+        </a>
     </aside>
 
     <main>
