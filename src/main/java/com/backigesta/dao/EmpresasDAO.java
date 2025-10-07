@@ -13,7 +13,7 @@ public class EmpresasDAO {
     //=======================MÉTODOS CREATE=======================\\
     public boolean inserir(Empresas empresa){
         boolean retorno = false;
-        Connection conn = banco.conexao();
+        Connection conn = banco.conectar();
         try{
             String sql = "INSERT INTO empresas(cnpj, nome, email, senha, id_planos, foto) VALUES (?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -38,7 +38,7 @@ public class EmpresasDAO {
 
     //=======================MÉTODOS READ=======================\\
     public Empresas selecionarPorId(int id){
-        Connection conn = banco.conexao();
+        Connection conn = banco.conectar();
         Empresas empresa = null;
         try{
             String sql = "SELECT * FROM empresas WHERE id=?";
@@ -69,7 +69,7 @@ public class EmpresasDAO {
     }
 
     public List<Empresas> selecionarTodos(){
-        Connection conn = banco.conexao();
+        Connection conn = banco.conectar();
         List<Empresas> empresa = new ArrayList<>();
         try{
             String sql = "SELECT * FROM empresas";
@@ -99,7 +99,7 @@ public class EmpresasDAO {
     }
 
     public byte[] selecionarFotoPorId(int id){
-        Connection conn = banco.conexao();
+        Connection conn = banco.conectar();
         byte[] foto = null;
         try{
             String sql = "SELECT foto FROM empresas WHERE id=?";
@@ -123,7 +123,7 @@ public class EmpresasDAO {
     //=======================MÉTODOS UPDATE=======================\\
     public boolean atualizar(Empresas empresas){
         boolean retorno = false;
-        Connection conn = banco.conexao();
+        Connection conn = banco.conectar();
         try{
             String sql = "UPDATE empresas SET cnpj=?, nome=?, email=?, senha=?, id_planos=?,foto=? WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -149,7 +149,7 @@ public class EmpresasDAO {
 
     public boolean atualizarFoto(int id, byte[] foto){
         boolean retorno = false;
-        Connection conn = banco.conexao();
+        Connection conn = banco.conectar();
         try{
             String sql = "UPDATE empresas SET foto=? WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -171,7 +171,7 @@ public class EmpresasDAO {
     //=======================MÉTODOS DELETE=======================\\
     public boolean deletar(int id){
         boolean retorno = false;
-        Connection conn = banco.conexao();
+        Connection conn = banco.conectar();
         try{
             String sql = "DELETE FROM empresas WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
