@@ -12,12 +12,12 @@ import com.backigesta.conexao.Conexao;
 import com.backigesta.model.Admin;
 
 public class AdminDAO {
-    private final Conexao banco = new Conexao();
+    private Conexao banco = new Conexao();
 
     //=======================MÉTODOS CREATE=======================\\
     public boolean inserir(Admin adm){
         boolean retorno = false;
-        Connection conn = banco.conexao();
+        Connection conn = banco.conectar();
         try{
             String sql = "INSERT INTO admin(nome, sobrenome, email, senha, foto) VALUES(?, ?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -42,7 +42,7 @@ public class AdminDAO {
 
     //=======================MÉTODOS READ=======================\\
     public Admin selecionarPorId(int id){
-        Connection conn = banco.conexao();
+        Connection conn = banco.conectar();
         Admin adm = null;
         try{
             String sql = "SELECT * FROM admin WHERE id=?";
@@ -72,7 +72,7 @@ public class AdminDAO {
     }
 
     public List<Admin> selecionarTodos(){
-        Connection conn = banco.conexao();
+        Connection conn = banco.conectar();
         List<Admin> admins = new ArrayList<>();
         try{
             String sql = "SELECT * FROM admin";
@@ -102,7 +102,7 @@ public class AdminDAO {
     }
 
     public List<Admin> selecionarPorNome(String nome){
-        Connection conn = banco.conexao();
+        Connection conn = banco.conectar();
         List<Admin> admins = new ArrayList<>();
         try{
             String sql = "SELECT * FROM admin WHERE nome like ?";
@@ -132,7 +132,7 @@ public class AdminDAO {
     }
 
     public byte[] selecionarFotoPorId(int id){
-        Connection conn = banco.conexao();
+        Connection conn = banco.conectar();
         byte[] foto = null;
         try{
             String sql = "SELECT foto FROM admin WHERE id=?";
@@ -157,7 +157,7 @@ public class AdminDAO {
 
     public boolean atualizar(Admin adm){
         boolean retorno = false;
-        Connection conn = banco.conexao();
+        Connection conn = banco.conectar();
         try{
             String sql = "UPDATE admin SET nome=?, sobrenome=?, email=?, senha=?, foto=? WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -182,7 +182,7 @@ public class AdminDAO {
 
     public boolean atualizarFoto(int id, byte[] foto){
         boolean retorno = false;
-        Connection conn = banco.conexao();
+        Connection conn = banco.conectar();
         try{
             String sql = "UPDATE admin SET foto=? WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -204,7 +204,7 @@ public class AdminDAO {
     //=======================MÉTODOS DELETE=======================\\
     public boolean deletar(int id){
         boolean retorno = false;
-        Connection conn = banco.conexao();
+        Connection conn = banco.conectar();
         try{
             String sql = "DELETE FROM admin WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);

@@ -56,7 +56,7 @@ section > form {
     gap: 10px;
 }
 
-input, textarea, button{
+input, textarea, button#buttonSubmit {
     border-radius: 10px;
     width: 260px;
     height: 58px;
@@ -74,7 +74,7 @@ input::placeholder, textarea::placeholder {
     color: #bbb;
 }
 
-button {
+button#buttonSubmit {
     width: 280px;
     background: var(--corVE);
     color: var(--corBranco);
