@@ -93,7 +93,7 @@ public class CondenasDao {
             PreparedStatement pstmt = conn.prepareStatement("update condenas set tipo_condena = ?, nome = ?, descricao = ? where id = ?");
             pstmt.setString(1,condena.getTipoCondena());
             pstmt.setString(2,condena.getNome());
-            if (condena.getDescricao().equals("")) {
+            if (condena.getDescricao().equals("") || condena.getDescricao().toLowerCase().equals("sem descricao")) {
                 pstmt.setNull(3,java.sql.Types.VARCHAR);
             } else {
                 pstmt.setString(3, condena.getDescricao());
@@ -123,7 +123,7 @@ public class CondenasDao {
             PreparedStatement pstmt2 = conn.prepareStatement("insert into condenas(nome,cod_admin,descricao,tipo_condena) values(?,?,?,?)");
             pstmt2.setString(1,condena.getNome());
             pstmt2.setInt(2,id);
-            if (condena.getDescricao().equals("")) {
+            if (condena.getDescricao().equals("") || condena.getDescricao().toLowerCase().equals("sem descricao")) {
                 pstmt2.setNull(3, java.sql.Types.VARCHAR);
             } else {
                 pstmt2.setString(3, condena.getDescricao());

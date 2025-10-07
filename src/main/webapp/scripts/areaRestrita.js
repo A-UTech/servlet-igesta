@@ -4,11 +4,12 @@
 function alterarCondena(numero) {
     // Pega os dados que estam no valor dos inputs hidden criados na página
     let [nome,tipo,descricao] = document.getElementById("condenaAlterar"+numero).value.split(";");
+    console.log(nome,tipo,descricao)
 
     // Coloca os valores nos inputs do dialog alterar
     document.getElementById('nomeCondena').value = nome;
     document.getElementById('condenaId').value = numero;
-    document.getElementById('descricaoCondena').value = descricao;
+    document.getElementById('descricaoCondena').value = (descricao != "null" ? descricao : "Sem descricao");
 
     // Define as ordens das opções que seram mostradas no option
     const selectTipo = document.getElementById("tipoCondena");

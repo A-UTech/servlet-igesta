@@ -35,6 +35,7 @@
 }
 
 .overlay .popup h2 {
+    font-family: var(--fontText);
     font-size: 30px;
 }
 .overlay .popup p {

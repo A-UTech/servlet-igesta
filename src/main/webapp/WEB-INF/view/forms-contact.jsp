@@ -19,7 +19,7 @@
             <input type="email" name="email" class="inputs" id="iEmail" placeholder="E-Mail" required minlength="10" autocomplete="email" autofocus>
             <input type="text" name="nome" class="inputs" id="iName" placeholder="Nome" required>
             <textarea name="message" id="iMes" class="inputs" placeholder="Mensagem" required></textarea>
-            <button class="buttons" type="submit">Enviar</button>
+            <button id="buttonSubmit" type="submit">Enviar</button>
         </form>
     </section>
     <div class="mens">
