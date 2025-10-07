@@ -22,7 +22,7 @@ public class Funcionarios extends Usuarios{
     }
 
     //Completo
-    public Funcionarios(int id ,String nome, String sobrenome, String email, String cpf, String senha, int id_empresa, int id_cargo, int id_permissoes, LocalTime turno ,Byte[] foto) {
+    public Funcionarios(int id ,String nome, String sobrenome, String email, String cpf, String senha, int id_empresa, int id_cargo, int id_permissoes, LocalTime turno, byte[] foto) {
         super(id, nome, email, senha, foto);
         this.turno = turno;
         this.cpf = cpf;
@@ -33,7 +33,7 @@ public class Funcionarios extends Usuarios{
     }
 
     //Sem Id
-    public Funcionarios(String nome, String sobrenome, String email, String cpf, String senha, int id_empresa, int id_cargo, int id_permissoes, LocalTime turno ,Byte[] foto) {
+    public Funcionarios(String nome, String sobrenome, String email, String cpf, String senha, int id_empresa, int id_cargo, int id_permissoes, LocalTime turno, byte[] foto) {
         super(nome, email, senha, foto);
         this.turno = turno;
         this.cpf = cpf;
@@ -122,6 +122,7 @@ public class Funcionarios extends Usuarios{
                 " | id_empresa:" + id_empresa +
                 " | id_cargo:" + id_cargo +
                 " | id_permissoes:" + id_permissoes +
+                " | Tem foto: " + (super.getFoto()!=null ? "sim":"não") +
                 " }";
     }
 }
