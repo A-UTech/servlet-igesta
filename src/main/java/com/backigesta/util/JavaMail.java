@@ -35,7 +35,9 @@ public class JavaMail {
                     InternetAddress.parse("autech.inovacao@gmail.com")
             );
             message.setSubject("Ajuda solicitada por: "+nome);
-            message.setText("E-mail de contato: "+email+"\n"+mensagem);
+            String formatacao = "<body style='background-color: #2F3034; padding: 10px; border-radius: 10px; font-family: sans-serif;'><h1 style='color: #1A7B66;'>Email de contato: <span style='text-decoration: nome;'>"+email+"</span></h1><h3 style='color: #A1E1D3;'>"+mensagem+"<h3></body>";
+
+            message.setContent(formatacao, "text/html; charset=UTF-8");
 
             // Enviando mensagem
             Transport.send(message);
