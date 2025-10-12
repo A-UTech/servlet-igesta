@@ -8,7 +8,7 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/emailContato"})
-public class Email extends HttpServlet {
+public class EmailContato extends HttpServlet {
     JavaMail javaMail = new JavaMail();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,7 +38,7 @@ public class Email extends HttpServlet {
         String mensagem = request.getParameter("message");
 
         // Usando método da classe JavaMail
-        boolean status = javaMail.enviarEmail(nome,email,mensagem);
+        boolean status = javaMail.enviarEmailContato(nome,email,mensagem);
 
         // Preparando resposta que será retornada para a pagína forms-contact.jsp
         request.setAttribute("status",status ? "true" : "false");

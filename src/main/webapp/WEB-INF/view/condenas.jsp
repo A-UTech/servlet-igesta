@@ -18,7 +18,7 @@
         String deletado = (String) request.getAttribute("deletado");
 
         // Aqui preciso mudar depois porque ainda não estamos criando um HttpSession para salvar a pessoa que está usando a pagina
-        int id = 7;
+        int id = 2;
     %>
 </head>
 <body>
@@ -88,37 +88,39 @@
 
         </section>
     </main>
-    <dialog id="add">
-        <form action="adicionarCondena" method="post">
-            <a onclick="fecharPopup('add')">X</a>
-            <input type="text" name="nomeCondena" required>
-            <select name="tipo" required>
+    <dialog id="add" class="popupInputs">
+        <h2>Adicionar condena</h2>
+        <form action="adicionarCondena" method="post" autocomplete="off">
+            <a onclick="document.getElementById('add').close()"><img src="assets/icons/arrow-left.png"></a>
+            <input type="text" name="nomeCondena" placeholder="Nome" class="inputCapitalize">
+            <select name="tipo">
                 <option value="" disabled selected >Tipo Condena</option>
                 <option value="Total">Total</option>
                 <option value="Parcial">Parcial</option>
             </select>
-            <textarea name="descricaoCondena" placeholder="Descrição"></textarea>
+            <textarea name="descricaoCondena" placeholder="Mensagem" required></textarea>
             <button type="submit">Adicionar</button>
         </form>
     </dialog>
-    <dialog id="delete">
-        <a onclick="fecharPopup('delete')">X</a>
-        <h3>Você tem certeza que quer apagar essa condena?</h3>
-        <button onclick="document.getElementById('delete').close()">Não</button>
-        <form action="deletarCondena" method="post">
-            <input type="hidden" id="deletarCondena" name="condenaId">
-            <button type="submit">Sim</button>
-        </form>
+    <dialog id="delete" class="popupButtons">
+        <a onclick="document.getElementById('delete').close()"><img src="assets/icons/arrow-left.png"></a>
+        <h2>Excluir condena?</h2>
+        <div>
+            <button onclick="document.getElementById('delete').close()">Não</button>
+            <form action="deletarCondena" method="post">
+                <input type="hidden" id="deletarCondena" name="condenaId">
+                <button type="submit">Sim</button>
+            </form>
+        </div>
     </dialog>
-    <dialog id="alterar">
-        <a onclick="fecharPopup('alterar')">X</a>
+    <dialog id="alterar" class="popupInputs">
+        <h2>Alterar condena</h2>
+        <a onclick="document.getElementById('alterar').close()"><img src="assets/icons/arrow-left.png"></a>
         <form action="alterarCondena" method="post">
             <input type="hidden" name="condenaId" id="condenaId">
-            <input type="text" id="nomeCondena" name="nomeCondena">
-            <select name="tipo" id="tipoCondena">
-
-            </select>
-            <textarea name="descricaoCondena" id="descricaoCondena" placeholder="Descrição"></textarea>
+            <input type="text" id="nomeCondena" name="nomeCondena" class="inputCapitalize">
+            <select name="tipo" id="tipoCondena"></select>
+            <textarea name="descricaoCondena" id="descricaoCondena" placeholder="Mensagem" required></textarea>
             <button type="submit">Alterar</button>
         </form>
     </dialog>
@@ -132,7 +134,7 @@
             <button onclick="fecharPopupInformacoes()">Ok</button>
         </div>
     </div>
-    <script src="${pageContext.request.contextPath}/scripts/areaRestrita.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/areaRestritaCondenas.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
     <script>
         <% if (adicionado != null) { %>

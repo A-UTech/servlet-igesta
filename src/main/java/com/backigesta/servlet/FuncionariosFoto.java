@@ -25,7 +25,7 @@ public class FuncionariosFoto extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
 
         byte[] foto = dao.selecionarFotoPorId(id);
-        resp.setContentType("image/png");
+        resp.setContentType("image/svg");
         ServletOutputStream sos = resp.getOutputStream();
         sos.write(foto);
         sos.close();
