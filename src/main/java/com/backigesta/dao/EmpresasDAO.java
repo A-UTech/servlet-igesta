@@ -120,6 +120,25 @@ public class EmpresasDAO {
         }
     }
 
+    public boolean verificaLoginEmp(String email, String senha) {
+        boolean valido = false;
+        try {
+            Connection conn = banco.conectar();
+            String sql = "SELECT * FROM empresas WHERE email = ? AND senha = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ResultSet rset = ps.executeQuery();
+
+            if (rset.next()) {
+                valido = true;
+            }
+        } catch (Exception e) {
+            System.out.println("!!SQLException ao chamar EmpresasDAO.verificaLoginEmp(String email, String senha)!!");
+            e.printStackTrace();
+        }
+        return valido;
+    }
+
     //=======================MÉTODOS UPDATE=======================\\
     public boolean atualizar(Empresas empresas){
         boolean retorno = false;
@@ -188,4 +207,6 @@ public class EmpresasDAO {
             return retorno;
         }
     }
+
+    //=======================MÉTODOS DELETE=======================\\
 }

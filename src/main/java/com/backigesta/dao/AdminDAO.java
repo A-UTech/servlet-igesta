@@ -201,6 +201,25 @@ public class AdminDAO {
         }
     }
 
+    public boolean verificaLoginAdm(String email, String senha) {
+        boolean valido = false;
+        try {
+            Connection conn = banco.conectar();
+            String sql = "SELECT * FROM admins WHERE email = ? AND senha = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ResultSet rset = ps.executeQuery();
+
+            if (rset.next()) {
+                valido = true;
+            }
+        } catch (Exception e) {
+            System.out.println("!!SQLException ao chamar AdminDAO.verificaLoginAdm(String email, String senha)!!");
+            e.printStackTrace();
+        }
+        return valido;
+    }
+
     //=======================MÉTODOS DELETE=======================\\
     public boolean deletar(int id){
         boolean retorno = false;

@@ -21,7 +21,7 @@ public class Condenas extends HttpServlet {
         // Capturando o caminho de como ele chegou no método doGet
         String caminho = request.getServletPath();
 
-        // Direcionado o cliente apartir do caminho que chegou no servlet
+        // Direcionado o cliente a partir do caminho que chegou no servlet
         if (caminho.equals("/selectCondena")) {
             // Jogando ele no método para mostrar os selects do banco
             mostrarSelects(request,response);
