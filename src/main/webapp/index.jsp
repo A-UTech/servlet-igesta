@@ -23,10 +23,10 @@
         </ul>
     </header>
     <div class="overlay" id="popupOverlay">
-        <a href="login.html">
+        <a href="loginAdmin">
             <div>Entrar como admin</div>
         </a>
-        <a href="">
+        <a href="loginEmpresa">
             <div>Entrar como empresa</div>
         </a>
     </div>

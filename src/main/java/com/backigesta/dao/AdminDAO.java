@@ -71,6 +71,28 @@ public class AdminDAO {
         }
     }
 
+    public boolean verificaLoginAdmin(String email, String senha) {
+        Connection conn = null;
+        try {
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM admin WHERE email = ? AND senha = ?");
+            ps.setString(1,email);
+            ps.setString(2,senha);
+
+            ResultSet rset = ps.executeQuery();
+
+            if (rset.next()) {
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("!!SQLException ao chamar EmpresasDAO.verificaLoginEmp(String email, String senha)!!");
+            e.printStackTrace();
+        } finally {
+            banco.desconectar(conn);
+        }
+        return false;
+    }
+
     public List<Admin> selecionarTodos(){
         Connection conn = banco.conectar();
         List<Admin> admins = new ArrayList<>();
