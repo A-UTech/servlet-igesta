@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/logos/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/forms.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/popups.css">
     <title>IGesta</title>
     <%
-        String mensagem = (String) request.getAttribute("semConta");
+        String loginCorreto = (String) request.getAttribute("semConta");
     %>
 </head>
 <body>
@@ -16,8 +17,7 @@
         <form action="loginAdmin" method="post">
             <input type="email" name="email" placeholder="E-mail" required minlength="10" autocomplete="email" autofocus>
             <input type="password" name="password" placeholder="Senha" required min="6" autocomplete="current-password">
-
-            <a href=""><button type="submit">Entrar</button></a>
+            <button type="submit" id="buttonSubmit">Entrar</button>
         </form>
     </section>
     <div class="mens">
@@ -30,5 +30,21 @@
             <p>Voltar</p>
         </a>
     </div>
+    <div class="overlay" id="popupOverlay">
+        <div class="popup">
+            <div class="icon">
+                <img id="icon" src="${pageContext.request.contextPath}/assets/icons/" alt="">
+            </div>
+            <h2 id="title"></h2>
+            <p id="text"></p>
+            <button onclick="fecharPopupInformacoes()">Ok</button>
+        </div>
+    </div>
+    <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
+    <script>
+        <% if ("true".equals(loginCorreto)) { %>
+            abrirPopupInformacoes("wrong.svg","Usuário ou senha incorreta","O email ou senha informado estão incorretos")
+        <% } %>
+    </script>
 </body>
 </html>

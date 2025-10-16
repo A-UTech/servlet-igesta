@@ -1,3 +1,6 @@
+<%@ page import="com.backigesta.model.Admin" %>
+<%@ page import="com.backigesta.model.Empresas" %>
+<%@ page import="com.backigesta.model.Usuarios" %>
 <html lang="pt-br">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
@@ -7,6 +10,10 @@
     <link rel="stylesheet" href="styles/style.css">
     <link rel="shortcut icon" href="assets/logos/favicon.ico" type="image/x-icon">
     <title>IGesta</title>
+    <%
+        Empresas empresa = (Empresas) session.getAttribute("empresa");
+        Admin admin = (Admin) session.getAttribute("admin");
+    %>
 </head>
 <body>
     <header>
@@ -19,16 +26,37 @@
             <li><a href="#slide01" class="linkAnimation">Início</a></li>
             <li><a href="#slide06" class="linkAnimation">Empresa</a></li>
             <li><a href="#slide05" class="linkAnimation">Mensalidades</a></li>
-            <li><a id="entrar" onclick="opcoesEntrar()"><button>Entrar</button></a></li>
+            <% if (admin == null && empresa == null) { %>
+                <li><a id="entrar" onclick="opcoesEntrar()"><button>Entrar</button></a></li>
+            <% } else if (admin != null) { %>
+                <li><a class="conta" onclick="opcoesEntrar()"><img src="<%= admin.getFoto() == null ? "assets/icons/aside-perfil.svg" : "admin-foto?id=" + admin.getId() %>"><%=admin.getNome()%></a></li>
+            <% } else { %>
+                <li><a class="conta" onclick="opcoesEntrar()"><img src="<%= empresa.getFoto() == null ? "assets/icons/aside-perfil.svg" : "empresas-foto?id=" + empresa.getId() %>"><%=empresa.getNome()%></a></li>
+            <% } %>
         </ul>
     </header>
     <div class="overlay" id="popupOverlay">
-        <a href="loginAdmin">
-            <div>Entrar como admin</div>
-        </a>
-        <a href="loginEmpresa">
-            <div>Entrar como empresa</div>
-        </a>
+        <% if (session.getAttribute("admin") == null && session.getAttribute("empresa") == null) { %>
+            <a href="loginAdmin">
+                <div>Entrar como admin</div>
+            </a>
+            <a href="loginEmpresa">
+                <div>Entrar como empresa</div>
+            </a>
+        <% } else { %>
+            <% if (session.getAttribute("admin") != null) { %>
+                <a href="selectCondena">
+                    <div>Área restrita</div>
+                </a>
+            <% } else { %>
+                <a href="">
+                    <div>Ver lideres e gestores</div>
+                </a>
+            <% } %>
+            <a href="logout">
+                <div>Sair</div>
+            </a>
+        <% } %>
     </div>
 
     <main>
@@ -48,7 +76,7 @@
                 <h2>GESTÃO</h2>
                 <h2>EVOLUÇÃO</h2>
             </section>
-            <p>O IGesta é um app de bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
+            <p>IGesta é uma solução inteligente que simplifica processos, automatiza a contagem e transforma dados em análises claras para otimizar a gestão nas indústrias alimentícias.</p>
         </div>
 
 
@@ -124,7 +152,7 @@
             <img src="assets/images/team-pc.png">
             <section>
                 <h2>Quem somos nós</h2>
-                <p>Nós somos 14 estudantes da Germinare Tech, onde participamos de um projeto para desenvolver um aplicativo que ajude de alguma forma o ODS 9 (Objetivo de Desenvolvimento Sustentável), que é focado a ajudar as indústrias a se desenvolverem.</p>
+                <p>Somos 14 estudantes da Germinare Tech e unimos nossas ideias para criar um projeto voltado ao ODS 9 (Indústria, Inovação e Infraestrutura). Nosso objetivo é desenvolver um aplicativo que auxilie as indústrias a se modernizarem, crescerem de forma sustentável e se tornarem mais competitivas, impulsionando a inovação e o desenvolvimento tecnológico.</p>
             </section>
         </div>
 
@@ -154,7 +182,7 @@
                 <ul>
                     <li><a href="#slide01" class="linkAnimation">Início</a></li>
                     <li><a href="#slide05" class="linkAnimation">Mensalidades</a></li>
-                    <li><a href="updates.html" class="linkAnimation">Atualizações</a></li>
+                    <li><a href="htmls/updates.html" class="linkAnimation">Atualizações</a></li>
                     <li><a href="emailContato" class="linkAnimation">Contato</a></li>
                 </ul>
             </section>

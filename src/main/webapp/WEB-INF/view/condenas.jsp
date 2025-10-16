@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.backigesta.model.Condenas" %>
+<%@ page import="com.backigesta.model.Admin" %>
 <!DOCTYPE html>
 <html lang="pt-br">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -17,21 +18,19 @@
         String alterado = (String) request.getAttribute("alterado");
         String deletado = (String) request.getAttribute("deletado");
 
-        // Aqui preciso mudar depois porque ainda não estamos criando um HttpSession para salvar a pessoa que está usando a pagina
-        int id = 2;
+        Admin admin = (Admin) session.getAttribute("admin");
     %>
 </head>
 <body>
     <aside>
-        <a href=""><img src="${pageContext.request.contextPath}/assets/logos/logo-branca.png"></a>
+        <a href="${pageContext.request.contextPath}/index.jsp"><img src="${pageContext.request.contextPath}/assets/logos/logo-branca.png"></a>
         <div>
             <a href="company.html"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"></a>
             <a href="condemn.html"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"></a>
             <a href="payment.html"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"></a>
         </div>
         <a href="">
-            <%-- Nessa parte tenho que arrumar porque preciso colocar um if se a pessoa não tiver uma foto--%>
-            <img id="fotoPerfil" src="admin-foto?id=<%=id%>">
+            <img id="fotoPerfil" src="<%= admin.getFoto() == null ? "${pageContext.request.contextPath}/assets/icons/aside-perfil.svg" : "admin-foto?id=" + admin.getId() %>">
         </a>
     </aside>
 

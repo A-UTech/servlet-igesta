@@ -1,4 +1,5 @@
-
+<%@ page import="com.backigesta.model.Admin" %>
+<%@ page import="com.backigesta.model.Empresas" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="pt-br">
 <head>
@@ -7,6 +8,10 @@
     <link rel="shortcut icon" href="assets/logos/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles/mb-header.css">
     <title>IGesta</title>
+    <%
+        Empresas empresa = (Empresas) session.getAttribute("empresa");
+        Admin admin = (Admin) session.getAttribute("admin");
+    %>
 </head>
 <body>
 <a href="index.jsp"><p>✕</p></a>
@@ -19,15 +24,36 @@
             <li><a href="index.jsp"><p>Início</p></a></li>
             <li><a href="index.jsp#slide06"><p>Empresa</p></a></li>
             <li><a href="index.jsp#slide05"><p>Mensalidades</p></a></li>
-            <li><a onclick="opcoesEntrar()"><input type="button" value="Entrar"></a></li>
+            <% if (admin == null && empresa == null) { %>
+                <li><a id="entrar" onclick="opcoesEntrar()"><button>Entrar</button></a></li>
+            <% } else if (admin != null) { %>
+                <li><a class="conta" onclick="opcoesEntrar()"><img src="<%= admin.getFoto() == null ? "assets/icons/aside-perfil.svg" : "admin-foto?id=" + admin.getId() %>"><%=admin.getNome()%></a></li>
+            <% } else { %>
+                <li><a class="conta" onclick="opcoesEntrar()"><img src="<%= empresa.getFoto() == null ? "assets/icons/aside-perfil.svg" : "empresas-foto?id=" + empresa.getId() %>"><%=empresa.getNome()%></a></li>
+            <% } %>
         </ul>
         <div class="overlay" id="popupOverlay">
-            <a href="">
+            <% if (session.getAttribute("admin") == null && session.getAttribute("empresa") == null) { %>
+            <a href="loginAdmin">
                 <div>Entrar como admin</div>
             </a>
-            <a href="">
+            <a href="loginEmpresa">
                 <div>Entrar como empresa</div>
             </a>
+            <% } else { %>
+                <% if (session.getAttribute("admin") != null) { %>
+                <a href="selectCondena">
+                    <div>Área restrita</div>
+                </a>
+                <% } else { %>
+                <a href="">
+                    <div>Ver lideres e gestores</div>
+                </a>
+                <% } %>
+                <a href="logout">
+                    <div>Sair</div>
+                </a>
+            <% } %>
         </div>
     </main>
 </section>

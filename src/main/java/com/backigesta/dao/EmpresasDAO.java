@@ -98,6 +98,37 @@ public class EmpresasDAO {
         }
     }
 
+    public Empresas selecionarPorEmail(String email){
+        Connection conn = null;
+        Empresas empresas = null;
+        try{
+            conn = banco.conectar();
+            String sql = "SELECT * FROM admin WHERE email like ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                empresas = new Empresas(
+                        rs.getInt("id"),
+                        rs.getString("cnpj"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getInt("id_planos"),
+                        rs.getBytes("foto")
+                );
+            }
+        }
+        catch(SQLException sqle){
+            System.out.println("!!SQLException ao chamar AdminDAO.selecionarPorNome(String)");
+            sqle.printStackTrace();
+        }
+        finally {
+            banco.desconectar(conn);
+            return empresas;
+        }
+    }
+
     public byte[] selecionarFotoPorId(int id){
         Connection conn = banco.conectar();
         byte[] foto = null;

@@ -319,7 +319,7 @@ div.container {
 
 footer {
     display: grid;
-    grid-template-rows: repeat(1fr, 4);
+    grid-template-rows: repeat(4,1fr);
     place-items: center;
     background-color: var(--corCinza);
 }
@@ -507,4 +507,16 @@ footer img {
 }
 .overlay > a:hover > div {
     background-color: #4d4d56;
+}
+
+.conta > img {
+    border-radius: 50%;
+    position: relative;
+    top: 3px;
+    right: 3px;
+    height: 20px;
+    width: 25px;
+}
+.conta:hover {
+    cursor: pointer;
 }

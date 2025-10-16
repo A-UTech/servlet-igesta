@@ -11,4 +11,13 @@ public class Token {
         }
         return token;
     }
+
+    public static String AnonimizarEmail(String email) {
+        int posicaoFinal = email.indexOf("@");
+        String [] vetorEmail = email.split("");
+        for (int i = 3;i < posicaoFinal;i++) {
+            vetorEmail[i] = "*";
+        }
+        return String.join("",vetorEmail);
+    }
 }

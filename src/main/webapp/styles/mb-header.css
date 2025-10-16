@@ -84,7 +84,6 @@ main p{
     font-size: 3em;
 }
 
-
 .overlay {
     position: fixed;
     bottom: 180px;
@@ -112,6 +111,8 @@ main p{
 .overlay > a:hover > div {
     background-color: #4d4d56;
 }
+
+
 
 @keyframes iniciar {
     from {

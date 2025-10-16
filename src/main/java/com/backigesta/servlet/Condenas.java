@@ -2,12 +2,14 @@ package com.backigesta.servlet;
 
 import com.backigesta.dao.CondenasDao;
 
+import com.backigesta.model.Admin;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.List;
@@ -75,6 +77,20 @@ public class Condenas extends HttpServlet {
         }
     }
 
+    protected void deletarCondena(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Capturando os parâmetros de condenaId que estam saindo de um formulario
+        int id = Integer.parseInt(request.getParameter("condenaId"));
+
+        // Usando o método da classe CondenasDao para deletar um registro
+        boolean deletado = daoCondenas.deletarCondena(id);
+
+        // Colocando o atributo deletado no request
+        request.setAttribute("deletado",deletado ? "true" : "false");
+
+        // Jogando ele no método para mostrar os selects do banco
+        mostrarSelects(request,response);
+    }
+
     protected void alterarCondena(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Capturando os parâmetros de condenaId, nomeCondena e tipo que estam saindo de um formulario
         int id = Integer.parseInt(request.getParameter("condenaId"));
@@ -93,33 +109,19 @@ public class Condenas extends HttpServlet {
     }
 
     protected void adicionarContena(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        Admin admin = (Admin) session.getAttribute("admin");
+
         // Capturando os parâmetros de nomeCondena, tipo e descricao que estam saindo de um formulario
         String nomeCondena = request.getParameter("nomeCondena");
         String tipoCondena = request.getParameter("tipo");
         String descricaoCondena = request.getParameter("descricaoCondena");
 
-        // Preciso adicionar a parte de pegar a sessão de quem está usando a area restrita
-        String admin = "Lucas";
-
         // Usando o método da classe CondenasDao para adicioanar um registro
-        boolean adicionado = daoCondenas.adicionarCondena(new com.backigesta.model.Condenas(nomeCondena,admin,descricaoCondena,tipoCondena));
+        boolean adicionado = daoCondenas.adicionarCondena(new com.backigesta.model.Condenas(nomeCondena,admin.getNome(),descricaoCondena,tipoCondena));
 
         // Colocando o atributo adicionado no request
         request.setAttribute("adicionado",adicionado ? "true" : "false");
-
-        // Jogando ele no método para mostrar os selects do banco
-        mostrarSelects(request,response);
-    }
-
-    protected void deletarCondena(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Capturando os parâmetros de condenaId que estam saindo de um formulario
-        int id = Integer.parseInt(request.getParameter("condenaId"));
-
-        // Usando o método da classe CondenasDao para deletar um registro
-        boolean deletado = daoCondenas.deletarCondena(id);
-
-        // Colocando o atributo deletado no request
-        request.setAttribute("deletado",deletado ? "true" : "false");
 
         // Jogando ele no método para mostrar os selects do banco
         mostrarSelects(request,response);

@@ -8,10 +8,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/loginAdmin","/loginEmpresa"})
+@WebServlet(urlPatterns = {"/loginAdmin","/loginEmpresa","/logout"})
 public class Login extends HttpServlet {
 
     @Override
@@ -21,9 +22,23 @@ public class Login extends HttpServlet {
             mandarLoginAdmin(request,response);
         } else if (caminho.equals("/loginEmpresa")) {
             mandarLoginEmpresa(request,response);
+        } else {
+            logoutConta(request,response);
         }
     }
 
+    protected void logoutConta(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        // Obtém a sessão atual, se existir
+        HttpSession session = request.getSession(false);
+
+        // Se a sessão existir ela será apagada
+        if (session != null) {
+            session.invalidate();
+        }
+
+        // Redireciona para o index.jsp
+        response.sendRedirect("index.jsp");
+    }
     protected void mandarLoginAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/forms-login_adm.jsp");
         rd.forward(request,response);
@@ -53,7 +68,7 @@ public class Login extends HttpServlet {
             rd = request.getRequestDispatcher("token");
             rd.forward(request,response);
         } else {
-            request.setAttribute("semConta","Usuário ou senha inválidos");
+            request.setAttribute("semConta","true");
             mandarLoginAdmin(request,response);
         }
     }
@@ -67,7 +82,7 @@ public class Login extends HttpServlet {
             rd = request.getRequestDispatcher("token");
             rd.forward(request,response);
         } else {
-            request.setAttribute("semConta","Usuário ou senha inválidos");
+            request.setAttribute("semConta","true");
             mandarLoginEmpresa(request,response);
         }
     }

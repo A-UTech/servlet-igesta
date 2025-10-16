@@ -113,8 +113,8 @@ public class CondenasDao {
     public boolean adicionarCondena(Condenas condena) {
         conn = conexao.conectar();
         try {
-            PreparedStatement pstmt1 = conn.prepareStatement("select id from admin where nome = ?");
-            pstmt1.setString(1,condena.getNomeAdmin());
+            PreparedStatement pstmt1 = conn.prepareStatement("select id from admin where lower(nome) = ?");
+            pstmt1.setString(1,condena.getNomeAdmin().toLowerCase());
             ResultSet rs = pstmt1.executeQuery();
             int id = 0;
             while (rs.next()) {

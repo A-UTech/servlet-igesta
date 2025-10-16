@@ -16,9 +16,9 @@
     <section>
         <h1>Contato</h1>
         <form method="post" action="emailContato">
-            <input type="email" name="email" class="inputs" id="iEmail" placeholder="E-Mail" required minlength="10" autocomplete="email" autofocus>
-            <input type="text" name="nome" class="inputs" id="iName" placeholder="Nome" required>
-            <textarea name="message" id="iMes" class="inputs" placeholder="Mensagem" required></textarea>
+            <input type="email" name="email" class="inputs" placeholder="E-Mail" required minlength="10" autocomplete="email" autofocus>
+            <input type="text" name="nome" class="inputs" placeholder="Nome" required>
+            <textarea name="message" class="textarea" placeholder="Mensagem" required></textarea>
             <button id="buttonSubmit" type="submit">Enviar</button>
         </form>
     </section>
