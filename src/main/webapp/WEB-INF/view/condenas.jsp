@@ -12,13 +12,17 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/popups.css">
     <title>Condenas</title>
     <%
+        Admin admin = (Admin) session.getAttribute("admin");
+        if (admin == null) {
+            response.sendRedirect("index.jsp");
+            return;
+        }
+
         List<Condenas> condenas = (List<Condenas>) request.getAttribute("condenas");
 
         String adicionado = (String) request.getAttribute("adicionado");
         String alterado = (String) request.getAttribute("alterado");
         String deletado = (String) request.getAttribute("deletado");
-
-        Admin admin = (Admin) session.getAttribute("admin");
     %>
 </head>
 <body>
@@ -84,7 +88,6 @@
                     </ul>
                 <% } %>
             </div>
-
         </section>
     </main>
     <dialog id="add" class="popupInputs">
