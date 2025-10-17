@@ -1,6 +1,5 @@
 <%@ page import="com.backigesta.model.Admin" %>
 <%@ page import="com.backigesta.model.Empresas" %>
-<%@ page import="com.backigesta.model.Usuarios" %>
 <html lang="pt-br">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
