@@ -8,14 +8,13 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/perfil.css">
     <title>Perfil</title>
     <%
-        Usuarios user = (Usuarios) request.getAttribute("usuario");
+        Usuarios user = (Usuarios) request.getSession().getAttribute("admin");
         int id = user.getId();
         String tipo = user.getClass().getSimpleName();
     %>
 </head>
 <body>
     <div class="mens">
-
         <img src="getFoto?id=<%=id%>&tipo=<%=tipo%>">
         <form action="uploadFoto" name="trocarFoto" method="post" enctype="multipart/form-data">
             <input type="file" id="foto" name="foto" accept="image/jpeg, image/png" style="display: none">
@@ -36,7 +35,7 @@
     </div>
 
     <section>
-        <a href="">
+        <a href="selectCondena">
             <img src="${pageContext.request.contextPath}/assets/icons/arrow-right.svg">
             <span>Voltar</span>
         </a>

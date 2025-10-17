@@ -33,8 +33,12 @@
             <a href="condemn.html"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"></a>
             <a href="payment.html"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"></a>
         </div>
-        <a href="">
-            <img id="fotoPerfil" src="<%= admin.getFoto() == null ? "${pageContext.request.contextPath}/assets/icons/aside-perfil.svg" : "admin-foto?id=" + admin.getId() %>">
+        <a href="entrarPerfil">
+            <%if(admin.getFoto()!=null){%>
+            <img id="fotoPerfil" src="getFoto?id=<%=admin.getId()%>&tipo=Admin">
+            <%} else {%>
+            <img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
+            <%}%>
         </a>
     </aside>
 
