@@ -17,8 +17,22 @@ import jakarta.servlet.http.Part;
 
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/atualizarPerfil","/uploadFoto"})
+@WebServlet(urlPatterns = {"/atualizarPerfil","/uploadFoto","/entrarPerfil"})
 public class Perfil extends HttpServlet {
+
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String caminho = request.getServletPath();
+        if (caminho.equals("/entrarPerfil")) {
+            entrarPerfil(request,response);
+        }
+    }
+
+    protected void entrarPerfil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("WEB-INF/view/perfil.jsp").forward(request, response);
+    }
+
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String caminho = request.getServletPath();
@@ -57,7 +71,7 @@ public class Perfil extends HttpServlet {
         user.setEmail(email);
         user.setSenha(senha);
 
-        if(dao.atualizar(user)){}
+        entrarPerfil(request,response);
     }
 
     protected void uploadFoto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
