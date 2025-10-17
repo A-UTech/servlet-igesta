@@ -141,3 +141,15 @@ main p{
         opacity: 1;
     }
 }
+
+.conta > img {
+    border-radius: 50%;
+    position: relative;
+    top: 3px;
+    right: 3px;
+    height: 20px;
+    width: 25px;
+}
+.conta:hover {
+    cursor: pointer;
+}

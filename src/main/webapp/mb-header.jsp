@@ -27,9 +27,9 @@
             <% if (admin == null && empresa == null) { %>
                 <li><a id="entrar" onclick="opcoesEntrar()"><button>Entrar</button></a></li>
             <% } else if (admin != null) { %>
-                <li><a class="conta" onclick="opcoesEntrar()"><img src="<%= admin.getFoto() == null ? "assets/icons/aside-perfil.svg" : "admin-foto?id=" + admin.getId() %>"><%=admin.getNome()%></a></li>
+                <li><a class="conta" onclick="opcoesEntrar()"><img src="<%= admin.getFoto() == null ? "assets/icons/aside-perfil.svg" : "getFoto?id=" + admin.getId() + "&tipo=Admin" %>"><%=admin.getNome()%></a></li>
             <% } else { %>
-                <li><a class="conta" onclick="opcoesEntrar()"><img src="<%= empresa.getFoto() == null ? "assets/icons/aside-perfil.svg" : "empresas-foto?id=" + empresa.getId() %>"><%=empresa.getNome()%></a></li>
+                <li><a class="conta" onclick="opcoesEntrar()"><img src="<%= empresa.getFoto() == null ? "assets/icons/aside-perfil.svg" : "empresas-foto?id=" + empresa.getId() + "&tipo=Empresas" %>"><%=empresa.getNome()%></a></li>
             <% } %>
         </ul>
         <div class="overlay" id="popupOverlay">

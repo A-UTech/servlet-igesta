@@ -1,4 +1,6 @@
 <%@ page import="com.backigesta.model.Usuarios" %>
+<%@ page import="com.backigesta.model.Admin" %>
+<%@ page import="com.backigesta.model.Empresas" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -8,19 +10,33 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/perfil.css">
     <title>Perfil</title>
     <%
-        Usuarios user = (Usuarios) request.getAttribute("usuario");
-        int id = user.getId();
-        String tipo = user.getClass().getSimpleName();
+        if (session.getAttribute("admin") == null && session.getAttribute("empresa") == null) {
+            response.sendRedirect("index.jsp");
+            return;
+        }
+
+        Admin admin = (Admin) session.getAttribute("admin");
+        Empresas empresa = (Empresas) session.getAttribute("empresa");
+        String tipo = "Empresa";
+        Usuarios user = empresa;
+        if (admin != null) {
+            tipo = "Admin";
+            user = admin;
+        }
     %>
 </head>
 <body>
     <div class="mens">
+        <% if (user.getFoto() == null) { %>
+            <img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
+        <% } else { %>
+            <img src="getFoto?id=<%=user.getId()%>&tipo=<%=tipo%>">
+        <% } %>
 
-        <img src="getFoto?id=<%=id%>&tipo=<%=tipo%>">
         <form action="uploadFoto" name="trocarFoto" method="post" enctype="multipart/form-data">
             <input type="file" id="foto" name="foto" accept="image/jpeg, image/png" style="display: none">
             <label for="foto"><img src="${pageContext.request.contextPath}/assets/icons/camera.png"></label>
-            <input type="hidden" name="id" value="<%=id%>">
+            <input type="hidden" name="id" value="<%=user.getId()%>">
             <input type="hidden" name="tipo" value="<%=tipo%>">
         </form>
         <script>
@@ -36,7 +52,7 @@
     </div>
 
     <section>
-        <a href="">
+        <a href="javascript:history.back()">
             <img src="${pageContext.request.contextPath}/assets/icons/arrow-right.svg">
             <span>Voltar</span>
         </a>
@@ -56,7 +72,7 @@
                 <p>Senha:</p>
                 <input type="password" name="password" required minlength="8" autocomplete="current-password" title="Senha" value="<%=user.getSenha()%>">
             </div>
-            <input type="hidden" name="id" value="<%=id%>">
+            <input type="hidden" name="id" value="<%=user.getId()%>">
             <input type="hidden" name="tipo" value="<%=tipo%>">
             <button type="submit">Trocar senha</button>
         </form>

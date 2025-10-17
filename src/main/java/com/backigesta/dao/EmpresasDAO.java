@@ -183,11 +183,13 @@ public class EmpresasDAO extends DAO{
             while(rs.next()){
                 empresas = new Empresas(
                         rs.getInt("id"),
-                        rs.getString("cnpj"),
                         rs.getString("nome"),
                         rs.getString("email"),
+                        rs.getString("cnpj"),
                         rs.getString("senha"),
                         rs.getInt("id_planos"),
+                        rs.getString("regiao"),
+                        rs.getString("unidade"),
                         rs.getBytes("foto")
                 );
             }
