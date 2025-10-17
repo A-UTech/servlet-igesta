@@ -134,7 +134,7 @@ div.table {
     display: block;
   }
 
-div.company > ul {grid-template-columns: repeat(6, 1fr)}
+div.company > ul {grid-template-columns: repeat(7, 1fr)}
 div.condemn > ul {grid-template-columns: repeat(5, 1fr)}
 div.payment > ul {grid-template-columns: repeat(4, 1fr)}
 

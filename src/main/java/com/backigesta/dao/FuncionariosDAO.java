@@ -4,13 +4,14 @@ import com.backigesta.conexao.Conexao;
 import com.backigesta.model.Admin;
 import com.backigesta.model.Empresas;
 import com.backigesta.model.Funcionarios;
+import com.backigesta.model.Usuarios;
 
 import java.sql.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FuncionariosDAO {
+public class FuncionariosDAO extends DAO{
     private final Conexao banco = new Conexao();
     //=======================MÉTODOS CREATE=======================\\
     public boolean inserir(Funcionarios func){
@@ -133,7 +134,8 @@ public class FuncionariosDAO {
     }
 
     //=======================MÉTODOS UPDATE=======================\\
-    public boolean atualizar(Funcionarios func){
+    public boolean atualizar(Usuarios user){
+        Funcionarios func = (Funcionarios) user;
         boolean retorno = false;
         Connection conn = banco.conectar();
         try{

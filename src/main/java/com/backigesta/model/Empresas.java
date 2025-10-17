@@ -9,6 +9,8 @@ public class Empresas extends Usuarios{
 
     private String cnpj;
     private int id_planos;
+    private String regiao;
+    private String unidade;
 
 //=======================MÉTODOS DA CLASSE=======================\\
 
@@ -20,55 +22,71 @@ public class Empresas extends Usuarios{
     }
 
     //Completo
-    public Empresas(int id, String nome, String email, String cnpj, String senha, int id_planos,  byte[] foto) {
+    public Empresas(int id, String nome, String email, String cnpj, String senha, int id_planos, String regiao, String unidade, byte[] foto) {
         super(id, nome, email, senha, foto);
         this.cnpj = cnpj;
         this.id_planos = id_planos;
+        this.regiao = regiao;
+        this.unidade = unidade;
     }
 
     //Sem Id
-    public Empresas(String nome, String email, String cnpj, String senha, int id_planos,  byte[] foto) {
+    public Empresas(String nome, String email, String cnpj, String senha, int id_planos, String regiao, String unidade, byte[] foto) {
         super(nome, email, senha, foto);
         this.cnpj = cnpj;
         this.id_planos = id_planos;
+        this.regiao = regiao;
+        this.unidade = unidade;
     }
 
     //Sem foto
-    public Empresas(int id, String nome, String email, String cnpj, String senha, int id_planos) {
+    public Empresas(int id, String nome, String email, String cnpj, String senha, int id_planos, String regiao, String unidade) {
         super(id, nome, email, senha);
         this.cnpj = cnpj;
         this.id_planos = id_planos;
+        this.regiao = regiao;
+        this.unidade = unidade;
     }
 
     //Sem id_planos
-    public Empresas(int id, String nome, String email, String cnpj, String senha, byte[] foto) {
+    public Empresas(int id, String nome, String email, String cnpj, String senha, String regiao, String unidade, byte[] foto) {
         super(id, nome, email, senha, foto);
         this.cnpj = cnpj;
+        this.regiao = regiao;
+        this.unidade = unidade;
     }
 
     //Sem foto nem Id
-    public Empresas(String nome, String email, String cnpj, String senha, int id_planos) {
+    public Empresas(String nome, String email, String cnpj, String senha, int id_planos, String regiao, String unidade) {
         super(nome, email, senha);
         this.cnpj = cnpj;
         this.id_planos = id_planos;
+        this.regiao = regiao;
+        this.unidade = unidade;
     }
 
     //Sem id_planos nem Id
-    public Empresas(String nome, String email, String cnpj, String senha, byte[] foto) {
+    public Empresas(String nome, String email, String cnpj, String senha, String regiao, String unidade, byte[] foto) {
         super(nome, email, senha, foto);
         this.cnpj = cnpj;
+        this.regiao = regiao;
+        this.unidade = unidade;
     }
 
     //Sem foto nem id_planos
-    public Empresas(int id, String nome, String email, String cnpj, String senha) {
+    public Empresas(int id, String nome, String email, String cnpj, String senha, String regiao, String unidade) {
         super(id, nome, email, senha);
         this.cnpj = cnpj;
+        this.regiao = regiao;
+        this.unidade = unidade;
     }
 
     //Sem foto, id_planos e Id
-    public Empresas(String nome, String email, String cnpj, String senha) {
+    public Empresas(String nome, String email, String cnpj, String senha, String regiao, String unidade) {
         super(nome, email, senha);
         this.cnpj = cnpj;
+        this.regiao = regiao;
+        this.unidade = unidade;
     }
 
 
@@ -80,6 +98,14 @@ public class Empresas extends Usuarios{
 
     public int getId_planos() {
         return id_planos;
+    }
+
+    public String getRegiao() {
+        return regiao;
+    }
+
+    public String getUnidade() {
+        return unidade;
     }
 
 //=======================MÉTODOS SET=======================\\
@@ -99,6 +125,8 @@ public class Empresas extends Usuarios{
                 " | nome: "+super.getNome()+
                 " | email: "+super.getEmail()+
                 " | senha: "+super.getSenha()+
+                " | regiao: "+regiao+
+                " | unidade: "+unidade+
                 " | Tem foto: " + (super.getFoto()!=null ? "sim":"não") +
                 " }";
     }

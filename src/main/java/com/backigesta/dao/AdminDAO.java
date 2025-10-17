@@ -10,8 +10,9 @@ import java.util.List;
 
 import com.backigesta.conexao.Conexao;
 import com.backigesta.model.Admin;
+import com.backigesta.model.Usuarios;
 
-public class AdminDAO {
+public class AdminDAO extends DAO{
     private Conexao banco = new Conexao();
 
     //=======================MÉTODOS CREATE=======================\\
@@ -155,7 +156,8 @@ public class AdminDAO {
 
     //=======================MÉTODOS UPDATE=======================\\
 
-    public boolean atualizar(Admin adm){
+    public boolean atualizar(Usuarios user){
+        Admin adm = (Admin) user;
         boolean retorno = false;
         Connection conn = banco.conectar();
         try{
