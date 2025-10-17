@@ -14,9 +14,9 @@ function alterarCondena(numero) {
     // Define as ordens das opções que seram mostradas no option
     const selectTipo = document.getElementById("tipoCondena");
     if (tipo === "Parcial") {
-        selectTipo.innerHTML = "<option value='Parcial' selected>Parcial</option> <option value='total'>Total</option>";
+        selectTipo.innerHTML = "<option value='Parcial' selected>Parcial</option> <option value='Total'>Total</option>";
     } else {
-        selectTipo.innerHTML = "<option value='Total' selected>Total</option><option value='parcial'>Parcial</option>";
+        selectTipo.innerHTML = "<option value='Total' selected>Total</option><option value='Parcial'>Parcial</option>";
     }
 
     // Abre o dialog alterar

@@ -1,0 +1,522 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+::-webkit-scrollbar {display: none;}
+::selection {background: var(--corVE);}
+
+:root {
+    --corCinza: #2F3034;    /* Cinza */
+    --corBranco: #FCFCFC;   /* Branco */
+    --corVE: #1A7B66;       /* Verde escuro */
+    --corVC: #A1E1D3;       /* Verde claro */
+    --corPreto: #141414;    /* Preto */
+
+    --fontText: 'Poppins';
+    --fontTitle: 'Anton';
+}
+
+* {
+    margin: 0;
+    padding: 0;
+
+    font: 0.95em var(--fontText);
+    color: var(--corBranco);
+    text-decoration: none;
+    border: 0;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--corPreto);
+}
+
+h1, h2 {
+    font: 3em var(--fontTitle);
+}
+
+input {
+    background: var(--corVC);
+    color: var(--corPreto);
+    width: 100px;
+    height: 30px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+
+p > a, li > a {
+    position: relative;
+}
+  
+a.linkAnimation::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      border-radius: 4px;
+      background: #ffffff;
+      bottom: 0;
+      left: 0;
+      transform-origin: right;
+      transform: scaleX(0);
+      transition: transform .3s ease-in-out;
+}
+  
+p > a:hover::before, li > a:hover::before {
+    transform-origin: left;
+    transform: scaleX(1);
+}
+
+
+/* --- main config -------------- */
+
+header {
+    position: fixed;
+    width: 100vw;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    transition: 0.5s;
+}
+
+header img {
+    width: 50px;
+    height: 61px;
+}
+
+header > section {
+    display: flex;
+    animation: titulo 1.5s;
+    transition: 1s;
+}
+
+header h1 {
+    margin-left: 15px;
+    font: bold 3em var(--fontText);
+}
+
+header > ul {
+    display: none;
+}
+
+header div {
+    font-size: 3.5em;
+    position: absolute;
+    top: 15px;
+    right: 70px;
+    transition: 0.6s;
+    width: 70px;
+    text-align: center;
+}
+
+header div:hover {
+    position: absolute;
+    background-color: var(--corCinza);
+    border-radius: 100px;
+    transition: 0.3s;
+}
+
+button {
+    background-color: var(--corVC);
+    color: var(--corPreto);
+    padding: 6px;
+    border-radius: 50px;
+    width: 100px;
+}
+
+main {
+    height: 100vh;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+}
+
+div.slides, footer {
+    height: 100vh;
+    width: 100vw;
+    scroll-snap-align: start;
+    position: relative;
+}
+
+div#slide02, div#slide03, div.container, div#slide04, div#slide05, div#slide06, div#slide08, .card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+div#slide01 {
+    background: url(../assets/images/splash.png) center center no-repeat fixed;
+    background-size: cover;
+    text-align: right;
+}
+
+div#slide01 img{
+    position: absolute;
+    left: 115px;
+    width: 250px;
+}
+
+div#slide01 > section {
+    position: absolute;
+    bottom: 50px;
+    right: 60px;
+    transition: 0.5s;
+    animation: tituloSec 1.5s;
+}
+
+div#slide01 h1 {
+    font-size: 7.5em;
+    margin-bottom: -20px;
+    letter-spacing: 3px;
+}
+
+div#slide01 p {
+    font-size: 1.2em;
+    letter-spacing: 2px;
+}
+
+
+
+div#slide02 {
+    width: 90vw;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+div#slide02 > section#phrases {
+    font-size: 2em;
+    margin-top: 70px;
+}
+
+div#slide02 h2 {
+    margin-bottom: -15px;
+}
+
+div#slide02 > p {
+    width: 300px;
+    margin-top: -60px;
+}
+
+
+
+div#slide03 .card {
+    align-items: center;
+    height: 190px;
+    width: 160px;
+    padding: 5px;
+}
+
+div#slide03 .card > h3,
+div#slide03 .card > p{
+    width: 150px;
+}
+
+
+
+div#slide04 {
+    background: var(--corCinza);
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+div#slide04 > h2 {
+    margin-top: 40px;
+}
+
+div#slide04 > img {
+    width: 100%;
+    max-width: 600px;
+}
+
+
+
+div#slide05{
+    text-align: center;
+    flex-direction: column;
+    gap: 50px;
+}
+
+
+
+div#slide06 {
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+}
+
+div#slide06 > section{
+    width: 90vw;
+}
+
+div#slide06 > img{
+    margin-top: 45px;
+    width: 90vw;
+    max-width: 500px;
+}
+
+
+
+div#slide07 {
+    display: flex;
+    align-items: center;
+    overflow-y: scroll;
+}
+
+div#slide07 > img {
+    height: 60vh;
+}
+
+
+
+div#slide08 {
+    font-size: 1.5em;
+    text-align: center;
+}
+
+div#slide08 p {
+    width: 300px;
+}
+
+
+
+div.container {
+    align-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.card h3 {
+    font-weight: bold;
+}
+
+.card {   
+    height: 160px;
+    width: 140px;
+    text-align: center;
+    flex-direction: column;
+    gap: 20px;
+    background-color: var(--corCinza);
+    border-radius: 10px;
+    box-shadow: -1rem 0 3rem #00000092;
+    transition: 0.4s ease-in-out;
+    position: relative;
+    left: 0;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    transition: 0.4s ease-out;
+}
+
+.card.selected {
+    background-color: var(--corVE);
+    color: var(--corPreto);
+    transform: translateY(-10px);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+
+
+footer {
+    display: grid;
+    grid-template-rows: repeat(4,1fr);
+    place-items: center;
+    background-color: var(--corCinza);
+}
+
+footer h1{
+    color: var(--corCinza);
+    margin-top: 100px;
+}
+
+footer h1, footer p {
+    text-align: center;
+}
+
+footer ul {
+    list-style: none;
+    columns: 2;
+}
+
+footer ul a {
+    color: #bbbbbb;
+}
+
+footer ul li, footer h3 {
+    margin-bottom: 10px;
+}
+
+footer h3 {
+    font-weight: bold;
+}
+
+footer img {
+    width: 50px;
+}
+
+
+
+
+
+/* configurações pc */
+
+@media screen and (min-width: 768px) {
+    body {
+        font-size: 1.3em;
+    }
+
+    header div {
+        display: none;
+        transition: 1s;
+    }
+
+    header > ul {
+        display: flex;
+        position: absolute;
+        right: 70px;
+        list-style-type: none;
+        gap: 20px;
+        align-items: center;
+        transition: 0.5s;
+    }
+
+    header > section {
+        animation: tituloSec 1.5s;
+        transition: 1s;
+    }
+
+    div#slide01 section {
+        animation: titulo 1.5s;
+        transform: translateX(20px);
+        transition: 0.5s;
+    }
+
+    div#slide01 img {
+        width: 375px;
+        left: 25vw;
+    }
+
+    div#slide02 > p {
+        margin-top: 90px;
+    }
+
+    div#slide03 section.card {
+        width: 230px;
+        height: 250px;
+    }
+
+    div#slide05 {
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+
+    div#slide05 .card{
+        height: 200px;
+        width: 180px;
+    }
+
+    div#slide05 .card:hover ~ .card {
+        position: relative;
+        left: 50px;
+        transition: 0.4s ease-out;
+    }
+
+    div#slide06.card:not(:first-child) {
+        margin-left: -50px;
+    }
+
+    div#slide06 {
+        justify-content: space-evenly;
+        flex-wrap: nowrap;
+        flex-direction: row;
+    }
+
+    div#slide06 > section {
+        width: 350px;
+    }
+
+    div#slide08 > p{
+        font-size: 1.5em;
+        width: 100%;
+    }
+
+
+    footer {
+        grid-template-rows: 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    footer > section {
+        width: fit-content;
+    }
+
+    footer ul{
+        columns: 1;
+    }
+
+    footer h1 {
+        color: var(--corBranco);
+    }
+}
+
+@keyframes titulo {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+@keyframes tituloSec {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+.overlay {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background-color: var(--corCinza);
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10;
+    width: 180px;
+    font-size: 14px;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.overlay > a > div {
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+.overlay > a:hover > div {
+    background-color: #4d4d56;
+}
+
+.conta > img {
+    border-radius: 50%;
+    position: relative;
+    top: 3px;
+    right: 3px;
+    height: 20px;
+    width: 25px;
+}
+.conta:hover {
+    cursor: pointer;
+}

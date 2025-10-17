@@ -56,18 +56,23 @@ section > form {
     gap: 10px;
 }
 
-input, textarea, button#buttonSubmit {
+input, .textarea, button#buttonSubmit {
     border-radius: 10px;
-    width: 260px;
+    width: 280px;
     height: 58px;
     transition: 500ms;
     color: var(--corPreto);
+    box-sizing: border-box;
+    padding: 20px;
 }
 
 input, textarea {
     border: 2px solid #1A7B66;
     text-align: left;
-    padding-left: 20px;
+}
+
+.textarea {
+    height: 120px;
 }
 
 input::placeholder, textarea::placeholder {
@@ -75,7 +80,6 @@ input::placeholder, textarea::placeholder {
 }
 
 button#buttonSubmit {
-    width: 280px;
     background: var(--corVE);
     color: var(--corBranco);
 }
@@ -143,7 +147,7 @@ div.back > a > img {
 
 /* --- token ------ */
 
-.token > input, .token > button{
+.token > input, .token button{
     border-radius: 10px;
     height: 60px;
     transition: 500ms;
@@ -157,7 +161,7 @@ div.back > a > img {
     color: var(--corPreto);
 }
 
-.token > button {
+.token button {
     margin: auto;
 }
 
@@ -237,7 +241,7 @@ section p {
     from {
         margin-top: 10dvh;
         opacity: 0;
-    } 
+    }
     to {
         margin-top: 0dvh;
         opacity: 1;
@@ -247,7 +251,7 @@ section p {
     from {
         margin-top: 50dvh;
         opacity: 0;
-    } 
+    }
     to {
         margin-top: 15dvh;
         opacity: 1;
@@ -257,9 +261,13 @@ section p {
     from {
         margin-top: 40dvh;
         opacity: 0;
-    } 
+    }
     to {
         margin-top: 0dvh;
         opacity: 1;
     }
+}
+
+.error {
+    color: red;
 }

@@ -72,6 +72,28 @@ public class AdminDAO extends DAO{
         }
     }
 
+    public boolean verificaLoginAdmin(String email, String senha) {
+        Connection conn = null;
+        try {
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM admin WHERE email = ? AND senha = ?");
+            ps.setString(1,email);
+            ps.setString(2,senha);
+
+            ResultSet rset = ps.executeQuery();
+
+            if (rset.next()) {
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("!!SQLException ao chamar EmpresasDAO.verificaLoginEmp(String email, String senha)!!");
+            e.printStackTrace();
+        } finally {
+            banco.desconectar(conn);
+        }
+        return false;
+    }
+
     public List<Admin> selecionarTodos(){
         Connection conn = banco.conectar();
         List<Admin> admins = new ArrayList<>();
@@ -132,6 +154,35 @@ public class AdminDAO extends DAO{
         }
     }
 
+    public Admin selecionarPorEmail(String email){
+        Connection conn = null;
+        Admin admin = null;
+        try{
+            conn = banco.conectar();
+            String sql = "SELECT * FROM admin WHERE email like ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                admin = new Admin(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("sobrenome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getBytes("foto")
+                );
+            }
+        }
+        catch(SQLException sqle){
+            System.out.println("!!SQLException ao chamar AdminDAO.selecionarPorNome(String)");
+            sqle.printStackTrace();
+        }
+        finally {
+            banco.desconectar(conn);
+            return admin;
+        }
+    }
     public byte[] selecionarFotoPorId(int id){
         Connection conn = banco.conectar();
         byte[] foto = null;
@@ -201,6 +252,25 @@ public class AdminDAO extends DAO{
         finally {
             return retorno;
         }
+    }
+
+    public boolean verificaLoginAdm(String email, String senha) {
+        boolean valido = false;
+        try {
+            Connection conn = banco.conectar();
+            String sql = "SELECT * FROM admins WHERE email = ? AND senha = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ResultSet rset = ps.executeQuery();
+
+            if (rset.next()) {
+                valido = true;
+            }
+        } catch (Exception e) {
+            System.out.println("!!SQLException ao chamar AdminDAO.verificaLoginAdm(String email, String senha)!!");
+            e.printStackTrace();
+        }
+        return valido;
     }
 
     //=======================MÉTODOS DELETE=======================\\
