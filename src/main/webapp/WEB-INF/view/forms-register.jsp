@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="../assets/logos/favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="../styles/forms.css">
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/logos/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/forms.css">
   <title>IGesta</title>
 </head>
 <body>
 <section>
   <h1>Criar conta</h1>
-  <form action="forms-register" method="post">
+  <form action="criarContaEmpresa" method="post">
     <input type="text" name="name" placeholder="Nome" required autofocus pattern="^[A-Z][a-z '-]*$" title="Caso o sistema não permita seu nome original, faça cadastro com outro nome, depois entre em contato conosco">
     <input type="email" name="email" placeholder="E-mail" required minlength="10" autocomplete="email" pattern="^[a-zA-Z0-9_\.\-]{1,}@[a-zA-Z_\.\-]{2,}\.(com|br|org|me)$" title="Coloque um dominio .com, ou .br, ou .org, ou .me">
     <input type="text" name="cnpj" placeholder="CNPJ" required minlength="14" maxlength="18" pattern="^[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}/?[0-9]{4}-?[0-9]{2}$" title="Digite apenas os números">
@@ -53,8 +54,8 @@
   <p>seja bem vindo!</p>
 </div>
 <div class="back">
-  <a href="forms-login_cmp.html">
-    <img src="../assets/icons/arrow-left.png">
+  <a href="${pageContext.request.contextPath}/index.jsp">
+    <img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png">
     <p>Voltar</p>
   </a>
 </div>

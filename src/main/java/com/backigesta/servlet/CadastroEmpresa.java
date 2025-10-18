@@ -8,21 +8,26 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/forms-register", "/forms-register_password"})
+@WebServlet(urlPatterns = {"/criarContaEmpresa", "/criarSenhaEmpresa","/entrarCadastroEmpresa"})
 public class CadastroEmpresa extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String caminho = request.getServletPath();
-        if (caminho.equals("/forms-register")) {
-            pegaCagastro(request, response);
-        } else if (caminho.equals("/forms-register_password")) {
-            pegaSenha(request, response);
-        } else {
-            response.sendRedirect(request.getContextPath() + "/htmls/erro.html");
-            System.out.println("Erro no doPost");
+        if (caminho.equals("/criarContaEmpresa")) {
+            cadastrarEmpresa(request, response);
+        } else if (caminho.equals("/criarSenhaEmpresa")) {
+            criarSenha(request, response);
+        } else if (caminho.equals("/entrarCadastroEmpresa")) {
+            entrarCadastroEmpresa(request,response);
         }
     }
 
-    protected void pegaSenha(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void entrarCadastroEmpresa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String plano = request.getParameter("plano");
+
+
+    }
+
+    protected void criarSenha(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String senha = request.getParameter("password");
         String confSenha = request.getParameter("confirmPassword");
 
@@ -47,7 +52,7 @@ public class CadastroEmpresa extends HttpServlet {
     }
 
 
-    protected void pegaCagastro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void cadastrarEmpresa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // pega os parâmetros do cadastro
         String nome = request.getParameter("name");
         String email = request.getParameter("email");
@@ -63,9 +68,6 @@ public class CadastroEmpresa extends HttpServlet {
             // guarda o id da empresa criada na sessão
             request.getSession().setAttribute("idEmpresa", idEmpresa);
             response.sendRedirect(request.getContextPath() + "htmls/forms-register_password.html");
-        } else {
-            response.sendRedirect(request.getContextPath() + "/htmls/erro.html");
-            System.out.println("Erro no cadastro");
         }
     }
 }
