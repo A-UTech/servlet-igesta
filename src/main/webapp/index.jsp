@@ -116,8 +116,8 @@
             <div class="title">
                 <h2>Mensalidades</h2>
                 <p>Por armazenamento</p>
-                <form action="">
-                    <input type="hidden" name="plano" value="basico" id="plano">
+                <form action="entrarCadastroEmpresa" method="post">
+                    <input type="hidden" name="plano" value="" id="plano">
                     <button type="submit">Assinar</button>
                 </form>
             </div>
