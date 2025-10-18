@@ -39,6 +39,53 @@ public class EmpresasDAO extends DAO{
         }
     }
 
+    public Integer criaConta(String nome, String email, String cnpj, String unidade, String estado) {
+        Integer idGerado = null;
+        Connection conn = banco.conectar();
+        try {
+            String sql = "INSERT INTO empresas (nome, email, cnpj, unidade, regiao) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, nome);
+            ps.setString(2, email);
+            ps.setString(3, cnpj);
+            ps.setString(4, unidade);
+            ps.setString(5, estado);
+            ps.executeUpdate();
+
+            // pega o id gerado automaticamente
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                idGerado = rs.getInt(1);
+            }
+
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println("!!SQLException ao chamar EmpresasDAO.criaSenha(...)");
+            e.printStackTrace();
+        }
+        return idGerado;
+    }
+
+    public boolean criaSenha(int idEmpresa, String senha, String confSenha) {
+        boolean sucesso = false;
+        Connection conn = banco.conectar();
+        try {
+            if (senha.equals(confSenha)) {
+                String sql = "UPDATE empresas SET senha = ? WHERE id_empresa = ?";
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setString(1, senha);
+                ps.setInt(2, idEmpresa);
+
+                sucesso = ps.executeUpdate() > 0;
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println("!!SQLException ao chamar EmpresasDAO.criaConta(...)");
+            e.printStackTrace();
+        }
+        return sucesso;
+    }
+
     //=======================MÉTODOS READ=======================\\
     public Empresas selecionarPorId(int id){
         Connection conn = banco.conectar();
