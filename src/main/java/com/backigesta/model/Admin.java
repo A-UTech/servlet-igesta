@@ -7,7 +7,6 @@ package com.backigesta.model;
 public class Admin extends Usuarios{
 //=======================ATRIBUTOS=======================\\
 
-    private String sobrenome;
 
 //=======================MÉTODOS DA CLASSE=======================\\
 
@@ -20,46 +19,37 @@ public class Admin extends Usuarios{
     }
 
     //Completo
-    public Admin(int id, String nome, String sobrenome, String email, String senha, byte[] foto) {
+    public Admin(int id, String nome, String email, String senha, byte[] foto) {
         super(id, nome, email, senha, foto);
-        this.sobrenome = sobrenome.toLowerCase();
     }
 
     //Sem Foto
     public Admin(int id, String nome, String sobrenome, String email, String senha) {
         super(id, nome, email, senha);
-        this.sobrenome = sobrenome.toLowerCase();
     }
 
     //Sem ID
     public Admin(String nome, String sobrenome, String email, String senha, byte[] foto) {
         super(nome, email, senha, foto);
-        this.sobrenome = sobrenome.toLowerCase();
     }
 
     //Sem ID nem Foto
     public Admin(String nome, String sobrenome, String email, String senha) {
         super(nome, email, senha);
-        this.sobrenome = sobrenome.toLowerCase();
     }
 
 //=======================MÉTODOS GET=======================\\
 
-    public String getSobrenome() {
-        return sobrenome;
-    }
+
 
 //=======================MÉTODOS SET=======================\\
 
-    public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome.toLowerCase();
-    }
+
 
 //=======================TO STRING=======================\\
 
     public String toString() {
-        return "Admin{ id: "+super.getId()+" | nome e sobrenome: "+super.getNome()+" "+
-                sobrenome+" | email: "+super.getEmail()+" | senha: "+super.getSenha()+
+        return "Admin{ id: "+super.getId()+" | nome: "+super.getNome()+"  | email: "+super.getEmail()+" | senha: "+super.getSenha()+
                 " | Tem foto: " + (super.getFoto()!=null ? "sim":"não") +
                 " }";
     }

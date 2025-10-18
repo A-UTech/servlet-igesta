@@ -4,7 +4,6 @@
 function alterarCondena(numero) {
     // Pega os dados que estam no valor dos inputs hidden criados na página
     let [nome,tipo,descricao] = document.getElementById("condenaAlterar"+numero).value.split(";");
-    console.log(nome,tipo,descricao)
 
     // Coloca os valores nos inputs do dialog alterar
     document.getElementById('nomeCondena').value = nome;

@@ -20,14 +20,13 @@ public class AdminDAO extends DAO{
         boolean retorno = false;
         Connection conn = banco.conectar();
         try{
-            String sql = "INSERT INTO admin(nome, sobrenome, email, senha, foto) VALUES(?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO admin(nome, email, senha, foto) VALUES(?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, adm.getNome());
-            ps.setString(2, adm.getSobrenome());
-            ps.setString(3, adm.getEmail());
-            ps.setString(4, adm.getSenha());
-            ps.setBytes(5, adm.getFoto());
+            ps.setString(2, adm.getEmail());
+            ps.setString(3, adm.getSenha());
+            ps.setBytes(4, adm.getFoto());
 
             retorno = ps.executeUpdate()==1;
             conn.close();
@@ -55,7 +54,6 @@ public class AdminDAO extends DAO{
                 adm = new Admin(
                         rs.getInt("id"),
                         rs.getString("nome"),
-                        rs.getString("sobrenome"),
                         rs.getString("email"),
                         rs.getString("senha"),
                         rs.getBytes("foto")
@@ -106,7 +104,6 @@ public class AdminDAO extends DAO{
                 admins.add(new Admin(
                         rs.getInt("id"),
                         rs.getString("nome"),
-                        rs.getString("sobrenome"),
                         rs.getString("email"),
                         rs.getString("senha"),
                         rs.getBytes("foto")
@@ -136,7 +133,6 @@ public class AdminDAO extends DAO{
                 admins.add(new Admin(
                         rs.getInt("id"),
                         rs.getString("nome"),
-                        rs.getString("sobrenome"),
                         rs.getString("email"),
                         rs.getString("senha"),
                         rs.getBytes("foto")
@@ -167,7 +163,6 @@ public class AdminDAO extends DAO{
                 admin = new Admin(
                         rs.getInt("id"),
                         rs.getString("nome"),
-                        rs.getString("sobrenome"),
                         rs.getString("email"),
                         rs.getString("senha"),
                         rs.getBytes("foto")
@@ -212,14 +207,13 @@ public class AdminDAO extends DAO{
         boolean retorno = false;
         Connection conn = banco.conectar();
         try{
-            String sql = "UPDATE admin SET nome=?, sobrenome=?, email=?, senha=?, foto=? WHERE id=?";
+            String sql = "UPDATE admin SET nome=?, email=?, senha=?, foto=? WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, adm.getNome());
-            ps.setString(2, adm.getSobrenome());
-            ps.setString(3, adm.getEmail());
-            ps.setString(4, adm.getSenha());
-            ps.setBytes(5, adm.getFoto());
-            ps.setInt(6, adm.getId());
+            ps.setString(2, adm.getEmail());
+            ps.setString(3, adm.getSenha());
+            ps.setBytes(4, adm.getFoto());
+            ps.setInt(5, adm.getId());
 
             retorno = ps.executeUpdate()>=1;
             conn.close();

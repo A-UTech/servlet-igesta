@@ -30,8 +30,8 @@
         <a href="${pageContext.request.contextPath}/index.jsp"><img src="${pageContext.request.contextPath}/assets/logos/logo-branca.png"></a>
         <div>
             <a href="company.html"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"></a>
-            <a href="condemn.html"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"></a>
-            <a href="payment.html"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"></a>
+            <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"></a>
+            <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"></a>
         </div>
         <a href="entrarPerfil">
             <% if (admin.getFoto() == null) { %>
@@ -97,7 +97,7 @@
     <dialog id="add" class="popupInputs">
         <h2>Adicionar condena</h2>
         <form action="adicionarCondena" method="post" autocomplete="off">
-            <a onclick="document.getElementById('add').close()"><img src="assets/icons/arrow-left.png"></a>
+            <a onclick="document.getElementById('add').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
             <input type="text" name="nomeCondena" placeholder="Nome" class="inputCapitalize">
             <select name="tipo">
                 <option value="" disabled selected >Tipo Condena</option>
@@ -109,7 +109,7 @@
         </form>
     </dialog>
     <dialog id="delete" class="popupButtons">
-        <a onclick="document.getElementById('delete').close()"><img src="assets/icons/arrow-left.png"></a>
+        <a onclick="document.getElementById('delete').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
         <h2>Excluir condena?</h2>
         <div>
             <button onclick="document.getElementById('delete').close()">Não</button>
@@ -121,7 +121,7 @@
     </dialog>
     <dialog id="alterar" class="popupInputs">
         <h2>Alterar condena</h2>
-        <a onclick="document.getElementById('alterar').close()"><img src="assets/icons/arrow-left.png"></a>
+        <a onclick="document.getElementById('alterar').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
         <form action="alterarCondena" method="post">
             <input type="hidden" name="condenaId" id="condenaId">
             <input type="text" id="nomeCondena" name="nomeCondena" class="inputCapitalize">
