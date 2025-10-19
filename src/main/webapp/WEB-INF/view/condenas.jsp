@@ -29,9 +29,11 @@
     <aside>
         <a href="${pageContext.request.contextPath}/index.jsp"><img src="${pageContext.request.contextPath}/assets/logos/logo-branca.png"></a>
         <div>
-            <a href="company.html"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"></a>
+            <a href=""><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"></a>
             <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"></a>
             <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"></a>
+            <a href="selectContatoFuncionarios"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"></a>
+            <a href=""><img src="${pageContext.request.contextPath}/assets/icons/aside-adm.svg"></a>
         </div>
         <a href="entrarPerfil">
             <% if (admin.getFoto() == null) { %>
@@ -58,7 +60,7 @@
                     <input type="hidden" value="parcial" name="filter">
                     <button type="submit" id="parcial" class="options">Parcial</button>
                 </form>
-                <form action="selectCondena" id="search">
+                <form action="selectCondena" class="search">
                     <input type="text" name="search" placeholder="Pesquisar">
                     <button type="submit" class="functions">
                         <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
