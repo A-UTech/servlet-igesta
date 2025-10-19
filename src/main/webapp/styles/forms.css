@@ -56,30 +56,37 @@ section > form {
     gap: 10px;
 }
 
-input, .textarea, button#buttonSubmit {
+input, textarea, button{
     border-radius: 10px;
-    width: 280px;
+    width: 260px;
     height: 58px;
     transition: 500ms;
     color: var(--corPreto);
-    box-sizing: border-box;
-    padding: 20px;
 }
 
 input, textarea {
     border: 2px solid #1A7B66;
     text-align: left;
-}
-
-.textarea {
-    height: 120px;
+    padding-left: 20px;
 }
 
 input::placeholder, textarea::placeholder {
     color: #bbb;
 }
 
-button#buttonSubmit {
+input[name="nome"] {
+    text-transform: capitalize;
+}
+
+input:valid {
+    color: var(--corVE);
+}
+input:invalid {
+    color: rgb(255, 0, 0);
+}
+
+button {
+    width: 280px;
     background: var(--corVE);
     color: var(--corBranco);
 }
@@ -93,7 +100,7 @@ button#buttonSubmit {
 }
 
 #registerLogin {
-    top: 670px;
+    top: 92dvh;
     margin: auto;
     position: absolute;
 }
@@ -147,7 +154,7 @@ div.back > a > img {
 
 /* --- token ------ */
 
-.token > input, .token button{
+.token > input, .token > button{
     border-radius: 10px;
     height: 60px;
     transition: 500ms;
@@ -161,7 +168,7 @@ div.back > a > img {
     color: var(--corPreto);
 }
 
-.token button {
+.token > button {
     margin: auto;
 }
 
@@ -183,8 +190,8 @@ div.back > a > img {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 section p {
@@ -237,6 +244,7 @@ section p {
         border-radius: 100px 0 0 100px;
     }
 }
+
 @keyframes subir {
     from {
         margin-top: 10dvh;
@@ -266,8 +274,4 @@ section p {
         margin-top: 0dvh;
         opacity: 1;
     }
-}
-
-.error {
-    color: red;
 }
