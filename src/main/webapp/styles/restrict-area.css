@@ -100,13 +100,12 @@ menu > form > button.options:hover {background: var(--corVC);}
     align-items: center;
     background: var(--corCinza);
     border-radius: 50px;
-    width: 40px;           /* largura inicial: só o botão visível */
-    overflow: hidden;      /* esconde o input */
+    width: 40px;
+    overflow: hidden;
     transition: width 0.5s ease;
     position: relative;
 }
 
-/* Expande quando o mouse passa sobre o form */
 form#search {transition: 800ms}
 form#search > input {
     display: none;
@@ -139,8 +138,8 @@ div.table {
   }
 
 div.company > ul {grid-template-columns: repeat(7, 1fr)}
-div.condemn > ul {grid-template-columns: repeat(5, 1fr)}
-div.payment > ul {grid-template-columns: repeat(4, 1fr)}
+div.condemn > ul, div.employeeContact > ul {grid-template-columns: repeat(5, 1fr)}
+div.payment > ul, div.adm > ul {grid-template-columns: repeat(4, 1fr)}
 
 ul {
     display: grid;

@@ -114,7 +114,14 @@ public class Empresas extends Usuarios{
         this.id_planos = id_planos;
     }
 
-//=======================TO STRING=======================\\
+    public void setRegiao(String regiao) {
+        this.regiao = regiao;
+    }
+
+    public void setUnidade(String unidade) {
+        this.unidade = unidade;
+    }
+    //=======================TO STRING=======================\\
 
     @Override
     public String toString() {

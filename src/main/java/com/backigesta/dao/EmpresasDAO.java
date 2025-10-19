@@ -7,6 +7,7 @@ import com.backigesta.model.Usuarios;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class EmpresasDAO extends DAO{
@@ -73,17 +74,17 @@ public class EmpresasDAO extends DAO{
         }
     }
 
-    public List<Empresas> selecionarPorRegiao(String regiao){
+    public HashMap<Empresas, String> selecionarPorRegiao(String regiao){
         Connection conn = banco.conectar();
-        List<Empresas> empresa = new ArrayList<>();
+        HashMap<Empresas, String> empresa = new HashMap<>();
         try{
-            String sql = "SELECT * FROM empresas where regiao like ?";
+            String sql = "SELECT e.*, p.nome AS plano FROM empresas e JOIN planos p ON p.id=e.id_planos where e.regiao like ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, regiao);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                empresa.add(new Empresas(
+                empresa.put(new Empresas(
                         rs.getInt("id"),
                         rs.getString("nome"),
                         rs.getString("email"),
@@ -93,7 +94,7 @@ public class EmpresasDAO extends DAO{
                         rs.getString("regiao"),
                         rs.getString("unidade"),
                         rs.getBytes("foto")
-                ));
+                ), rs.getString("plano"));
             }
             conn.close();
         }
@@ -106,17 +107,17 @@ public class EmpresasDAO extends DAO{
         }
     }
 
-    public List<Empresas> selecionarPorNome(String nome){
+    public HashMap<Empresas, String> selecionarPorNome(String nome){
         Connection conn = banco.conectar();
-        List<Empresas> empresa = new ArrayList<>();
+        HashMap<Empresas, String> empresa = new HashMap<>();
         try{
-            String sql = "SELECT * FROM empresas where nome like ?";
+            String sql = "SELECT e.*, p.nome AS plano FROM empresas e JOIN planos p ON p.id=e.id_planos where e.nome ilike ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, nome);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                empresa.add(new Empresas(
+                empresa.put(new Empresas(
                         rs.getInt("id"),
                         rs.getString("nome"),
                         rs.getString("email"),
@@ -126,7 +127,7 @@ public class EmpresasDAO extends DAO{
                         rs.getString("regiao"),
                         rs.getString("unidade"),
                         rs.getBytes("foto")
-                ));
+                ), rs.getString("plano"));
             }
             conn.close();
         }
@@ -139,16 +140,16 @@ public class EmpresasDAO extends DAO{
         }
     }
 
-    public List<Empresas> selecionarTodos(){
+    public HashMap<Empresas, String> selecionarTodos(){
         Connection conn = banco.conectar();
-        List<Empresas> empresa = new ArrayList<>();
+        HashMap<Empresas, String> empresa = new HashMap<>();
         try{
-            String sql = "SELECT * FROM empresas";
+            String sql = "SELECT e.*, p.nome AS plano FROM empresas e JOIN planos p ON p.id=e.id_planos";
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
 
             while(rs.next()) {
-                empresa.add(new Empresas(
+                empresa.put(new Empresas(
                         rs.getInt("id"),
                         rs.getString("nome"),
                         rs.getString("email"),
@@ -158,7 +159,7 @@ public class EmpresasDAO extends DAO{
                         rs.getString("regiao"),
                         rs.getString("unidade"),
                         rs.getBytes("foto")
-                ));
+                ), rs.getString("plano"));
             }
             conn.close();
         }
@@ -254,17 +255,16 @@ public class EmpresasDAO extends DAO{
         boolean retorno = false;
         Connection conn = banco.conectar();
         try{
-            String sql = "UPDATE empresas SET cnpj=?, nome=?, email=?, senha=?, id_planos=?, regiao=?, unidade=?,foto=? WHERE id=?";
+            String sql = "UPDATE empresas SET cnpj=?, nome=?, email=?, senha=?, id_planos=?, regiao=?, unidade=? WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, empresas.getCnpj());
             ps.setString(2, empresas.getNome());
             ps.setString(3, empresas.getEmail());
             ps.setString(4, empresas.getSenha());
             ps.setInt(5, empresas.getId_planos());
-            ps.setBytes(6, empresas.getFoto());
-            ps.setInt(7, empresas.getId());
-            ps.setString(7, empresas.getRegiao());
-            ps.setString(8, empresas.getUnidade());
+            ps.setString(6, empresas.getRegiao());
+            ps.setString(7, empresas.getUnidade());
+            ps.setInt(8, empresas.getId());
 
             retorno = ps.executeUpdate()>=1;
             conn.close();
