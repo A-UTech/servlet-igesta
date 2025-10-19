@@ -22,7 +22,7 @@ public class EmpresasDAO extends DAO{
             ps.setString(2, empresas.getNome());
             ps.setString(3, empresas.getEmail());
             ps.setString(4, empresas.getSenha());
-            ps.setInt(5, empresas.getId_planos());
+            ps.setString(5, empresas.getNomePlano());
             ps.setBytes(6, empresas.getFoto());
             ps.setString(7, empresas.getRegiao());
             ps.setString(8, empresas.getUnidade());
@@ -37,6 +37,69 @@ public class EmpresasDAO extends DAO{
         finally{
             return retorno;
         }
+    }
+
+    public int criaConta(Empresas empresa) {
+        int idGerado = -1;
+        Connection conn = banco.conectar();
+        try {
+            int id = -1;
+            PreparedStatement ps = conn.prepareStatement("select id from planos where lower(nome) = lower(?)");
+            ps.setString(1,empresa.getNomePlano());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt(1);
+            }
+            rs.close();
+            ps.close();
+
+            ps = conn.prepareStatement("INSERT INTO empresas (nome, email, cnpj, unidade, regiao, id_planos) VALUES (?, ?, ?, ?, ?, ?)");
+            ps.setString(1, empresa.getNome());
+            ps.setString(2, empresa.getEmail());
+            ps.setString(3, empresa.getCnpj());
+            ps.setString(4, empresa.getUnidade());
+            ps.setString(5, empresa.getRegiao());
+            ps.setInt(6, id);
+            ps.execute();
+            ps.close();
+
+            ps = conn.prepareStatement("select id from empresas where lower(email) = lower(?) and lower(cnpj) = lower(?)");
+            ps.setString(1,empresa.getEmail());
+            ps.setString(2,empresa.getCnpj());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                idGerado = rs.getInt(1);
+            }
+            ps.close();
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println("!!SQLException ao chamar EmpresasDAO.criaSenha(...)");
+            e.printStackTrace();
+        } finally {
+            banco.desconectar(conn);
+            return idGerado;
+        }
+
+    }
+
+    public boolean criaSenha(int empresaId, String senha, String confSenha) {
+        boolean sucesso = false;
+        Connection conn = banco.conectar();
+        try {
+            if (senha.equals(confSenha)) {
+                String sql = "UPDATE empresas SET senha = ? WHERE id = ?";
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setString(1, senha);
+                ps.setInt(2, empresaId);
+
+                sucesso = ps.executeUpdate() > 0;
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println("!!SQLException ao chamar EmpresasDAO.criaConta(...)");
+            e.printStackTrace();
+        }
+        return sucesso;
     }
 
     //=======================MÉTODOS READ=======================\\
@@ -56,7 +119,7 @@ public class EmpresasDAO extends DAO{
                         rs.getString("email"),
                         rs.getString("cnpj"),
                         rs.getString("senha"),
-                        rs.getInt("id_planos"),
+                        rs.getString("id_planos"),
                         rs.getString("regiao"),
                         rs.getString("unidade"),
                         rs.getBytes("foto")
@@ -89,7 +152,7 @@ public class EmpresasDAO extends DAO{
                         rs.getString("email"),
                         rs.getString("cnpj"),
                         rs.getString("senha"),
-                        rs.getInt("id_planos"),
+                        rs.getString("id_planos"),
                         rs.getString("regiao"),
                         rs.getString("unidade"),
                         rs.getBytes("foto")
@@ -122,7 +185,7 @@ public class EmpresasDAO extends DAO{
                         rs.getString("email"),
                         rs.getString("cnpj"),
                         rs.getString("senha"),
-                        rs.getInt("id_planos"),
+                        rs.getString("id_planos"),
                         rs.getString("regiao"),
                         rs.getString("unidade"),
                         rs.getBytes("foto")
@@ -154,7 +217,7 @@ public class EmpresasDAO extends DAO{
                         rs.getString("email"),
                         rs.getString("cnpj"),
                         rs.getString("senha"),
-                        rs.getInt("id_planos"),
+                        rs.getString("id_planos"),
                         rs.getString("regiao"),
                         rs.getString("unidade"),
                         rs.getBytes("foto")
@@ -176,7 +239,7 @@ public class EmpresasDAO extends DAO{
         Empresas empresas = null;
         try{
             conn = banco.conectar();
-            String sql = "SELECT * FROM admin WHERE email like ?";
+            String sql = "SELECT * FROM empresas WHERE email like ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
@@ -187,7 +250,7 @@ public class EmpresasDAO extends DAO{
                         rs.getString("email"),
                         rs.getString("cnpj"),
                         rs.getString("senha"),
-                        rs.getInt("id_planos"),
+                        rs.getString("id_planos"),
                         rs.getString("regiao"),
                         rs.getString("unidade"),
                         rs.getBytes("foto")
@@ -260,7 +323,7 @@ public class EmpresasDAO extends DAO{
             ps.setString(2, empresas.getNome());
             ps.setString(3, empresas.getEmail());
             ps.setString(4, empresas.getSenha());
-            ps.setInt(5, empresas.getId_planos());
+            ps.setString(5, empresas.getNomePlano());
             ps.setBytes(6, empresas.getFoto());
             ps.setInt(7, empresas.getId());
             ps.setString(7, empresas.getRegiao());
