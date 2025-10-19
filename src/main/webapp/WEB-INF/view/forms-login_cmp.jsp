@@ -9,14 +9,16 @@
     <title>IGesta</title>
     <%
         String loginCorreto = (String) request.getAttribute("semConta");
+        String email = (String) request.getAttribute("email");
+        String senha = (String) request.getAttribute("senha");
     %>
 </head>
 <body>
     <section>
         <h1>Login de empresa</h1>
         <form action="loginEmpresa" method="post">
-            <input type="email" name="email" placeholder="E-mail" required minlength="10" autocomplete="email" autofocus>
-            <input type="password" name="password" placeholder="Senha" required minlength="6" autocomplete="current-password">
+            <input type="email" name="email" placeholder="E-mail" required minlength="10" autocomplete="email" value="<%=email == null ? "" : email%>" autofocus>
+            <input type="password" name="password" placeholder="Senha" required minlength="6" autocomplete="current-password" value="<%=senha == null ? "" : senha%>">
             <button type="submit" id="buttonSubmit">Entrar</button>
         </form>
     </section>

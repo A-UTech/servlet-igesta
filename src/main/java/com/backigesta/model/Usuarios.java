@@ -80,6 +80,11 @@ public abstract class Usuarios {
         this.foto = foto;
     }
 
+    public Usuarios(String nome, String email) {
+        this.nome = nome;
+        this.email = email;
+    }
+
     //Sem foto
     public Usuarios(int id, String nome, String email, String senha) {
         this.id = id;

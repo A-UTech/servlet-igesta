@@ -15,13 +15,13 @@ function deixarSelecionado(numero) {
 
     if (numero === 4) {
         cards[4].classList.add('selected');
-        document.getElementById('plano').value = 'basico';
+        document.getElementById('plano').value = 'Básico';
     } else if (numero === 5) {
         cards[5].classList.add('selected');
-        document.getElementById('plano').value = 'intermediario';
+        document.getElementById('plano').value = 'Intermediário';
     } else {
         cards[6].classList.add('selected');
-        document.getElementById('plano').value = 'avancado';
+        document.getElementById('plano').value = 'Avançado';
     }
 }
 

@@ -116,9 +116,9 @@
             <div class="title">
                 <h2>Mensalidades</h2>
                 <p>Por armazenamento</p>
-                <form action="entrarCadastroEmpresa" method="post">
-                    <input type="hidden" name="plano" value="" id="plano">
-                    <button type="submit">Assinar</button>
+                <form action="entrarCadastroEmpresa" id="formPlano" method="post">
+                    <input type="hidden" name="plano" value="Básico" id="plano">
+                    <button type="button" id="buttonPlano" onclick="enviarFormulario('buttonPlano','formPlano')">Assinar</button>
                 </form>
             </div>
             <div class="container">
@@ -197,5 +197,6 @@
         </footer>
     </main>
     <script src="scripts/index.js"></script>
+    <script src="scripts/mandarFormulario.js"></script>
 </body>
 </html>

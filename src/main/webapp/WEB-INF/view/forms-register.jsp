@@ -1,3 +1,4 @@
+<%@ page import="com.backigesta.servlet.Plano" %>
 <!DOCTYPE html>
 <html lang="pt-br">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -7,11 +8,15 @@
   <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/logos/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/forms.css">
   <title>IGesta</title>
+  <%
+    String plano = (String) request.getAttribute("plano");
+  %>
 </head>
 <body>
 <section>
   <h1>Criar conta</h1>
   <form action="criarContaEmpresa" method="post">
+    <input type="hidden" name="plano" value="<%=plano%>">
     <input type="text" name="name" placeholder="Nome" required autofocus pattern="^[A-Z][a-z '-]*$" title="Caso o sistema não permita seu nome original, faça cadastro com outro nome, depois entre em contato conosco">
     <input type="email" name="email" placeholder="E-mail" required minlength="10" autocomplete="email" pattern="^[a-zA-Z0-9_\.\-]{1,}@[a-zA-Z_\.\-]{2,}\.(com|br|org|me)$" title="Coloque um dominio .com, ou .br, ou .org, ou .me">
     <input type="text" name="cnpj" placeholder="CNPJ" required minlength="14" maxlength="18" pattern="^[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}/?[0-9]{4}-?[0-9]{2}$" title="Digite apenas os números">
@@ -46,7 +51,7 @@
       <option value="RS"></option>
       <option value="SC"></option>
     </datalist>
-    <button type="submit">Entrar</button>
+    <button type="submit" id="buttonSubmit">Entrar</button>
   </form>
 </section>
 <div class="mens">
