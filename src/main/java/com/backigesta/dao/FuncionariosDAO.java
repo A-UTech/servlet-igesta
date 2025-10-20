@@ -18,19 +18,18 @@ public class FuncionariosDAO extends DAO{
         boolean retorno = false;
         Connection conn = banco.conectar();
         try{
-            String sql = "INSERT INTO funcionarios(cpf, nome, sobrenome, email, senha, id_empresa, turno, id_cargo, id_permissao, foto) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO funcionarios(cpf, nome, email, senha, id_empresa, turno, id_cargo, id_permissao, foto) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             Time turno = new Time(func.getTurno().getHour(), func.getTurno().getMinute(), func.getTurno().getSecond());
             ps.setString(1, func.getCpf());
             ps.setString(2, func.getNome());
-            ps.setString(3, func.getSobrenome());
-            ps.setString(4, func.getEmail());
-            ps.setString(5, func.getSenha());
-            ps.setInt(6, func.getId_empresa());
-            ps.setTime(7, turno);
-            ps.setInt(8, func.getId_cargo());
-            ps.setInt(9, func.getId_permissoes());
-            ps.setBytes(10, func.getFoto());
+            ps.setString(3, func.getEmail());
+            ps.setString(4, func.getSenha());
+            ps.setInt(5, func.getId_empresa());
+            ps.setTime(6, turno);
+            ps.setInt(7, func.getId_cargo());
+            ps.setInt(8, func.getId_permissoes());
+            ps.setBytes(9, func.getFoto());
 
             retorno = ps.executeUpdate()==1;
             conn.close();
@@ -49,7 +48,7 @@ public class FuncionariosDAO extends DAO{
         Connection conn = banco.conectar();
         Funcionarios retorno = null;
         try{
-            String sql = "SELECT * FROM funcionarios WHERE id = ?";
+            String sql = "SELECT f.*, c.nome AS cargo FROM funcionarios f JOIN cargos c ON c.id=f.id_cargo WHERE f.id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -57,12 +56,12 @@ public class FuncionariosDAO extends DAO{
                 retorno = new Funcionarios(
                         rs.getInt("id"),
                         rs.getString("nome"),
-                        rs.getString("sobrenome"),
                         rs.getString("email"),
                         rs.getString("cpf"),
                         rs.getString("senha"),
                         rs.getInt("id_empresa"),
                         rs.getInt("id_cargo"),
+                        rs.getString("cargo"),
                         rs.getInt("id_permissao"),
                         rs.getTime("turno").toLocalTime(),
                         rs.getBytes("foto")
@@ -78,23 +77,24 @@ public class FuncionariosDAO extends DAO{
         }
     }
 
-    public List<Funcionarios> selecionarTodos(){
+    public List<Funcionarios> selecionarTodos(int id_empresa){
         Connection conn = banco.conectar();
-        List<Funcionarios> funcionarios = new ArrayList<Funcionarios>();
+        List<Funcionarios> funcionarios = new ArrayList<>();
         try{
-            String sql = "SELECT * FROM funcionarios";
+            String sql = "SELECT f.*, c.nome AS cargo FROM funcionarios f JOIN cargos c ON c.id=f.id_cargo WHERE id_empresa=?";
             PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id_empresa);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 funcionarios.add(new Funcionarios(
                         rs.getInt("id"),
                         rs.getString("nome"),
-                        rs.getString("sobrenome"),
                         rs.getString("email"),
                         rs.getString("cpf"),
                         rs.getString("senha"),
                         rs.getInt("id_empresa"),
                         rs.getInt("id_cargo"),
+                        rs.getString("cargo"),
                         rs.getInt("id_permissao"),
                         rs.getTime("turno").toLocalTime(),
                         rs.getBytes("foto")
@@ -103,7 +103,7 @@ public class FuncionariosDAO extends DAO{
             conn.close();
         }
         catch(SQLException sqle){
-            System.out.println("!!SQLException ao chamar FuncionariosDAO.selecionarPorNome(String)");
+            System.out.println("!!SQLException ao chamar FuncionariosDAO.selecionarTodos(String)");
             sqle.printStackTrace();
         }
         finally {
@@ -111,13 +111,85 @@ public class FuncionariosDAO extends DAO{
         }
     }
 
-    public byte[] selecionarFotoPorId(int id){
+    public List<Funcionarios> selecionarPorNome(String nome, int id_empresa){
+        Connection conn = banco.conectar();
+        List<Funcionarios> funcionarios = new ArrayList<>();
+        try{
+            String sql = "SELECT f.*, c.nome AS cargo FROM funcionarios f JOIN cargos c ON c.id=f.id_cargo WHERE f.nome ilike ? and id_empresa=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, "%" + nome + "%");
+            ps.setInt(2, id_empresa);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                funcionarios.add(new Funcionarios(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("cpf"),
+                        rs.getString("senha"),
+                        rs.getInt("id_empresa"),
+                        rs.getInt("id_cargo"),
+                        rs.getString("cargo"),
+                        rs.getInt("id_permissao"),
+                        rs.getTime("turno").toLocalTime(),
+                        rs.getBytes("foto")
+                ));
+            }
+            conn.close();
+        }
+        catch(SQLException sqle){
+            System.out.println("!!SQLException ao chamar FuncionariosDAO.selecionarTodos(String)");
+            sqle.printStackTrace();
+        }
+        finally {
+            return funcionarios;
+        }
+    }
+
+    public List<Funcionarios> selecionarPorCargo(int id_cargo, int id_empresa){
+        Connection conn = banco.conectar();
+        List<Funcionarios> funcionarios = new ArrayList<>();
+        try{
+            String sql = "SELECT f.*, c.nome AS cargo FROM funcionarios f JOIN cargos c ON c.id=f.id_cargo WHERE f.id_cargo = ? and id_empresa=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id_cargo);
+            ps.setInt(2, id_empresa);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                funcionarios.add(new Funcionarios(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("cpf"),
+                        rs.getString("senha"),
+                        rs.getInt("id_empresa"),
+                        rs.getInt("id_cargo"),
+                        rs.getString("cargo"),
+                        rs.getInt("id_permissao"),
+                        rs.getTime("turno").toLocalTime(),
+                        rs.getBytes("foto")
+                ));
+            }
+            conn.close();
+        }
+        catch(SQLException sqle){
+            System.out.println("!!SQLException ao chamar FuncionariosDAO.selecionarTodos(String)");
+            sqle.printStackTrace();
+        }
+        finally {
+            return funcionarios;
+        }
+    }
+
+
+
+    public byte[] selecionarFotoPorId(int id_empresa){
         Connection conn = banco.conectar();
         byte[] foto = null;
         try{
             String sql = "SELECT foto FROM funcionarios WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setInt(1, id_empresa);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 foto = rs.getBytes(1);
@@ -139,20 +211,19 @@ public class FuncionariosDAO extends DAO{
         boolean retorno = false;
         Connection conn = banco.conectar();
         try{
-            String sql = "UPDATE funcionarios SET nome=?, sobrenome=?, cpf=?, email=?, senha=?, id_empresa=?, id_cargo=?, id_permissao=?, turno=?, foto=? where id=?";
+            String sql = "UPDATE funcionarios SET nome=?, cpf=?, email=?, senha=?, id_empresa=?, id_cargo=?, id_permissao=?, turno=?, foto=? where id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, func.getNome());
-            ps.setString(2, func.getSobrenome());
-            ps.setString(3, func.getCpf());
-            ps.setString(4, func.getEmail());
-            ps.setString(5, func.getSenha());
-            ps.setInt(6, func.getId_empresa());
-            ps.setInt(7, func.getId_cargo());
-            ps.setInt(8, func.getId_permissoes());
-            ps.setTime(9,  new Time(func.getTurno().getHour(), func.getTurno().getMinute(), func.getTurno().getSecond()));
-            ps.setBytes(10, func.getFoto());
-            ps.setInt(11, func.getId());
+            ps.setString(2, func.getCpf());
+            ps.setString(3, func.getEmail());
+            ps.setString(4, func.getSenha());
+            ps.setInt(5, func.getId_empresa());
+            ps.setInt(6, func.getId_cargo());
+            ps.setInt(7, func.getId_permissoes());
+            ps.setTime(8,  new Time(func.getTurno().getHour(), func.getTurno().getMinute(), func.getTurno().getSecond()));
+            ps.setBytes(9, func.getFoto());
+            ps.setInt(10, func.getId());
 
             retorno = ps.executeUpdate()==1;
             conn.close();
