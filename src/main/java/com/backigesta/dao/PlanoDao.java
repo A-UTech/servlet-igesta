@@ -49,6 +49,23 @@ public class PlanoDao {
         return listas;
     } // Método que busca as condenas por seu nome no banco de dados
 
+    public ArrayList<String> buscarNomes() {
+        conn = conexao.conectar();
+        ArrayList<String> listas = new ArrayList<>();
+        try {
+            PreparedStatement pstmt = conn.prepareStatement("select nome from planos");
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                listas.add(rs.getString(1));
+            }
+        } catch (SQLException sql) {
+            return null;
+        } finally {
+            conexao.desconectar(conn);
+        }
+        return listas;
+    }
+
     public boolean deletarPlano(int id) {
         conn = conexao.conectar();
         ArrayList<Integer> listaId = new ArrayList<>();

@@ -16,7 +16,7 @@ public class Empresas extends Usuarios{
 
     //nenhum aqui tbm :P
 
-//=======================CONSTRUTORES=======================\\
+    //=======================CONSTRUTORES=======================\\
     //Vazio
     public Empresas() {
     }
@@ -114,7 +114,14 @@ public class Empresas extends Usuarios{
         this.nomePlano = nomePlano;
     }
 
-//=======================TO STRING=======================\\
+    public void setRegiao(String regiao) {
+        this.regiao = regiao;
+    }
+
+    public void setUnidade(String unidade) {
+        this.unidade = unidade;
+    }
+    //=======================TO STRING=======================\\
 
     @Override
     public String toString() {
