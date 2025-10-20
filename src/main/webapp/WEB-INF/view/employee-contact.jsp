@@ -30,7 +30,7 @@
     <aside>
         <a href=""><img src="${pageContext.request.contextPath}/assets/logos/logo-branca.png"></a>
         <div>
-            <a href=""><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"></a>
+            <a href="selectEmpresas"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"></a>
             <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"></a>
             <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"></a>
             <a href="selectContatoFuncionarios"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"></a>
