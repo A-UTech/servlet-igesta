@@ -520,3 +520,12 @@ footer img {
 .conta:hover {
     cursor: pointer;
 }
+button:hover {
+    cursor: pointer;
+}
+
+
+#buttonPlano:hover {
+    background-color: var(--corVE);
+}
+

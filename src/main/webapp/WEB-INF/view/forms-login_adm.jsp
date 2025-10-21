@@ -14,10 +14,10 @@
 <body>
     <section>
         <h1>Login de administrador</h1>
-        <form action="loginAdmin" method="post">
+        <form action="loginAdmin" method="post" id="loginAdmin">
             <input type="email" name="email" placeholder="E-mail" required minlength="10" autocomplete="email" autofocus>
             <input type="password" name="password" placeholder="Senha" required min="6" autocomplete="current-password">
-            <button type="submit" id="buttonSubmit">Entrar</button>
+            <button type="button" onclick="enviarFormulario('buttonSubmit','loginAdmin')" id="buttonSubmit">Entrar</button>
         </form>
     </section>
     <div class="mens">
@@ -41,6 +41,7 @@
         </div>
     </div>
     <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
     <script>
         <% if ("true".equals(loginCorreto)) { %>
             abrirPopupInformacoes("wrong.svg","Usuário ou senha incorreta","O email ou senha informado estão incorretos")

@@ -15,11 +15,11 @@
 <body>
     <section>
         <h1>Contato</h1>
-        <form method="post" action="emailContato">
+        <form method="post" action="emailContato" id="emailContato">
             <input type="email" name="email" class="inputs" placeholder="E-Mail" required minlength="10" autocomplete="email" autofocus>
             <input type="text" name="nome" class="inputs" placeholder="Nome" required>
             <textarea name="message" class="textarea" placeholder="Mensagem" required></textarea>
-            <button id="buttonSubmit" type="submit">Enviar</button>
+            <button id="buttonSubmit" onclick="enviarFormulario('buttonSubmit','emailContato')" type="button">Enviar</button>
         </form>
     </section>
     <div class="mens">
@@ -50,6 +50,7 @@
         </div>
     </div>
     <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
     <script>
         <% if (status != null) { %>
             <%

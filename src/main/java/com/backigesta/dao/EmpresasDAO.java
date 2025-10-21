@@ -184,8 +184,7 @@ public class EmpresasDAO extends DAO{
         Connection conn = banco.conectar();
         ArrayList<Empresas> empresa = new ArrayList<>();
         try{
-            String sql = "SELECT e.*, p.nome AS plano FROM empresas e JOIN planos p ON p.id=e.id_planos where e.nome ilike ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement("SELECT e.*, p.nome AS plano FROM empresas e JOIN planos p ON p.id=e.id_planos where lower(e.nome) like lower(?)");
             ps.setString(1, nome);
             ResultSet rs = ps.executeQuery();
 

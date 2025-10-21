@@ -14,12 +14,12 @@
 <body>
 <section>
   <h1>Proposta</h1>
-  <form action="enviarProsposta" method="post">
+  <form action="enviarProsposta" method="post" id="enviarProposta">
     <input type="text" name="name" placeholder="Nome" required autocomplete="name" autofocus>
     <input type="email" name="email" placeholder="E-Mail" required autocomplete="email" minlength="10" >
     <input type="text" name="cnpj" placeholder="CNPJ" required minlength="14" maxlength="14" pattern="^[0-9]{14}$" title="Digite apenas os números">
     <textarea name="message" placeholder="Mensagem"></textarea>
-    <button type="submit">Entrar</button>
+    <button type="button" id="buttonProposta" onclick="enviarFormulario('buttonProposta','enviarProposta')">Entrar</button>
   </form>
 </section>
 <div class="mens">
@@ -38,6 +38,7 @@
   </a>
 </div>
   <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
+  <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
   <script>
     <%
     if (status != null) {

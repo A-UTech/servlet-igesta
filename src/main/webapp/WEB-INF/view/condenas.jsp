@@ -48,21 +48,21 @@
         <header>
             <h1>Condenas</h1>
             <menu>
-                <form action="selectCondena" method="get">
+                <form action="selectCondena" method="get" id="procuraCondenaTodas">
                     <input type="hidden" value="todos" name="filter">
-                    <button type="submit" id="todos" class="options">Todas</button>
+                    <button type="button" onclick="enviarFormulario('buttonTodos','procuraCondenaTodas')" id="buttonTodos" class="options">Todas</button>
                 </form>
-                <form action="selectCondena" method="get">
+                <form action="selectCondena" method="get" id="procuraCondenaTotal">
                     <input type="hidden" value="total" name="filter">
-                    <button type="submit" id="total" class="options">Total</button>
+                    <button type="button" onclick="enviarFormulario('buttonTotal','procuraCondenaTotal')" id="buttonTotal" class="options">Total</button>
                 </form>
-                <form action="selectCondena" method="get">
+                <form action="selectCondena" method="get" id="procuraCondenaParcial">
                     <input type="hidden" value="parcial" name="filter">
-                    <button type="submit" id="parcial" class="options">Parcial</button>
+                    <button type="button" onclick="enviarFormulario('buttonParcial','procuraCondenaParcial')" id="buttonParcial" class="options">Parcial</button>
                 </form>
-                <form action="selectCondena" class="search">
+                <form action="selectCondena" class="search" id="procuraCondenaNome">
                     <input type="text" name="search" placeholder="Pesquisar">
-                    <button type="submit" class="functions">
+                    <button type="button" onclick="enviarFormulario('buttonSearchNome','procuraCondenaNome')" id="buttonSearchNome" class="functions">
                         <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
                     </button>
                 </form>
@@ -98,16 +98,16 @@
     </main>
     <dialog id="add" class="popupInputs">
         <h2>Adicionar condena</h2>
-        <form action="adicionarCondena" method="post" autocomplete="off">
+        <form action="adicionarCondena" method="post" autocomplete="off" id="adicionarCondena">
             <a onclick="document.getElementById('add').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
             <input type="text" name="nomeCondena" placeholder="Nome" class="inputCapitalize">
             <select name="tipo">
-                <option value="" disabled selected >Tipo Condena</option>
+                <option value="" disabled selected hidden>Tipo Condena</option>
                 <option value="Total">Total</option>
                 <option value="Parcial">Parcial</option>
             </select>
-            <textarea name="descricaoCondena" placeholder="Mensagem" required></textarea>
-            <button type="submit">Adicionar</button>
+            <textarea name="descricaoCondena" placeholder="Descrição da condena" required></textarea>
+            <button type="button" id="buttonAdicionar" onclick="enviarFormulario('buttonAdicionar','adicionarCondena')">Adicionar</button>
         </form>
     </dialog>
     <dialog id="delete" class="popupButtons">
@@ -115,21 +115,25 @@
         <h2>Excluir condena?</h2>
         <div>
             <button onclick="document.getElementById('delete').close()">Não</button>
-            <form action="deletarCondena" method="post">
-                <input type="hidden" id="deletarCondena" name="condenaId">
-                <button type="submit">Sim</button>
+            <form action="deletarCondena" method="post" id="deletarCondena">
+                <input type="hidden" id="IdCondena" name="condenaId">
+                <button type="button" id="buttonDeletar" onclick="enviarFormulario('buttonDeletar','deletarCondena')">Sim</button>
             </form>
         </div>
     </dialog>
     <dialog id="alterar" class="popupInputs">
         <h2>Alterar condena</h2>
         <a onclick="document.getElementById('alterar').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
-        <form action="alterarCondena" method="post">
+        <form action="alterarCondena" method="post" id="alterarCondena">
             <input type="hidden" name="condenaId" id="condenaId">
             <input type="text" id="nomeCondena" name="nomeCondena" class="inputCapitalize">
-            <select name="tipo" id="tipoCondena"></select>
-            <textarea name="descricaoCondena" id="descricaoCondena" placeholder="Mensagem" required></textarea>
-            <button type="submit">Alterar</button>
+            <select name="tipo" id="tipoCondena">
+                <option value="" disabled hidden>Tipo Condena</option>
+                <option value="Total" id="Total">Total</option>
+                <option value="Parcial" id="Parcial">Parcial</option>
+            </select>
+            <textarea name="descricaoCondena" id="descricaoCondena" placeholder="Descrição da condena" required></textarea>
+            <button type="button" id="buttonAlterar" onclick="enviarFormulario('buttonAlterar','alterarCondena')">Alterar</button>
         </form>
     </dialog>
     <div class="overlay" id="popupOverlay">
@@ -144,6 +148,7 @@
     </div>
     <script src="${pageContext.request.contextPath}/scripts/areaRestritaCondenas.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
     <script>
         <% if (adicionado != null) { %>
             <%

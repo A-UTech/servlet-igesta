@@ -17,8 +17,12 @@ senha.addEventListener("input", verificarSenhas);
 confirmarSenha.addEventListener("input", verificarSenhas);
 
 function senhaConfirmar() {
+    confirmarSenha.setCustomValidity("");
     if (senha.value === confirmarSenha.value) {
         botao.disabled = true;
         form.submit();
+    } else {
+        confirmarSenha.setCustomValidity('As senhas precisam ser iguais');
+        confirmarSenha.reportValidity();
     }
 }

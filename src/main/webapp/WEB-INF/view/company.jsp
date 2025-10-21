@@ -37,11 +37,11 @@
             <a href="administrators.html"><img src="${pageContext.request.contextPath}/assets/icons/aside-adm.svg"></a>
         </div>
         <a href="entrarPerfil">
-                <%if(admin.getFoto()!=null){%>
-            <img id="fotoPerfil" src="getFoto?id=<%=admin.getId()%>&tipo=Admin">
-                <%} else {%>
-            <img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
-                <%}%>
+            <% if (admin.getFoto() == null) { %>
+                <img id="fotoPerfil" src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
+            <% } else { %>
+                <img id="fotoPerfil" src="getFoto?id=<%=admin.getId()%>&tipo=Admin">
+            <% } %>
         </a>
     </aside>
 
@@ -82,9 +82,9 @@
                     </select>
                 </form>
 
-                <form action="selectEmpresas" class="search">
+                <form action="selectEmpresas" method="get" class="search" id="procuraEmpresaNome">
                     <input type="text" name="search" placeholder="Pesquisar">
-                    <button type="submit" class="functions">
+                    <button type="button" id="buttonSearchNome" onclick="enviarFormulario('buttonSearchNome','procuraEmpresaNome')" class="functions">
                         <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
                     </button>
                 </form>
@@ -124,7 +124,7 @@
     </main>
         <dialog id="add" class="popupInputs">
             <h2>Adicionar empresa</h2>
-            <form action="adicionarEmpresas" method="post" autocomplete="off">
+            <form action="adicionarEmpresas" method="post" autocomplete="off" id="adicionarEmpresa">
                 <a onclick="document.getElementById('addEmpresa').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
                 <input type="text" name="nomeEmpresa" class="inputCapitalize" placeholder="Nome">
                 <input type="email" name="emailEmpresa" placeholder="Email">
@@ -166,7 +166,7 @@
                         <option value="<%=plano%>"><%=plano%></option>
                     <% } %>
                 </select>
-                <button type="submit">Adicionar</button>
+                <button type="button" id="buttonAdicionar" onclick="enviarFormulario('deletarEmpresa','adicionarEmpresa')">Adicionar</button>
             </form>
         </dialog>
         <dialog id="delete" class="popupButtons">
@@ -174,15 +174,15 @@
             <h2>Excluir Empresa?</h2>
             <div>
                 <button onclick="document.getElementById('delete').close()">Não</button>
-                <form action="deletarEmpresas" method="post">
-                    <input type="hidden" id="deletarEmpresa" name="idEmpresa">
-                    <button type="submit">Sim</button>
+                <form action="deletarEmpresas" method="post" id="deletarEmpresa">
+                    <input type="hidden" id="empresaId" name="idEmpresa">
+                    <button type="button" id="buttonDeletar" onclick="enviarFormulario('buttonDeletar','deletarEmpresa')">Sim</button>
                 </form>
             </div>
         </dialog>
         <dialog id="alterar" class="popupInputs">
             <h2>Editar Empresa</h2>
-            <form action="alterarEmpresas" method="post">
+            <form action="alterarEmpresas" method="post" id="alterarEmpresa">
                 <input type="hidden" name="idEmpresa" id="idEmpresa">
                 <input type="text" name="nomeEmpresa" id="nomeEmpresa" placeholder="Nome">
                 <input type="email" name="emailEmpresa" id="emailEmpresa" placeholder="Email">
@@ -223,7 +223,7 @@
                     <% } %>
                 </select>
                 <input type="password" name="senhaEmpresa" placeholder="Nova Senha">
-                <button type="submit">Alterar</button>
+                <button type="button" id="buttonAlterar" onclick="enviarFormulario('buttonAlterar','alterarEmpresa')">Alterar</button>
             </form>
         </dialog>
         <div class="overlay" id="popupOverlay">
@@ -238,6 +238,7 @@
         </div>
         <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
         <script src="${pageContext.request.contextPath}/scripts/areaRestritaCompany.js"></script>
+        <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
         <script>
             <% if (adicionado != null) { %>
             <%

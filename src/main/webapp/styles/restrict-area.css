@@ -139,7 +139,7 @@ div.table {
 
 div.company > ul {grid-template-columns: repeat(7, 1fr)}
 div.condemn > ul, div.employeeContact > ul {grid-template-columns: repeat(5, 1fr)}
-div.payment > ul, div.adm > ul {grid-template-columns: repeat(4, 1fr)}
+div.plans ul, div.adm > ul {grid-template-columns: repeat(4, 1fr)}
 
 ul {
     display: grid;

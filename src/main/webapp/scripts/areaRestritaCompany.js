@@ -16,7 +16,7 @@ function deletarEmpresa(numero) {
     document.getElementById('delete').showModal();
 
     // Coloca o valor do numero no input hidden do dialog delete
-    document.getElementById('deletarEmpresa').value = numero;
+    document.getElementById('empresaId').value = numero;
 }
 
 function abrirPopup(idElemento){

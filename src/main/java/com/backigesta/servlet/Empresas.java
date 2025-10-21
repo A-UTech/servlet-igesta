@@ -25,7 +25,7 @@ public class Empresas extends HttpServlet {
         String procura = request.getParameter("search");
         String regiao = request.getParameter("regiao");
 
-        ArrayList<com.backigesta.model.Empresas> empresas = new ArrayList<>();
+        ArrayList<com.backigesta.model.Empresas> empresas;
         if (regiao != null && !regiao.equals("todos")) {
             empresas = daoEmpresas.selecionarPorRegiao(regiao);
         }

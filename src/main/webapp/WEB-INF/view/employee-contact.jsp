@@ -28,7 +28,7 @@
     %>
 </head>
     <aside>
-        <a href=""><img src="${pageContext.request.contextPath}/assets/logos/logo-branca.png"></a>
+        <a href="${pageContext.request.contextPath}/index.jsp"><img src="${pageContext.request.contextPath}/assets/logos/logo-branca.png"></a>
         <div>
             <a href="selectEmpresas"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"></a>
             <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"></a>
@@ -36,7 +36,13 @@
             <a href="selectContatoFuncionarios"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"></a>
             <a href=""><img src="${pageContext.request.contextPath}/assets/icons/aside-adm.svg"></a>
         </div>
-        <a href=""><img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg"></a>
+        <a href="entrarPerfil">
+            <% if (admin.getFoto() == null) { %>
+                <img id="fotoPerfil" src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
+            <% } else { %>
+                <img id="fotoPerfil" src="getFoto?id=<%=admin.getId()%>&tipo=Admin">
+            <% } %>
+        </a>
     </aside>
 
     <main>
@@ -45,13 +51,13 @@
             <menu>
                 <form action="selectContatoFuncionarios" id="searchName" class="search">
                     <input type="text" name="searchName" placeholder="Pesquisar por nome">
-                    <button type="submit" class="functions">
+                    <button type="button" onclick="enviarFormulario('buttonSearchNome','searchName')" id="buttonSearchNome" class="functions">
                         <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
                     </button>
                 </form>
                 <form action="selectContatoFuncionarios" id="searchPhone" class="search">
                     <input type="text" name="searchPhone" placeholder="Pesquisar por telefone">
-                    <button type="submit" class="functions">
+                    <button type="button" onclick="enviarFormulario('buttonSearchTelefone','searchPhone')" id="buttonSearchTelefone" class="functions">
                         <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
                     </button>
                 </form>
@@ -90,7 +96,7 @@
     </main>
     <dialog id="add" class="popupInputs">
         <h2>Adicionar condena</h2>
-        <form action="adicionarContatoFuncionarios" method="post" autocomplete="off">
+        <form action="adicionarContatoFuncionarios" method="post" autocomplete="off" id="adicionarContato">
             <a onclick="document.getElementById('add').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
             <select name="nomeContato">
                 <option value="" disabled selected >Funcionário</option>
@@ -99,7 +105,7 @@
                 <% } %>
             </select>
             <input type="text" name="contato" placeholder="Telefone" class="inputCapitalize" pattern="^\(?[0-9]{2}\)? ?[0-9]{5}\-?[0-9]{4}">
-            <button type="submit">Adicionar</button>
+            <button type="button" id="buttonAdicionar" onclick="enviarFormulario('buttonAdicionar','adicionarContato')" >Adicionar</button>
         </form>
     </dialog>
     <dialog id="delete" class="popupButtons">
@@ -107,20 +113,20 @@
         <h2>Excluir condena?</h2>
         <div>
             <button onclick="document.getElementById('delete').close()">Não</button>
-            <form action="deletarContatoFuncionarios" method="post">
-                <input type="hidden" id="deletarContato" name="contatoId">
-                <button type="submit">Sim</button>
+            <form action="deletarContatoFuncionarios" method="post" id="deletarContato">
+                <input type="hidden" id="idContato" name="contatoId">
+                <button type="button" id="buttonDeletar" onclick="enviarFormulario('buttonDeletar','deletarContato')" >Sim</button>
             </form>
         </div>
     </dialog>
     <dialog id="alterar" class="popupInputs">
         <h2>Alterar condena</h2>
         <a onclick="document.getElementById('alterar').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
-        <form action="alterarContatoFuncionarios" method="post">
+        <form action="alterarContatoFuncionarios" method="post" id="alterarContato">
             <input type="hidden" name="contatoId" id="contatoId">
             <input type="text" id="nomeContato" name="nomeContato" disabled class="inputCapitalize">
             <input type="text" id="contato" name="contato" class="inputCapitalize" pattern="^\(?[0-9]{2}\)? ?[0-9]{5}\-?[0-9]{4}">
-            <button type="submit">Alterar</button>
+            <button type="button" id="buttonAlterar" onclick="enviarFormulario('buttonAlterar','alterarContato')">Alterar</button>
         </form>
     </dialog>
     <div class="overlay" id="popupOverlay">
@@ -135,6 +141,7 @@
     </div>
     <script src="${pageContext.request.contextPath}/scripts/areaRestritaContato.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
     <script>
         <% if (adicionado != null) { %>
         <%

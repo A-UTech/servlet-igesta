@@ -19,7 +19,7 @@ function deletarContato(numero) {
     document.getElementById('delete').showModal();
 
     // Coloca o valor do numero no input hidden do dialog delete
-    document.getElementById('deletarContato').value = numero;
+    document.getElementById('idContato').value = numero;
 }
 
 function abrirPopup(idElemento) {

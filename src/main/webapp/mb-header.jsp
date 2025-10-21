@@ -42,7 +42,7 @@
             </a>
             <% } else { %>
                 <% if (session.getAttribute("admin") != null) { %>
-                <a href="selectCondena">
+                <a href="htmls/splash.html">
                     <div>Área restrita</div>
                 </a>
                 <% } else { %>
