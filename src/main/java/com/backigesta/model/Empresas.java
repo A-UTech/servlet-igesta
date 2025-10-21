@@ -8,7 +8,7 @@ public class Empresas extends Usuarios{
 //=======================ATRIBUTOS=======================\\
 
     private String cnpj;
-    private int id_planos;
+    private String nomePlano;
     private String regiao;
     private String unidade;
 
@@ -22,28 +22,36 @@ public class Empresas extends Usuarios{
     }
 
     //Completo
-    public Empresas(int id, String nome, String email, String cnpj, String senha, int id_planos, String regiao, String unidade, byte[] foto) {
+    public Empresas(int id, String nome, String email, String cnpj, String senha, String nomePlano, String regiao, String unidade, byte[] foto) {
         super(id, nome, email, senha, foto);
         this.cnpj = cnpj;
-        this.id_planos = id_planos;
+        this.nomePlano = nomePlano;
+        this.regiao = regiao;
+        this.unidade = unidade;
+    }
+
+    public Empresas(String nome, String email, String cnpj, String nomePlano, String regiao, String unidade) {
+        super(nome, email);
+        this.cnpj = cnpj;
+        this.nomePlano = nomePlano;
         this.regiao = regiao;
         this.unidade = unidade;
     }
 
     //Sem Id
-    public Empresas(String nome, String email, String cnpj, String senha, int id_planos, String regiao, String unidade, byte[] foto) {
+    public Empresas(String nome, String email, String cnpj, String senha, String nomePlano, String regiao, String unidade, byte[] foto) {
         super(nome, email, senha, foto);
         this.cnpj = cnpj;
-        this.id_planos = id_planos;
+        this.nomePlano = nomePlano;
         this.regiao = regiao;
         this.unidade = unidade;
     }
 
     //Sem foto
-    public Empresas(int id, String nome, String email, String cnpj, String senha, int id_planos, String regiao, String unidade) {
+    public Empresas(int id, String nome, String email, String cnpj, String senha, String nomePlano, String regiao, String unidade) {
         super(id, nome, email, senha);
         this.cnpj = cnpj;
-        this.id_planos = id_planos;
+        this.nomePlano = nomePlano;
         this.regiao = regiao;
         this.unidade = unidade;
     }
@@ -57,10 +65,10 @@ public class Empresas extends Usuarios{
     }
 
     //Sem foto nem Id
-    public Empresas(String nome, String email, String cnpj, String senha, int id_planos, String regiao, String unidade) {
+    public Empresas(String nome, String email, String cnpj, String senha, String nomePlano, String regiao, String unidade) {
         super(nome, email, senha);
         this.cnpj = cnpj;
-        this.id_planos = id_planos;
+        this.nomePlano = nomePlano;
         this.regiao = regiao;
         this.unidade = unidade;
     }
@@ -81,14 +89,6 @@ public class Empresas extends Usuarios{
         this.unidade = unidade;
     }
 
-    //Sem foto, id_planos e Id
-    public Empresas(String nome, String email, String cnpj, String senha, String regiao, String unidade) {
-        super(nome, email, senha);
-        this.cnpj = cnpj;
-        this.regiao = regiao;
-        this.unidade = unidade;
-    }
-
 
 //=======================MÉTODOS GET=======================\\
 
@@ -96,8 +96,8 @@ public class Empresas extends Usuarios{
         return cnpj;
     }
 
-    public int getId_planos() {
-        return id_planos;
+    public String getNomePlano() {
+        return nomePlano;
     }
 
     public String getRegiao() {
@@ -110,8 +110,8 @@ public class Empresas extends Usuarios{
 
 //=======================MÉTODOS SET=======================\\
 
-    public void setId_planos(int id_planos) {
-        this.id_planos = id_planos;
+    public void setNomePlano(String nomePlano) {
+        this.nomePlano = nomePlano;
     }
 
     public void setRegiao(String regiao) {
@@ -128,7 +128,7 @@ public class Empresas extends Usuarios{
         return "Empresas{ " +
                 "id: " +super.getId()+
                 " | cnpj: "+cnpj+
-                " | id_planos: "+id_planos+
+                " | id_planos: "+nomePlano+
                 " | nome: "+super.getNome()+
                 " | email: "+super.getEmail()+
                 " | senha: "+super.getSenha()+

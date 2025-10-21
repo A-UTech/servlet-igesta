@@ -6,19 +6,25 @@ public class Planos {
     private int id;
     private String nome;
     private double mensalidade;
-    private double armazenamento;
+    private int armazenamento;
 
     //==========CONSTRUTORES==========\\
 
     public Planos(){} //Vazio
-    public Planos(int id, String nome, double mensalidade, double armazenamento){
+    public Planos(int id, String nome, double mensalidade, int armazenamento){
         this.id = id;
         this.nome = nome;
         this.mensalidade = mensalidade;
         this.armazenamento = armazenamento;
     } //Completo
 
-    public Planos(String nome, double mensalidade) {
+    public Planos(String nome, double mensalidade, int armazenamento){
+        this.nome = nome;
+        this.mensalidade = mensalidade;
+        this.armazenamento = armazenamento;
+    } // Com nome, mensalidade e armazenamento
+
+    public Planos(String nome, int mensalidade) {
         this.nome = nome;
         this.mensalidade = mensalidade;
     } // Construtor com nome e mensalidade
@@ -37,7 +43,7 @@ public class Planos {
         return mensalidade;
     }
 
-    public double getArmazenamento() {
+    public int getArmazenamento() {
         return armazenamento;
     }
     //==========MÉTODOS SET==========\\
@@ -49,7 +55,7 @@ public class Planos {
     public void setMensalidade(double mensalidade) {
         this.mensalidade = mensalidade;
     }
-    public void setArmazenamento(double armazenamento) {
+    public void setArmazenamento(int armazenamento) {
         this.armazenamento = armazenamento;
     }
     //==========TO STRING==========\\

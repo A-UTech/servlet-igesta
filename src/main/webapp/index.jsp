@@ -28,9 +28,15 @@
             <% if (admin == null && empresa == null) { %>
                 <li><a id="entrar" onclick="opcoesEntrar()"><button>Entrar</button></a></li>
             <% } else if (admin != null) { %>
+<<<<<<< HEAD
                 <li><a class="conta" onclick="opcoesEntrar()"><img src="<%= admin.getFoto() == null ? "assets/icons/aside-perfil.svg" : "getFoto?id=" + admin.getId() + "&tipo=Admin"%>"><%=admin.getNome()%></a></li>
             <% } else { %>
                 <li><a class="conta" onclick="opcoesEntrar()"><img src="<%= empresa.getFoto() == null ? "assets/icons/aside-perfil.svg" : "getFoto?id=" + empresa.getId() + "&tipo=Empresas"%>"><%=empresa.getNome()%></a></li>
+=======
+                <li><a class="conta" onclick="opcoesEntrar()"><img src="<%= admin.getFoto() == null ? "assets/icons/aside-perfil.svg" : "getFoto?id=" + admin.getId() + "&tipo=Admin" %>"><%=admin.getNome()%></a></li>
+            <% } else { %>
+                <li><a class="conta" onclick="opcoesEntrar()"><img src="<%= empresa.getFoto() == null ? "assets/icons/aside-perfil.svg" : "getFoto?id=" + empresa.getId() + "&tipo=Empresas" %>"><%=empresa.getNome()%></a></li>
+>>>>>>> d850abced838118a24345f846131b597d8980f3f
             <% } %>
         </ul>
     </header>
@@ -115,9 +121,9 @@
             <div class="title">
                 <h2>Mensalidades</h2>
                 <p>Por armazenamento</p>
-                <form action="">
-                    <input type="hidden" name="plano" value="basico" id="plano">
-                    <button type="submit">Assinar</button>
+                <form action="entrarCadastroEmpresa" id="formPlano" method="post">
+                    <input type="hidden" name="plano" value="Básico" id="plano">
+                    <button type="button" id="buttonPlano" onclick="enviarFormulario('buttonPlano','formPlano')">Assinar</button>
                 </form>
             </div>
             <div class="container">
@@ -196,5 +202,6 @@
         </footer>
     </main>
     <script src="scripts/index.js"></script>
+    <script src="scripts/mandarFormulario.js"></script>
 </body>
 </html>

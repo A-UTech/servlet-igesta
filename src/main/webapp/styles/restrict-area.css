@@ -95,7 +95,7 @@ menu > form > button.options:hover {background: var(--corVC);}
 
 /* menu, search */
 /* ===== Barra de pesquisa ===== */
-#search {
+.search {
     display: flex;
     align-items: center;
     background: var(--corCinza);
@@ -106,18 +106,23 @@ menu > form > button.options:hover {background: var(--corVC);}
     position: relative;
 }
 
+<<<<<<< HEAD
 form#search {transition: 800ms}
 form#search > input {
+=======
+form.search {transition: 800ms}
+form.search > input {
+>>>>>>> d850abced838118a24345f846131b597d8980f3f
     display: none;
     background: transparent;
-    width: 120px;
+    width: 140px;
     text-align: center}
-form#search:hover {
-    width: 200px;
+form.search:hover {
+    width: 220px;
     justify-content: space-evenly;
 }
-form#search:hover > input{display: block}
-form#search:hover img{content: url(../assets/icons/edit.svg)}
+form.search:hover > input{display: block}
+form.search:hover img{content: url(../assets/icons/edit.svg)}
 
 section {
     background: var(--corCinza);
@@ -135,7 +140,7 @@ div.table {
     max-height: 100%;
     overflow-y: auto;
     display: block;
-  }
+}
 
 div.company > ul {grid-template-columns: repeat(7, 1fr)}
 div.condemn > ul, div.employeeContact > ul {grid-template-columns: repeat(5, 1fr)}

@@ -11,6 +11,11 @@ public class Funcionarios extends Usuarios{
     private int id_cargo;
     private String cargo;
     private int id_permissoes;
+=======
+    private String nomeEmpresa;
+    private String nomeCargo;
+    private int idPermissoes;
+>>>>>>> d850abced838118a24345f846131b597d8980f3f
 //=======================MÉTODOS DA CLASSE=======================\\
 
     //nenhum aqui tbm :P
@@ -22,6 +27,7 @@ public class Funcionarios extends Usuarios{
     }
 
     //Completo
+<<<<<<< HEAD
     public Funcionarios(int id ,String nome, String email, String cpf, String senha, int id_empresa, int id_cargo, String cargo, int id_permissoes, LocalTime turno, byte[] foto) {
         super(id, nome, email, senha, foto);
         this.turno = turno;
@@ -73,6 +79,45 @@ public class Funcionarios extends Usuarios{
         this.id_empresa = id_empresa;
         this.id_cargo = id_cargo;
         this.id_permissoes = id_permissoes;
+=======
+    public Funcionarios(int id ,String nome,String email, String cpf, String senha, String nomeEmpresa, String nomeCargo, int idPermissoes, LocalTime turno, byte[] foto) {
+        super(id, nome, email, senha, foto);
+        this.turno = turno;
+        this.cpf = cpf;
+        this.nomeEmpresa = nomeEmpresa;
+        this.nomeCargo = nomeCargo;
+        this.idPermissoes = idPermissoes;
+    }
+
+    //Sem Id
+    public Funcionarios(String nome, String email, String cpf, String senha, String nomeEmpresa, String nomeCargo, int idPermissoes, LocalTime turno, byte[] foto) {
+        super(nome, email, senha, foto);
+        this.turno = turno;
+        this.cpf = cpf;
+        this.nomeEmpresa = nomeEmpresa;
+        this.nomeCargo = nomeCargo;
+        this.idPermissoes = idPermissoes;
+    }
+
+    //Sem foto
+    public Funcionarios(int id ,String nome, String email, String cpf, String senha, String nomeEmpresa, String nomeCargo, int idPermissoes, LocalTime turno) {
+        super(id, nome, email, senha);
+        this.turno = turno;
+        this.cpf = cpf;
+        this.nomeEmpresa = nomeEmpresa;
+        this.nomeCargo = nomeCargo;
+        this.idPermissoes = idPermissoes;
+    }
+
+    //Sem Foto nem Id
+    public Funcionarios(String nome, String email, String cpf, String senha, String nomeEmpresa, String nomeCargo, int idPermissoes, LocalTime turno) {
+        super(nome, email, senha);
+        this.turno = turno;
+        this.cpf = cpf;
+        this.nomeEmpresa = nomeEmpresa;
+        this.nomeCargo = nomeCargo;
+        this.idPermissoes = idPermissoes;
+>>>>>>> d850abced838118a24345f846131b597d8980f3f
     }
 
 //=======================MÉTODOS GET=======================\\
@@ -85,6 +130,7 @@ public class Funcionarios extends Usuarios{
         return cpf;
     }
 
+<<<<<<< HEAD
     public int getId_empresa() {
         return id_empresa;
     }
@@ -99,6 +145,19 @@ public class Funcionarios extends Usuarios{
 
     public int getId_permissoes() {
         return id_permissoes;
+=======
+
+    public String getNomeEmpresa() {
+        return nomeEmpresa;
+    }
+
+    public String getNomeCargo() {
+        return nomeCargo;
+    }
+
+    public int getIdPermissoes() {
+        return idPermissoes;
+>>>>>>> d850abced838118a24345f846131b597d8980f3f
     }
 
 //=======================MÉTODOS SET=======================\\
@@ -108,12 +167,12 @@ public class Funcionarios extends Usuarios{
         this.turno = turno;
     }
 
-    public void setId_cargo(int id_cargo) {
-        this.id_cargo = id_cargo;
+    public void setNomeCargo(String nomeCargo) {
+        this.nomeCargo = nomeCargo;
     }
 
-    public void setId_permissoes(int id_permissoes) {
-        this.id_permissoes = id_permissoes;
+    public void setIdPermissoes(int idPermissoes) {
+        this.idPermissoes = idPermissoes;
     }
 
 //=======================TO STRING=======================\\
@@ -127,10 +186,16 @@ public class Funcionarios extends Usuarios{
                 " | senha: "+super.getSenha()+
                 " | turno:" + turno +
                 " | cpf:" + cpf +
+<<<<<<< HEAD
                 " | id_empresa:" + id_empresa +
                 " | id_cargo:" + id_cargo +
                 " | cargo:" + cargo +
                 " | id_permissoes:" + id_permissoes +
+=======
+                " | nomeEmpresa:" + nomeEmpresa +
+                " | nomeCargo:" + nomeCargo +
+                " | idPermissoes:" + idPermissoes +
+>>>>>>> d850abced838118a24345f846131b597d8980f3f
                 " | Tem foto: " + (super.getFoto()!=null ? "sim":"não") +
                 " }";
     }
