@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmpresasDAO extends DAO{
+public class EmpresasDAO{
     private final Conexao banco = new Conexao();
     //=======================MÉTODOS CREATE=======================\\
     public boolean inserir(Empresas empresas){
@@ -309,6 +309,29 @@ public class EmpresasDAO extends DAO{
             banco.desconectar(conn);
         }
         return false;
+    }
+
+    public String selecionarInformacoesPlano(int id_empresa){
+        Connection conn = banco.conectar();
+        String retorno = null;
+        try{
+            String sql = "select count(*) filter(where f.id_cargo=1) AS gestores, count(*) filter(where f.id_cargo=2) AS lideres, p.nome AS nomePlano, p.mensalidade, p.armazenamento from funcionarios f join empresas e on e.id=f.id_empresa join planos p on p.id=e.id_planos where f.id_empresa=? group by(p.nome, p.mensalidade, p.armazenamento)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id_empresa);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                retorno = "";
+                retorno += rs.getInt("gestores")+";"+rs.getInt("lideres")+";"+rs.getString("nomeplano")+";"+rs.getDouble("mensalidade")+";"+rs.getInt("armazenamento");
+            }
+            conn.close();
+        }
+        catch(SQLException sqle){
+            System.out.println("!!SQLException ao chamar EmpresasDAO.selecionarInformacoesPlano(int)!!");
+            sqle.printStackTrace();
+        }
+        finally {
+            return retorno;
+        }
     }
 
     //=======================MÉTODOS UPDATE=======================\\

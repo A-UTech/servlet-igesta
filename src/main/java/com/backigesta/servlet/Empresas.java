@@ -26,7 +26,7 @@ public class Empresas extends HttpServlet {
         String procura = request.getParameter("search");
         String regiao = request.getParameter("regiao");
 
-        HashMap<com.backigesta.model.Empresas, String> empresas;
+        List<com.backigesta.model.Empresas> empresas;
         if (regiao != null && !regiao.equals("todos")) {
             empresas = daoEmpresas.selecionarPorRegiao(regiao);
         }
@@ -68,7 +68,7 @@ public class Empresas extends HttpServlet {
         String regiao = request.getParameter("regiaoEmpresa");
         String unidade = request.getParameter("unidadeEmpresa");
         String senha = request.getParameter("senhaEmpresa");
-        int plano = Integer.parseInt(request.getParameter("planoEmpresa"));
+        String plano = request.getParameter("planoEmpresa");
 
         com.backigesta.model.Empresas empresa = daoEmpresas.selecionarPorId(id);
         empresa.setNome(nome);
@@ -78,7 +78,7 @@ public class Empresas extends HttpServlet {
         if(!senha.equals("")){
             empresa.setSenha(senha);
         }
-        empresa.setId_planos(plano);
+        empresa.setNomePlano(plano);
         boolean alterado = daoEmpresas.atualizar(empresa);
 
         request.setAttribute("alterado", alterado ? "true" : "false");
@@ -93,7 +93,7 @@ public class Empresas extends HttpServlet {
         String estado = request.getParameter("regiaoEmpresa");
         String unidade = request.getParameter("unidadeEmpresa");
         String senha = request.getParameter("senhaEmpresa");
-        int plano = Integer.parseInt(request.getParameter("planoEmpresa"));
+        String plano = request.getParameter("planoEmpresa");
 
         boolean retorno = daoEmpresas.inserir(new com.backigesta.model.Empresas(nome,email,cnpj, senha, plano,estado,unidade));
         request.setAttribute("adicionado", retorno ? "true" : "false");

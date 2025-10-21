@@ -1,5 +1,6 @@
 <%@ page import="com.backigesta.model.Empresas" %>
 <%@ page import="com.backigesta.model.Funcionarios" %>
+<%@ page import="java.util.List" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -12,16 +13,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/popups.css">
     <title>Colaboradores</title>
 
-    <%--Remover isto depois--%>
-    <%@ page import="com.backigesta.dao.EmpresasDAO" %>
-    <%@ page import="java.util.List" %>
-    <%
-        com.backigesta.model.Empresas eu = new EmpresasDAO().selecionarPorId(1);
-        session.setAttribute("empresa", eu);
-    %>
-    <%--Remover isto depois--%>
-
-
     <%
         Empresas empresa = (Empresas) session.getAttribute("empresa");
         if (empresa == null) {
@@ -30,6 +21,8 @@
         }
 
         List<Funcionarios> funcionarios = (List<Funcionarios>) request.getAttribute("funcionarios");
+
+        String[] infoPlano = ((String) request.getAttribute("infoPlano")).split(";");
 
         String adicionado = (String) request.getAttribute("adicionado");
         String alterado = (String) request.getAttribute("alterado");
@@ -41,15 +34,15 @@
     <aside>
         <img src="${pageContext.request.contextPath}/assets/logos/logo-branca.png">
         <div>
-            <h3>Básico</h3>
-            <p>3 TB • R$200</p>
+            <h3><%=infoPlano[2]%></h3>
+            <p><%=infoPlano[4]%> GB • R$<%=infoPlano[3]%></p>
         </div>
         <div>
-            <h3>12</h3>
+            <h3><%=infoPlano[1]%></h3>
             <p>líderes</p>
         </div>
         <div>
-            <h3>05</h3>
+            <h3><%=infoPlano[0]%></h3>
             <p>gestores</p>
         </div>
     </aside>
@@ -58,15 +51,15 @@
             <h1>Colaboradores</h1>
             <menu>
                 <form action="selectCollab">
-                    <input type="hidden" name="filter" value="0">
+                    <input type="hidden" name="filter" value="">
                     <button type="submit" class="options">Todos</button>
                 </form>
                 <form action="selectCollab">
-                    <input type="hidden" name="filter" value="2">
+                    <input type="hidden" name="filter" value="lider">
                     <button type="submit" class="options">Líderes</button>
                 </form>
                 <form action="selectCollab">
-                    <input type="hidden" name="filter" value="1">
+                    <input type="hidden" name="filter" value="gestor">
                     <button type="submit" class="options">Gestores</button>
                 </form>
                 <form action="selectCollab" id="search">
@@ -105,10 +98,10 @@
                     <li><%=func.getNome()%></li>
                     <li><%=func.getEmail()%></li>
                     <li><%=func.getCpf()%></li>
-                    <li><%=func.getCargo()%></li>
+                    <li><%=func.getNomeCargo()%></li>
                     <li>
                         <a onclick="alterarColaborador(<%=func.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/edit.svg"></a>
-                        <input type="hidden" id="colaboradorAlterar<%=func.getId()%>" value="<%=func.getNome()%>;<%=func.getEmail()%>;<%=func.getId_cargo()%>;<%=func.getTurno()%>;<%=func.getSenha()%>">
+                        <input type="hidden" id="colaboradorAlterar<%=func.getId()%>" value="<%=func.getNome()%>;<%=func.getEmail()%>;<%=func.getNomeCargo()%>;<%=func.getTurno()%>;<%=func.getSenha()%>">
                         <a onclick="deletarColaborador(<%=func.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/trash.svg"></a>
                     </li>
                 </ul>
@@ -125,8 +118,8 @@
             <input type="text" name="cpf" placeholder="CPF" required>
             <select name="cargo" required>
                 <option selected disabled hidden>Selecionar Cargo</option>
-                <option value="1">Gestor</option>
-                <option value="2">Líder</option>
+                <option value="Gestor(a);1">Gestor</option>
+                <option value="Lider;2">Líder</option>
             </select>
             <input type="time" name="turno" placeholder="Horario de Turno" required>
             <input type="password" name="senha" placeholder="Senha" required>
@@ -135,6 +128,7 @@
     </dialog>
     <dialog id="alterar" class="popupInputs">
         <h2>Alterar Funcionario</h2>
+        <a onclick="document.getElementById('alterar').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
         <form action="alterarCollab" method="post">
             <input type="text" name="nome" id="nomeColaborador">
             <input type="email" name="email" id="emailColaborador">

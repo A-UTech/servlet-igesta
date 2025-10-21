@@ -9,9 +9,9 @@ function alterarColaborador(numero){
 
     const selectCargo = document.getElementById("cargoColaborador");
     if (cargo === 1) {
-        selectCargo.innerHTML = "<option value='1' selected>Gestor</option> <option value='2'>Líder</option>";
+        selectCargo.innerHTML = "<option value='gestor_1' selected>Gestor</option> <option value='lider_2'>Líder</option>";
     } else {
-        selectCargo.innerHTML = "<option value='2' selected>Líder</option><option value='1'>Gestor</option>";
+        selectCargo.innerHTML = "<option value='lider_2' selected>Líder</option><option value='gestor_1'>Gestor</option>";
     }
 
     document.getElementById('alterar').showModal();

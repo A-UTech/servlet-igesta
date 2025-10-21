@@ -1,5 +1,6 @@
 package com.backigesta.servlet;
 
+import com.backigesta.dao.EmpresasDAO;
 import com.backigesta.dao.FuncionariosDAO;
 import com.backigesta.model.Empresas;
 import com.backigesta.model.Funcionarios;
@@ -17,6 +18,7 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/selectCollab", "/alterarCollab", "/deletarCollab", "/adicionarCollab"})
 public class Colaboradores extends HttpServlet {
     FuncionariosDAO daoFuncionarios = new FuncionariosDAO();
+    EmpresasDAO daoEmpresas = new EmpresasDAO();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(request.getServletPath().equals("/selectCollab")) {
@@ -27,20 +29,21 @@ public class Colaboradores extends HttpServlet {
     protected void mostrarSelects(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String procura = request.getParameter("search");
 
-        String filter = request.getParameter("filter");
-        int cargo = filter != null && !filter.equals("") ? Integer.parseInt(filter) : 0;
+        String cargo = request.getParameter("filter");
 
-    //            int id_empresa = ((Empresas) request.getSession().getAttribute("empresa")).getId(); //Tirar do comentario depois.
-        int id_empresa = 1;
+        int idEmpresa = ((Empresas) request.getSession().getAttribute("empresa")).getId();
 
         List<Funcionarios> funcionarios;
         if (procura != null) {
-            funcionarios = daoFuncionarios.selecionarPorNome(procura, id_empresa);
-        } else if (cargo == 0) {
-            funcionarios = daoFuncionarios.selecionarTodos(id_empresa);
+            funcionarios = daoFuncionarios.selecionarPorNome(procura, idEmpresa);
+        } else if (cargo == null || cargo.equals("")) {
+            funcionarios = daoFuncionarios.selecionarTodos(idEmpresa);
         } else {
-            funcionarios = daoFuncionarios.selecionarPorCargo(cargo, id_empresa);
+            funcionarios = daoFuncionarios.selecionarPorCargo(cargo, idEmpresa);
         }
+
+        String infoPlano = daoEmpresas.selecionarInformacoesPlano(idEmpresa);
+        request.setAttribute("infoPlano", infoPlano);
         request.setAttribute("funcionarios", funcionarios);
         request.getRequestDispatcher("/WEB-INF/view/collaborators.jsp").forward(request, response);
     }
@@ -63,13 +66,18 @@ public class Colaboradores extends HttpServlet {
         String email = request.getParameter("email");
         String cpf = request.getParameter("cpf");
         String senha = request.getParameter("senha");
-        int cargo = Integer.parseInt(request.getParameter("cargo"));
+
+        String[] cargo = request.getParameter("cargo").split(";");
+        String nomeCargo = cargo[0];
+        int idPermissao = Integer.parseInt(cargo[1]);
+
         String[] tempo = request.getParameter("turno").split(":");
         LocalTime turno = new Time(Integer.parseInt(tempo[0]), Integer.parseInt(tempo[1]), 0).toLocalTime();
-        int id_empresa = ((Empresas) request.getSession().getAttribute("empresa")).getId();
+        String nomeEmpresa = ((Empresas) request.getSession().getAttribute("empresa")).getNome();
+        int idEmpresa = ((Empresas) request.getSession().getAttribute("empresa")).getId();
 
         boolean adicionado = daoFuncionarios.inserir(
-                new Funcionarios(nome, email, cpf, senha, id_empresa, cargo, cargo, turno)
+                new Funcionarios(nome, email, cpf, senha, nomeEmpresa, nomeCargo, idPermissao, turno), idEmpresa
         );
         request.setAttribute("adicionado",adicionado ? "true" : "false");
         mostrarSelects(request,response);
@@ -84,6 +92,7 @@ public class Colaboradores extends HttpServlet {
 
     protected void alterarColaborador(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
+        int idEmpresa = ((Empresas) request.getSession().getAttribute("empresa")).getId();
 
         Funcionarios funcionario = daoFuncionarios.selecionarPorId(id);
 
@@ -92,12 +101,14 @@ public class Colaboradores extends HttpServlet {
 
         funcionario.setNome(request.getParameter("nome"));
         funcionario.setEmail(request.getParameter("email"));
-        funcionario.setId_cargo(Integer.parseInt(request.getParameter("cargo")));
+        String[] cargo = request.getParameter("cargo").split("_");
+        funcionario.setNomeCargo(cargo[0]);
+        funcionario.setIdPermissoes(Integer.parseInt(cargo[1]));
         funcionario.setSenha(request.getParameter("senha"));
         funcionario.setTurno(turno);
 
 
-        boolean alterado = daoFuncionarios.atualizar(funcionario);
+        boolean alterado = daoFuncionarios.atualizar(funcionario, idEmpresa);
         request.setAttribute("alterado", alterado ? "true" : "false");
         mostrarSelects(request, response);
     }
