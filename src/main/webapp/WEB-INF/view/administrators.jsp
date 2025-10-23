@@ -1,5 +1,4 @@
 <%@ page import="com.backigesta.model.Admin" %>
-<%@ page import="com.backigesta.model.Planos" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -10,7 +9,7 @@
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/logos/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/restrict-area.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/popups.css">
-    <title>Pagamento</title>
+    <title>Administradores</title>
     <%
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
@@ -18,7 +17,7 @@
             return;
         }
 
-        List<Planos> planos = (List<Planos>) request.getAttribute("planos");
+        List<Admin> admins = (List<Admin>) request.getAttribute("admins");
 
         String adicionado = (String) request.getAttribute("adicionado");
         String alterado = (String) request.getAttribute("alterado");
@@ -41,76 +40,72 @@
 
     <main>
         <header>
-            <h1>Pagamento</h1>
+            <h1>Administradores</h1>
             <menu>
-                <form action="selectPlano" class="search" id="procuraPlanoNome">
-                    <input type="text" name="search" placeholder="Pesquisar">
-                    <button type="button" onclick="enviarFormulario('ButtonSearchNome','buttonSearchNome')" id="ButtonSearchNome" class="functions">
+                <form action="" method="get" class="search" id="procuraAdmin">
+                    <input type="text" name="search" placeholder="Pesquisar por nome">
+                    <button type="button" id="buttonSearchNome" onclick="enviarFormulario('buttonSearchNome','procuraAdmin')" class="functions">
                         <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
                     </button>
                 </form>
-                <button onclick="abrirPopup('add')" class="functions">
-                    <img src="${pageContext.request.contextPath}/assets/icons/menu-add.svg">
-                </button>
+                <button type="submit" class="functions"><img src="${pageContext.request.contextPath}/assets/icons/menu-add.svg"></button>
             </menu>
         </header>
 
         <section>
-                <div class="table plans">
+                <div class="table adm">
                     <ul>
                         <li>Nome</li>
-                        <li>Mensalidade</li>
-                        <li>Armazenamento</li>
+                        <li>Email</li>
+                        <li>Senha</li>
                         <li>Ações</li>
                     </ul>
 
-                    <% for (Planos plano : planos) { %>
+                    <% for (Admin admin1 : admins) { %>
                         <ul>
-                            <li><%=plano.getNome()%></li>
-                            <li>R$<%=plano.getMensalidade()%></li>
-                            <li><%=plano.getArmazenamento()%>GB</li>
+                            <li><%=admin1.getNome()%></li>
+                            <li><%=admin1.getEmail()%></li>
+                            <li><%=admin1.getSenha()%></li>
                             <li>
-                                <a onclick="alterarPlano(<%=plano.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/edit.svg"></a>
-                                <input type="hidden" id="planoAlterar<%=plano.getId()%>" value="<%=plano.getNome()%>;<%=plano.getMensalidade()%>;<%=plano.getArmazenamento()%>">
-                                <a onclick="deletarPlano(<%=plano.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/trash.svg"></a>
+                                <a href=""><img src="${pageContext.request.contextPath}/assets/icons/edit.svg"></a>
+                                <input type="hidden" id="alterarAdmin<%=admin1.getId()%>" value="<%=admin1.getNome()%>;<%=admin1.getEmail()%>;<%=admin1.getSenha()%>">
+                                <a href=""><img src="${pageContext.request.contextPath}/assets/icons/trash.svg"></a>
                             </li>
                         </ul>
                     <% } %>
-
                 </div>
         </section>
-        
     </main>
     <dialog id="add" class="popupInputs">
-        <h2>Adicionar Plano</h2>
-        <form action="adicionarPlano" method="post" autocomplete="off" id="adicionarPlano">
-            <a onclick="fecharPopup('add')"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
-            <input type="text" name="nomePlano" placeholder="Nome" class="inputCapitalize" required>
-            <input type="number" step="any" name="mensalidade" placeholder="Mensalidade" class="inputCapitalize" required>
-            <input type="number" name="armazenamento" placeholder="Armazenamento" class="inputCapitalize" required>
-            <button type="button" id="buttonAdicionar" onclick="enviarFormulario('buttonAdicionar','adicionarPlano')" >Adicionar</button>
+        <h2>Adicionar admin</h2>
+        <form action="" method="post" autocomplete="off" id="adicionarAdmin">
+            <a onclick="document.getElementById('add').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
+            <input type="text" name="nomeAdmin" placeholder="Nome" class="inputCapitalize">
+            <input type="email" name="emailAdmin" placeholder="Email" class="inputCapitalize">
+            <input type="text" name="senhaAdmin" placeholder="Senha" required>
+            <button type="button" id="buttonAdicionar" onclick="enviarFormulario('buttonAdicionar','adicionarAdmin')">Adicionar</button>
         </form>
     </dialog>
     <dialog id="delete" class="popupButtons">
-        <a onclick="fecharPopup('delete')"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
-        <h2>Excluir Plano?</h2>
+        <a onclick="document.getElementById('delete').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
+        <h2>Excluir admin?</h2>
         <div>
             <button onclick="document.getElementById('delete').close()">Não</button>
-            <form action="deletarPlano" method="post" id="deletarPlano">
-                <input type="hidden" id="idPlano" name="planoId">
-                <button type='button' id="buttonDeletar" onclick="enviarFormulario('buttonDeletar','deletarPlano')" >Sim</button>
+            <form action="" method="post" id="deletarAdmin">
+                <input type="hidden" id="IdAdmin" name="adminId">
+                <button type="button" id="buttonDeletar" onclick="enviarFormulario('buttonDeletar','deletarAdmin')">Sim</button>
             </form>
         </div>
     </dialog>
     <dialog id="alterar" class="popupInputs">
-        <h2>Alterar Plano</h2>
-        <a onclick="fecharPopup('alterar')"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
-        <form action="alterarPlano" method="post" id="alterarPlano">
-            <input type="hidden" name="planoId" id="planoId">
-            <input type="text" id="nomePlano" name="nomePlano" class="inputCapitalize" required>
-            <input type="number" step="any" id="mensalidade" name="mensalidade" class="inputCapitalize" required>
-            <input type="number" id="armazenamento" name="armazenamento" class="inputCapitalize" required>
-            <button type="button" id="buttonAlterar" onclick="enviarFormulario('buttonAlterar','alterarPlano')">Alterar</button>
+        <h2>Alterar admin</h2>
+        <a onclick="document.getElementById('alterar').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
+        <form action="" method="post" id="alterarAdmin">
+            <input type="hidden" id="adminId" name="idAdmin">
+            <input type="text" id="nomeAdmin" name="nomeAdmin" placeholder="Nome" class="inputCapitalize">
+            <input type="email" id="emailAdmin" name="emailAdmin" placeholder="Email" class="inputCapitalize">
+            <input type="text" id="senhaAdmin" name="senhaAdmin" placeholder="Senha" required>
+            <button type="button" id="buttonAlterar" onclick="enviarFormulario('buttonAlterar','alterarAdmin')">Alterar</button>
         </form>
     </dialog>
     <div class="overlay" id="popupOverlay">
@@ -123,7 +118,6 @@
             <button onclick="fecharPopupInformacoes()">Ok</button>
         </div>
     </div>
-    <script src="${pageContext.request.contextPath}/scripts/areaRestritaPlanos.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
     <script>

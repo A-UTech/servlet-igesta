@@ -125,9 +125,9 @@ public class AdminDAO extends DAO{
         Connection conn = banco.conectar();
         List<Admin> admins = new ArrayList<>();
         try{
-            String sql = "SELECT * FROM admin WHERE nome like ?";
+            String sql = "SELECT * FROM admin WHERE lower(nome) like lower(?)";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, nome);
+            ps.setString(1, nome+"%");
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 admins.add(new Admin(
@@ -207,13 +207,12 @@ public class AdminDAO extends DAO{
         boolean retorno = false;
         Connection conn = banco.conectar();
         try{
-            String sql = "UPDATE admin SET nome=?, email=?, senha=?, foto=? WHERE id=?";
+            String sql = "UPDATE admin SET nome=?, email=?, senha=? WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, adm.getNome());
             ps.setString(2, adm.getEmail());
             ps.setString(3, adm.getSenha());
-            ps.setBytes(4, adm.getFoto());
-            ps.setInt(5, adm.getId());
+            ps.setInt(4, adm.getId());
 
             retorno = ps.executeUpdate()>=1;
             conn.close();
@@ -252,7 +251,7 @@ public class AdminDAO extends DAO{
         boolean valido = false;
         try {
             Connection conn = banco.conectar();
-            String sql = "SELECT * FROM admins WHERE email = ? AND senha = ?";
+            String sql = "SELECT * FROM admin WHERE email = ? AND senha = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ResultSet rset = ps.executeQuery();

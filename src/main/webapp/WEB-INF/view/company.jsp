@@ -27,23 +27,19 @@
     %>
 </head>
 <body>
-    <aside>
-        <a href="${pageContext.request.contextPath}/index.jsp"><img src="${pageContext.request.contextPath}/assets/logos/logo-branca.png"></a>
-        <div>
-            <a href="selectEmpresas"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"></a>
-            <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"></a>
-            <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"></a>
-            <a href="selectContatoFuncionarios"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"></a>
-            <a href="administrators.html"><img src="${pageContext.request.contextPath}/assets/icons/aside-adm.svg"></a>
-        </div>
-        <a href="entrarPerfil">
-            <% if (admin.getFoto() == null) { %>
-                <img id="fotoPerfil" src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
-            <% } else { %>
-                <img id="fotoPerfil" src="getFoto?id=<%=admin.getId()%>&tipo=Admin">
-            <% } %>
-        </a>
-    </aside>
+<aside>
+    <a href="${pageContext.request.contextPath}/index.jsp" class="logo"><img src="${pageContext.request.contextPath}/assets/logos/igesta-outlined.svg"> <h2>IGesta</h2></a>
+
+    <nav>
+        <a href="selectEmpresas"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresa</span></a>
+        <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"><span>Condenas</span></a>
+        <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"><span>Mensalidades</span></a>
+        <a href="selectContato"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"><span>Contato dos funcionários</span></a>
+        <a href="selectAdmin"><img src="${pageContext.request.contextPath}/assets/icons/aside-adm.svg"><span>Administradores</span></a>
+    </nav>
+
+    <a href="" class="perfil"><img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg"> <span>Lucas Lima</span></a>
+</aside>
 
     <main>
         <header>

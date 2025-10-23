@@ -19,7 +19,7 @@ public class CondenasDao{
         ArrayList<Condenas> listas = new ArrayList<>();
         try {
             Statement pstmt = conn.createStatement();
-            ResultSet rs = pstmt.executeQuery("select c.id,c.nome,a.nome,c.descricao,c.tipo_condena from condenas c join admin a on a.id = c.cod_admin order by c.nome");
+            ResultSet rs = pstmt.executeQuery("select c.id,c.nome,a.nome,c.descricao,c.tipo_condena from condena c join admin a on a.id = c.cod_admin order by c.nome");
             while (rs.next()) {
                 listas.add(new Condenas(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
             }
@@ -35,7 +35,7 @@ public class CondenasDao{
         conn = conexao.conectar();
         ArrayList<Condenas> listas = new ArrayList<>();
         try {
-            PreparedStatement pstmt = conn.prepareStatement("select c.id,c.nome,a.nome,c.descricao,c.tipo_condena from condenas c join admin a on a.id = c.cod_admin where lower(c.tipo_condena) = ? order by c.nome");
+            PreparedStatement pstmt = conn.prepareStatement("select c.id,c.nome,a.nome,c.descricao,c.tipo_condena from condena c join admin a on a.id = c.cod_admin where lower(c.tipo_condena) = ? order by c.nome");
             pstmt.setString(1,tipo_condena);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -53,7 +53,7 @@ public class CondenasDao{
         conn = conexao.conectar();
         ArrayList<Condenas> listas = new ArrayList<>();
         try {
-            PreparedStatement pstmt = conn.prepareStatement("select c.id,c.nome,a.nome,c.descricao,c.tipo_condena from condenas c join admin a on a.id = c.cod_admin where lower(c.nome) like ? order by c.nome");
+            PreparedStatement pstmt = conn.prepareStatement("select c.id,c.nome,a.nome,c.descricao,c.tipo_condena from condena c join admin a on a.id = c.cod_admin where lower(c.nome) like ? order by c.nome");
             pstmt.setString(1,procura+"%");
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -70,10 +70,10 @@ public class CondenasDao{
     public boolean deletarCondena(int id) {
         conn = conexao.conectar();
         try {
-            PreparedStatement pstmt1 = conn.prepareStatement("delete from quantidadecondenas where cod_condena = ?");
+            PreparedStatement pstmt1 = conn.prepareStatement("delete from quantidadecondena where cod_condena = ?");
             pstmt1.setInt(1,id);
             pstmt1.execute();
-            PreparedStatement pstmt2 = conn.prepareStatement("delete from condenas where id = ?");
+            PreparedStatement pstmt2 = conn.prepareStatement("delete from condena where id = ?");
             pstmt2.setInt(1,id);
             if (pstmt2.executeUpdate() > 0) {
                 return true;
@@ -90,7 +90,7 @@ public class CondenasDao{
     public boolean alterarCondena(Condenas condena) {
         conn = conexao.conectar();
         try {
-            PreparedStatement pstmt = conn.prepareStatement("update condenas set tipo_condena = ?, nome = ?, descricao = ? where id = ?");
+            PreparedStatement pstmt = conn.prepareStatement("update condena set tipo_condena = ?, nome = ?, descricao = ? where id = ?");
             pstmt.setString(1,condena.getTipoCondena());
             pstmt.setString(2,condena.getNome());
             if (condena.getDescricao().equals("") || condena.getDescricao().toLowerCase().equals("sem descricao")) {
@@ -120,7 +120,7 @@ public class CondenasDao{
             while (rs.next()) {
                 id = rs.getInt(1);
             }
-            PreparedStatement pstmt2 = conn.prepareStatement("insert into condenas(nome,cod_admin,descricao,tipo_condena) values(?,?,?,?)");
+            PreparedStatement pstmt2 = conn.prepareStatement("insert into condena(nome,cod_admin,descricao,tipo_condena) values(?,?,?,?)");
             pstmt2.setString(1,condena.getNome());
             pstmt2.setInt(2,id);
             if (condena.getDescricao().equals("") || condena.getDescricao().toLowerCase().equals("sem descricao")) {

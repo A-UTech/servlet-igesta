@@ -1,6 +1,6 @@
-<%@ page import="java.util.List" %>
-<%@ page import="com.backigesta.model.Condenas" %>
 <%@ page import="com.backigesta.model.Admin" %>
+<%@ page import="com.backigesta.model.Condenas" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="pt-br">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/popups.css">
     <title>Condenas</title>
     <%
-        Admin admin = (Admin) session.getAttribute("admin");
-        if (admin == null) {
-            response.sendRedirect("index.jsp");
-            return;
-        }
+//        Admin admin = (Admin) session.getAttribute("admin");
+//        if (admin == null) {
+//            response.sendRedirect("index.jsp");
+//            return;
+//        }
 
         List<Condenas> condenas = (List<Condenas>) request.getAttribute("condenas");
 
@@ -26,24 +26,19 @@
     %>
 </head>
 <body>
-    <aside>
-        <a href="${pageContext.request.contextPath}/index.jsp"><img src="${pageContext.request.contextPath}/assets/logos/logo-branca.png"></a>
-        <div>
-            <a href="selectEmpresas"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"></a>
-            <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"></a>
-            <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"></a>
-            <a href="selectContatoFuncionarios"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"></a>
-            <a href=""><img src="${pageContext.request.contextPath}/assets/icons/aside-adm.svg"></a>
-        </div>
-        <a href="entrarPerfil">
-            <% if (admin.getFoto() == null) { %>
-                <img id="fotoPerfil" src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
-            <% } else { %>
-                <img id="fotoPerfil" src="getFoto?id=<%=admin.getId()%>&tipo=Admin">
-            <% } %>
-        </a>
-    </aside>
+<aside>
+    <a href="${pageContext.request.contextPath}/index.jsp" class="logo"><img src="${pageContext.request.contextPath}/assets/logos/igesta-outlined.svg"> <h2>IGesta</h2></a>
 
+    <nav>
+        <a href="selectEmpresas"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresa</span></a>
+        <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"><span>Condenas</span></a>
+        <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"><span>Mensalidades</span></a>
+        <a href="selectContato"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"><span>Contato dos funcionários</span></a>
+        <a href="selectAdmin"><img src="${pageContext.request.contextPath}/assets/icons/aside-adm.svg"><span>Administradores</span></a>
+    </nav>
+
+    <a href="" class="perfil"><img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg"> <span>Lucas Lima</span></a>
+</aside>
     <main>
         <header>
             <h1>Condenas</h1>
@@ -81,17 +76,17 @@
                     <li>Ações</li>
                 </ul>
                 <% for (Condenas condena : condenas) { %>
-                    <ul>
-                        <li><%=condena.getNome()%></li>
-                        <li><%=condena.getTipoCondena()%></li>
-                        <li><%=condena.getDescricao() != null ? condena.getDescricao() : "Sem descricao"%></li>
-                        <li><%=condena.getNomeAdmin()%></li>
-                        <li>
-                            <a onclick="alterarCondena(<%=condena.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/edit.svg"></a>
-                            <input type="hidden" id="condenaAlterar<%=condena.getId()%>" value="<%=condena.getNome()%>;<%=condena.getTipoCondena()%>;<%=condena.getDescricao()%>">
-                            <a onclick="deletarCondena(<%=condena.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/trash.svg"></a>
-                        </li>
-                    </ul>
+                <ul>
+                    <li><%=condena.getNome()%></li>
+                    <li><%=condena.getTipoCondena()%></li>
+                    <li><%=condena.getDescricao() != null ? condena.getDescricao() : "Sem descricao"%></li>
+                    <li><%=condena.getNomeAdmin()%></li>
+                    <li>
+                        <a onclick="alterarCondena(<%=condena.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/edit.svg"></a>
+                        <input type="hidden" id="condenaAlterar<%=condena.getId()%>" value="<%=condena.getNome()%>;<%=condena.getTipoCondena()%>;<%=condena.getDescricao()%>">
+                        <a onclick="deletarCondena(<%=condena.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/trash.svg"></a>
+                    </li>
+                </ul>
                 <% } %>
             </div>
         </section>
@@ -151,21 +146,22 @@
     <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
     <script>
         <% if (adicionado != null) { %>
-            <%
-                boolean isAdicionado = Boolean.parseBoolean(adicionado);
-            %>
-            abrirPopupInformacoes("<%=isAdicionado ? "check.svg" : "wrong.svg"%>","<%=isAdicionado ? "Registro adicionado!" : "Erro ao adicionar"%>","<%=isAdicionado ? "O novo dado foi salvo com sucesso." : "Não foi possível salvar o registro. Tente novamente."%>")
+        <%
+            boolean isAdicionado = Boolean.parseBoolean(adicionado);
+        %>
+        abrirPopupInformacoes("<%=isAdicionado ? "check.svg" : "wrong.svg"%>","<%=isAdicionado ? "Registro adicionado!" : "Erro ao adicionar"%>","<%=isAdicionado ? "O novo dado foi salvo com sucesso." : "Não foi possível salvar o registro. Tente novamente."%>")
         <% } else if (alterado != null) { %>
-            <%
-                boolean isAlterado = Boolean.parseBoolean(alterado);
-            %>
-            abrirPopupInformacoes("<%=isAlterado ? "check.svg" : "wrong.svg"%>","<%=isAlterado ? "Alteração concluída!" : "Erro ao editar"%>","<%=isAlterado ? "O registro foi atualizado com sucesso." : "Não foi possível atualizar o registro."%>")
+        <%
+            boolean isAlterado = Boolean.parseBoolean(alterado);
+        %>
+        abrirPopupInformacoes("<%=isAlterado ? "check.svg" : "wrong.svg"%>","<%=isAlterado ? "Alteração concluída!" : "Erro ao editar"%>","<%=isAlterado ? "O registro foi atualizado com sucesso." : "Não foi possível atualizar o registro."%>")
         <% } else if (deletado != null) { %>
-            <%
-                boolean isDeletado = Boolean.parseBoolean(deletado);
-            %>
-            abrirPopupInformacoes("<%=isDeletado ? "check.svg" : "wrong.svg"%>","<%=isDeletado? "Registro removido!" : "Erro ao excluir"%>","<%=isDeletado ? "O dado foi excluído do sistema." : "Não foi possível remover o registro."%>")
+        <%
+            boolean isDeletado = Boolean.parseBoolean(deletado);
+        %>
+        abrirPopupInformacoes("<%=isDeletado ? "check.svg" : "wrong.svg"%>","<%=isDeletado? "Registro removido!" : "Erro ao excluir"%>","<%=isDeletado ? "O dado foi excluído do sistema." : "Não foi possível remover o registro."%>")
         <% } %>
     </script>
+
 </body>
 </html>

@@ -4,21 +4,21 @@ public class Telefone {
     //==========ATRIBUTOS==========\\
 
     private int id;
-    private String nomeFuncionario;
+    private int idFuncionario;
     private String telefone;
 
     //==========CONSTRUTORES==========\\
     public Telefone(){} //Vazio
-    public Telefone(int id, String nomeFuncionario, String telefone){
+    public Telefone(int id, int idFuncionario, String telefone){
         this.id = id;
-        this.nomeFuncionario = nomeFuncionario;
+        this.idFuncionario = idFuncionario;
         this.telefone = telefone;
     } //Completo
 
-    public Telefone(String nomeFuncionario, String telefone) {
-        this.nomeFuncionario = nomeFuncionario;
+    public Telefone(String telefone,int idFuncionario) {
+        this.idFuncionario = idFuncionario;
         this.telefone = telefone;
-    }     // Construtor com nomeFuncionario e telefone
+    }     // Construtor com idFuncionaro e telefone
 
     public Telefone(int id, String telefone) {
         this.id = id;
@@ -30,16 +30,16 @@ public class Telefone {
     public int getId() {
         return id;
     }
-    public String getNomeFuncionario() {
-        return nomeFuncionario;
+    public int getIdFuncionario() {
+        return idFuncionario;
     }
     public String getTelefone() {
         return telefone;
     }
     //==========MÉTODOS SET==========\\
 
-    public void setNomeFuncionario(String nomeFuncionario) {
-        this.nomeFuncionario = nomeFuncionario;
+    public void setIdFuncionaro(int idFuncionaro) {
+        this.idFuncionario = idFuncionaro;
     }
 
     public void setTelefone(String telefone) {
@@ -49,7 +49,7 @@ public class Telefone {
 
     public String toString(){
         return "NovaClasse{ id: " + this.id +
-                " | Nome funcionário: " + this.nomeFuncionario +
+                " | Nome funcionário: " + this.idFuncionario +
                 " | telefone: " + this.telefone + "}";
     }
 }

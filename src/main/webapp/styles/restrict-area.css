@@ -22,50 +22,101 @@
     text-decoration: none;
     scroll-behavior: smooth;
     list-style-type: none;
+    box-sizing: border-box;
     border: 0;
     outline: 0;
 }
 
 body {
     background: var(--corPreto);
-    display: grid;
-    grid-template-columns: 5% 90%;
-    gap: 25px;
-    align-items: center;
-    justify-content: center;
     height: 100vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 75px auto;
+    transition: 500ms;
+
 }
 
-h1, h2 {
-    font: bold 3em var(--fontText);
-}
+body:has(aside:hover) {grid-template-columns: 270px auto}
 
-aside, div, header, menu, menu button.functions, li:last-child {
+h1, h2 {font: bold 3em var(--fontText)}
+
+aside, aside a.logo, aside > nav a, aside a.perfil,
+header, menu, menu button.functions, .search, li:last-child {
     display: flex;
-    align-items: center}
+    align-items: center;
+}
+
 ul:first-child > li, button.options:hover {color: var(--corPreto)}
 
-/* aside */
-aside, main {
-    height: 90vh;
-}
+/* sidebar */
 aside {
     background: var(--corCinza);
-    border-radius: 10px}
-aside, div {
-    flex-direction: column;
-    justify-content: space-around;
-    gap: 20px}
-aside img {width: 45px}
+    height: 100vh;
+    padding-left: 10px;
+}
 
+aside a.logo {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    gap: 15px;
+}
+
+aside a.logo img {width: 50px;}
+
+aside > nav > a:not(:last-child) {margin-bottom: 20px}
+
+aside > nav img {width: 30px}
+
+aside > a.perfil > img {
+    width: 40px;
+    height: 40px;
+}
+
+aside > nav a, aside a.perfil {
+    gap: 20px;
+    width: 250px;
+    padding: 10px;
+    border-radius: 10px;
+    transition: 500ms;
+}
+
+aside nav a:hover, aside a.perfil:hover {background-color: #202020}
+
+aside span, aside a.logo h2 {
+    display: none;
+    width: 200px;
+    opacity: 0;
+}
+
+aside:hover span, aside:hover a.logo h2 {
+    display: block;
+    opacity: 1;
+    transition: 500ms;
+}
+
+aside > .perfil {
+    position: absolute;
+    bottom: 7px;
+    left: 7px;
+}
+
+
+/* main */
+main {
+    padding: 0 20px 20px 20px;
+}
 
 main {
     display: grid;
     grid-template-rows: 15% 85%;
     width: 100%;
+    height: 100vh;
 }
 
 header {justify-content: space-between}
+
 
 /* menu */
 menu {gap: 5px;}
@@ -76,6 +127,7 @@ menu button {
     height: 40px;
     border-radius: 100px}
 
+
 /* menu, functions */
 menu .functions {
     background: var(--corCinza);
@@ -83,6 +135,7 @@ menu .functions {
     width: 40px;
     justify-content: space-evenly}
 menu .functions:hover {background: #4d4d56}
+
 
 /* menu, options */
 menu > form > button.options {
@@ -93,11 +146,9 @@ menu > form > button.options {
     font-weight: 500}
 menu > form > button.options:hover {background: var(--corVC);}
 
+
 /* menu, search */
-/* ===== Barra de pesquisa ===== */
 .search {
-    display: flex;
-    align-items: center;
     background: var(--corCinza);
     border-radius: 50px;
     width: 40px;
@@ -107,17 +158,22 @@ menu > form > button.options:hover {background: var(--corVC);}
 }
 
 form.search {transition: 800ms}
-form.search > input {
+
+form.search input {
     display: none;
     background: transparent;
-    width: 140px;
-    text-align: center}
+    width: 120px;
+    text-align: center;
+}
+
 form.search:hover {
-    width: 220px;
+    width: 200px;
     justify-content: space-evenly;
 }
-form.search:hover > input{display: block}
-form.search:hover img{content: url(../assets/icons/edit.svg)}
+
+form.search:hover input{display: block}
+
+form.search:hover img{content: url(../assets/icons/sent.svg)}
 
 section {
     background: var(--corCinza);
@@ -139,7 +195,7 @@ div.table {
 
 div.company > ul {grid-template-columns: repeat(7, 1fr)}
 div.condemn > ul, div.employeeContact > ul {grid-template-columns: repeat(5, 1fr)}
-div.plans ul, div.adm > ul {grid-template-columns: repeat(4, 1fr)}
+div.payment > ul, div.adm > ul {grid-template-columns: repeat(4, 1fr)}
 
 ul {
     display: grid;
@@ -159,6 +215,7 @@ ul:first-child {
 ul:not(:first-child) {
     transition: 500ms;
 }
+
 ul:not(:first-child):hover {background: #292a2d}
 
 li:last-child {gap: 10px}
@@ -170,6 +227,20 @@ div.condemn ul li:nth-child(3) {
     text-align: center;
 }
 
+li {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+select.selectPhone {
+    background: var(--corCinza);
+    color: var(--corBranco);
+    padding: 2px;
+    border-radius: 5px;
+}
+
+
 dialog {
     border: none;
     border-radius: 10px;
@@ -178,20 +249,19 @@ dialog {
     background: var(--corCinza);
     color: var(--corCinza);
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-
-    /* centraliza na tela */
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
 dialog input,textarea,option,select {
-    background-color: white;
-    color: black;
+    background-color: var(--corBranco);
+    color: var(--corPreto);
 }
 
 dialog input::placeholder, textarea::placeholder, option::placeholder {
-    color: black;
+    color: var(--corPreto);
 }
 
 #fotoPerfil {
@@ -205,7 +275,7 @@ dialog {
     align-items: center;
     justify-content: space-around;
     border-radius: 20px;
-    background-color: #141414;
+    background-color: var(--corPreto);
 }
 dialog[open] {
     display: flex;
@@ -230,7 +300,7 @@ dialog.popupInputs input, dialog.popupInputs select, dialog.popupInputs textarea
     height: 70px;
     resize: none;
     padding: 20px;
-    background: #FCFCFC;
+    background: var(--corBranco);
     border-radius: 15px;
 }
 
@@ -239,15 +309,16 @@ dialog.popupInputs textarea {
 }
 
 dialog.popupInputs button {
-    background: #A1E1D3;
+    background: var(--corVC);
 }
 
-dialog.popupInputs > form {
+dialog.popupInputs > form, .form {
     width: 300px;
     height: 400px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
+    row-gap: 10px;
 }
 
 dialog img {
@@ -280,7 +351,7 @@ dialog.popupButtons button {
     width: 120px;
     height: 40px;
     border-radius: 50px;
-    color: #FCFCFC;
+    color: var(--corBranco);
     font-weight: bold;
 }
 
@@ -289,5 +360,5 @@ dialog.popupButtons button:first-child {
 }
 
 dialog.popupButtons button:last-child {
-    background-color: #1A7B66;
+    background-color: var(--corVE);
 }

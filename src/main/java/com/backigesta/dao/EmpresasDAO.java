@@ -18,7 +18,7 @@ public class EmpresasDAO extends DAO{
         boolean retorno = false;
         Connection conn = banco.conectar();
         try{
-            PreparedStatement ps = conn.prepareStatement("select id from planos where lower(nome) = lower(?)");
+            PreparedStatement ps = conn.prepareStatement("select id from plano where lower(nome) = lower(?)");
             ps.setString(1,empresas.getNomePlano());
             ResultSet rs = ps.executeQuery();
             int planoId = -1;
@@ -28,7 +28,7 @@ public class EmpresasDAO extends DAO{
             rs.close();
             ps.close();
 
-            ps = conn.prepareStatement("INSERT INTO empresas(cnpj, nome, email, senha, id_planos, foto, regiao, unidade) VALUES (?,?,?,?,?,?,?,?)");
+            ps = conn.prepareStatement("INSERT INTO empresa(cnpj, nome, email, senha, id_planos, foto, regiao, unidade) VALUES (?,?,?,?,?,?,?,?)");
             ps.setString(1, empresas.getCnpj());
             ps.setString(2, empresas.getNome());
             ps.setString(3, empresas.getEmail());
@@ -55,7 +55,7 @@ public class EmpresasDAO extends DAO{
         Connection conn = banco.conectar();
         try {
             int id = -1;
-            PreparedStatement ps = conn.prepareStatement("select id from planos where lower(nome) = lower(?)");
+            PreparedStatement ps = conn.prepareStatement("select id from plano where lower(nome) = lower(?)");
             ps.setString(1,empresa.getNomePlano());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -64,7 +64,7 @@ public class EmpresasDAO extends DAO{
             rs.close();
             ps.close();
 
-            ps = conn.prepareStatement("INSERT INTO empresas (nome, email, cnpj, unidade, regiao, id_planos) VALUES (?, ?, ?, ?, ?, ?)");
+            ps = conn.prepareStatement("INSERT INTO empresa (nome, email, cnpj, unidade, regiao, id_planos) VALUES (?, ?, ?, ?, ?, ?)");
             ps.setString(1, empresa.getNome());
             ps.setString(2, empresa.getEmail());
             ps.setString(3, empresa.getCnpj());
@@ -74,7 +74,7 @@ public class EmpresasDAO extends DAO{
             ps.execute();
             ps.close();
 
-            ps = conn.prepareStatement("select id from empresas where lower(email) = lower(?) and lower(cnpj) = lower(?)");
+            ps = conn.prepareStatement("select id from empresa where lower(email) = lower(?) and lower(cnpj) = lower(?)");
             ps.setString(1,empresa.getEmail());
             ps.setString(2,empresa.getCnpj());
             rs = ps.executeQuery();
@@ -98,7 +98,7 @@ public class EmpresasDAO extends DAO{
         Connection conn = banco.conectar();
         try {
             if (senha.equals(confSenha)) {
-                String sql = "UPDATE empresas SET senha = ? WHERE id = ?";
+                String sql = "UPDATE empresa SET senha = ? WHERE id = ?";
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ps.setString(1, senha);
                 ps.setInt(2, empresaId);
@@ -118,7 +118,7 @@ public class EmpresasDAO extends DAO{
         Connection conn = banco.conectar();
         Empresas empresas = null;
         try{
-            String sql = "SELECT * FROM empresas WHERE id=?";
+            String sql = "SELECT * FROM empresa WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setInt(1, id);
@@ -151,7 +151,7 @@ public class EmpresasDAO extends DAO{
         Connection conn = banco.conectar();
         ArrayList<Empresas> empresa = new ArrayList<>();
         try{
-            String sql = "SELECT e.*, p.nome AS plano FROM empresas e JOIN planos p ON p.id=e.id_planos where e.regiao like ?";
+            String sql = "SELECT e.*, p.nome AS plano FROM empresa e JOIN plano p ON p.id=e.id_planos where e.regiao like ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, regiao);
             ResultSet rs = ps.executeQuery();
@@ -184,7 +184,7 @@ public class EmpresasDAO extends DAO{
         Connection conn = banco.conectar();
         ArrayList<Empresas> empresa = new ArrayList<>();
         try{
-            PreparedStatement ps = conn.prepareStatement("SELECT e.*, p.nome AS plano FROM empresas e JOIN planos p ON p.id=e.id_planos where lower(e.nome) like lower(?)");
+            PreparedStatement ps = conn.prepareStatement("SELECT e.*, p.nome AS plano FROM empresa e JOIN plano p ON p.id=e.id_planos where lower(e.nome) like lower(?)");
             ps.setString(1, nome);
             ResultSet rs = ps.executeQuery();
 
@@ -216,7 +216,7 @@ public class EmpresasDAO extends DAO{
         Connection conn = banco.conectar();
         ArrayList<Empresas> empresa = new ArrayList<>();
         try{
-            String sql = "SELECT e.*, p.nome AS plano FROM empresas e JOIN planos p ON p.id=e.id_planos";
+            String sql = "SELECT e.*, p.nome AS plano FROM empresa e JOIN plano p ON p.id=e.id_planos";
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
 
@@ -249,7 +249,7 @@ public class EmpresasDAO extends DAO{
         Empresas empresas = null;
         try{
             conn = banco.conectar();
-            String sql = "SELECT * FROM empresas WHERE email like ?";
+            String sql = "SELECT * FROM empresa WHERE email like ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
@@ -281,7 +281,7 @@ public class EmpresasDAO extends DAO{
         Connection conn = banco.conectar();
         byte[] foto = null;
         try{
-            String sql = "SELECT foto FROM empresas WHERE id=?";
+            String sql = "SELECT foto FROM empresa WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -303,7 +303,7 @@ public class EmpresasDAO extends DAO{
         Connection conn = null;
         try {
             conn = banco.conectar();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM empresas WHERE email = ? AND senha = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM empresa WHERE email = ? AND senha = ?");
             ps.setString(1,email);
             ps.setString(2,senha);
 
@@ -327,7 +327,7 @@ public class EmpresasDAO extends DAO{
         boolean retorno = false;
         Connection conn = banco.conectar();
         try{
-            PreparedStatement ps = conn.prepareStatement("select id from planos where lower(nome) = lower(?)");
+            PreparedStatement ps = conn.prepareStatement("select id from plano where lower(nome) = lower(?)");
             ps.setString(1,empresas.getNomePlano());
             ResultSet rs = ps.executeQuery();
             int planoId = -1;
@@ -337,7 +337,7 @@ public class EmpresasDAO extends DAO{
             rs.close();;
             ps.close();
 
-            ps = conn.prepareStatement("UPDATE empresas SET cnpj=?, nome=?, email=?, senha=?, id_planos=?, regiao=?, unidade=? WHERE id=?");
+            ps = conn.prepareStatement("UPDATE empresa SET cnpj=?, nome=?, email=?, senha=?, id_planos=?, regiao=?, unidade=? WHERE id=?");
             ps.setString(1, empresas.getCnpj());
             ps.setString(2, empresas.getNome());
             ps.setString(3, empresas.getEmail());
@@ -363,7 +363,7 @@ public class EmpresasDAO extends DAO{
         boolean retorno = false;
         Connection conn = banco.conectar();
         try{
-            String sql = "UPDATE empresas SET foto=? WHERE id=?";
+            String sql = "UPDATE empresa SET foto=? WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setBytes(1, foto);
             ps.setInt(2, id);
@@ -388,7 +388,7 @@ public class EmpresasDAO extends DAO{
             conn.setAutoCommit(false);
 
 
-            PreparedStatement pstmt = conn.prepareStatement("select t.id from  empresas e join funcionarios f on f.id_empresa = e.id join telefones t on f.id = t.id_funcionario where e.id = ?");
+            PreparedStatement pstmt = conn.prepareStatement("select t.id from empresa e join funcionario f on f.id_empresa = e.id join telefone t on f.id = t.id_funcionario where e.id = ?");
             pstmt.setInt(1,id);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -403,7 +403,7 @@ public class EmpresasDAO extends DAO{
             }
 
 
-            pstmt = conn.prepareStatement("select qc.id from empresas e join funcionarios f on f.id_empresa = e.id join medicoes m on f.id = m.cod_gestor join quantidadecondenas qc on m.id = qc.cod_medicao where e.id = ?");
+            pstmt = conn.prepareStatement("select qc.id from empresa e join funcionario f on f.id_empresa = e.id join medicao m on f.id = m.cod_gestor join quantidadecondena qc on m.id = qc.cod_medicao where e.id = ?");
             pstmt.setInt(1,id);
             rs = pstmt.executeQuery();
             listaId = new ArrayList<>();
@@ -412,14 +412,14 @@ public class EmpresasDAO extends DAO{
             }
             pstmt.close();
             for (int i = 0;i < listaId.size();i++) {
-                pstmt = conn.prepareStatement("delete from quantidadecondenas where id = ?");
+                pstmt = conn.prepareStatement("delete from quantidadecondena where id = ?");
                 pstmt.setInt(1,listaId.get(i));
                 pstmt.execute();
                 pstmt.close();
             }
 
 
-            pstmt = conn.prepareStatement("select m.id from  empresas e join funcionarios f on f.id_empresa = e.id join medicoes m on f.id = m.cod_gestor where e.id = ?");
+            pstmt = conn.prepareStatement("select m.id from empresa e join funcionario f on f.id_empresa = e.id join medicao m on f.id = m.cod_gestor where e.id = ?");
             pstmt.setInt(1,id);
             rs = pstmt.executeQuery();
             listaId = new ArrayList<>();
@@ -428,14 +428,14 @@ public class EmpresasDAO extends DAO{
             }
             pstmt.close();
             for (int i = 0;i < listaId.size();i++) {
-                pstmt = conn.prepareStatement("delete from medicoes where id = ?");
+                pstmt = conn.prepareStatement("delete from medicao where id = ?");
                 pstmt.setInt(1,listaId.get(i));
                 pstmt.execute();
                 pstmt.close();
             }
 
 
-            pstmt = conn.prepareStatement("select f.id from empresas e join funcionarios f on f.id_empresa = e.id where e.id = ?");
+            pstmt = conn.prepareStatement("select f.id from empresa e join funcionario f on f.id_empresa = e.id where e.id = ?");
             pstmt.setInt(1,id);
             rs = pstmt.executeQuery();
             listaId = new ArrayList<>();
@@ -444,13 +444,13 @@ public class EmpresasDAO extends DAO{
             }
             pstmt.close();
             for (int i = 0;i < listaId.size();i++) {
-                pstmt = conn.prepareStatement("delete from funcionarios where id = ?");
+                pstmt = conn.prepareStatement("delete from funcionario where id = ?");
                 pstmt.setInt(1,listaId.get(i));
                 pstmt.execute();
                 pstmt.close();
             }
 
-            pstmt = conn.prepareStatement("delete from empresas where id = ?");
+            pstmt = conn.prepareStatement("delete from empresa where id = ?");
             pstmt.setInt(1,id);
             if (pstmt.executeUpdate() > 0) {
                 pstmt.close();

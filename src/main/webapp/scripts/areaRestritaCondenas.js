@@ -1,5 +1,5 @@
 
-// Esse arquivo Java Script está sendo usando para manipular elementos da página condenas.jsp
+// Esse arquivo Java Script está sendo usando para manipular elementos da página condenasFeia.jsp
 
 function alterarCondena(numero) {
     // Pega os dados que estam no valor dos inputs hidden criados na página

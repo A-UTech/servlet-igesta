@@ -29,6 +29,13 @@
             <version>2.0.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.8</version>
+        </dependency>
+
         <!--  Dependência do JavaMail  -->
         <dependency>
             <groupId>com.sun.mail</groupId>

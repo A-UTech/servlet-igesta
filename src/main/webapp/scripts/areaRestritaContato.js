@@ -3,23 +3,27 @@
 
 function alterarContato(numero) {
     // Pega os dados que estam no valor dos inputs hidden criados na página
-    let [nome,telefone] = document.getElementById("contatoFuncionarioAlterar"+numero).value.split(";");
+    let tel = document.getElementById('telefoneContato'+numero);
 
-    // Coloca os valores nos inputs do dialog alterar
-    document.getElementById('nomeContato').value = nome;
-    document.getElementById('contatoId').value = numero;
-    document.getElementById('contato').value = telefone;
+    if (tel.value !== "") {
+        // Coloca os valores nos inputs do dialog alterar
+        document.getElementById('idTelefone').value = tel.value;
+        document.getElementById('telefone').value = tel.options[tel.selectedIndex].innerHTML;
 
-    // Abre o dialog alterar
-    document.getElementById("alterar").showModal();
+        // Abre o dialog alterar
+        document.getElementById("alterar").showModal();
+    }
 }
 
 function deletarContato(numero) {
-    // Abre o dialog delete
-    document.getElementById('delete').showModal();
+    let tel = document.getElementById('telefoneContato'+numero);
 
-    // Coloca o valor do numero no input hidden do dialog delete
-    document.getElementById('idContato').value = numero;
+    if (tel.value !== "") {
+        document.getElementById('idContato').value = tel.value;
+
+        // Abre o dialog delete
+        document.getElementById('delete').showModal();
+    }
 }
 
 function abrirPopup(idElemento) {
