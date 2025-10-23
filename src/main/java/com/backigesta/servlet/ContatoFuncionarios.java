@@ -1,9 +1,8 @@
 package com.backigesta.servlet;
 
-import com.backigesta.dao.ContatoFuncionarioDao;
 import com.backigesta.dao.FuncionariosDAO;
 import com.backigesta.dao.TelefoneDao;
-import com.backigesta.model.ContatoFuncionario;
+import com.backigesta.model.Funcionarios;
 import com.backigesta.model.Telefone;
 import com.backigesta.util.Regex;
 import jakarta.servlet.*;
@@ -12,12 +11,12 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/selectContatoFuncionarios","/adicionarContatoFuncionarios","/alterarContatoFuncionarios","/deletarContatoFuncionarios"})
+@WebServlet(urlPatterns = {"/selectContato","/adicionarContato","/alterarContato","/deletarContato"})
 public class ContatoFuncionarios extends HttpServlet {
 
-    ContatoFuncionarioDao contatoFuncionarioDao = new ContatoFuncionarioDao();
     FuncionariosDAO funcionariosDAO = new FuncionariosDAO();
     TelefoneDao telefoneDao = new TelefoneDao();
 
@@ -27,7 +26,7 @@ public class ContatoFuncionarios extends HttpServlet {
         String caminho = request.getServletPath();
 
         // Direcionado o cliente a partir do caminho que chegou no servlet
-        if (caminho.equals("/selectContatoFuncionarios")) {
+        if (caminho.equals("/selectContato")) {
             // Jogando ele no método para mostrar os selects do banco
             mostrarSelects(request,response);
         }
@@ -36,25 +35,35 @@ public class ContatoFuncionarios extends HttpServlet {
     protected void mostrarSelects(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Capturando os parâmetros de searchNome e searchPhone
         String procuraNome = request.getParameter("searchName");
-        String procuraTelefone = request.getParameter("searchPhone");
+        String procuraEmail = request.getParameter("searchEmail");
 
         // Criando o objeto ArrayList com a interface List
-        List<ContatoFuncionario> lista;
+        HashMap<Funcionarios, ArrayList<Telefone>> mapa = new HashMap<>();
+        ArrayList<Funcionarios> funcionarios;
 
         // Direcionado qual método de procura será usado
         if (procuraNome != null) {
-            lista = contatoFuncionarioDao.buscarContatoFuncionarioPorNome(procuraNome);
-        } else if (procuraTelefone != null) {
-            lista = contatoFuncionarioDao.buscarContatoFuncionarioPorTelefone(Regex.formatarTelefone(procuraTelefone));
+            funcionarios = funcionariosDAO.selecionarPorNomeComTelefone(procuraNome);
+            for (Funcionarios funcionarios1 : funcionarios) {
+                mapa.put(funcionarios1,telefoneDao.buscarPorIdFuncionario(funcionarios1.getId()));
+            }
+        } else if (procuraEmail != null) {
+            funcionarios = funcionariosDAO.selecionarPorEmailComTelefone(procuraEmail);
+            for (Funcionarios funcionarios1 : funcionarios) {
+                mapa.put(funcionarios1,telefoneDao.buscarPorIdFuncionario(funcionarios1.getId()));
+            }
         } else {
-            lista = contatoFuncionarioDao.buscarContatoFuncionario();
+            funcionarios = funcionariosDAO.selecionarTodosComTelefone();
+            for (Funcionarios funcionarios1 : funcionarios) {
+                mapa.put(funcionarios1,telefoneDao.buscarPorIdFuncionario(funcionarios1.getId()));
+            }
         }
 
-        ArrayList<String> funcionarios = funcionariosDAO.buscarApenasNome();
 
+        ArrayList<Funcionarios> funcionariosNomes = funcionariosDAO.buscarNomeId();
         // Colocando o atributo lista no request
-        request.setAttribute("contatos",lista);
-        request.setAttribute("funcionarios",funcionarios);
+        request.setAttribute("contatos",mapa);
+        request.setAttribute("funcionarios",funcionariosNomes);
 
         // Direcionado para onde quero mandar os atributos do request
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/employee-contact.jsp");
@@ -71,13 +80,13 @@ public class ContatoFuncionarios extends HttpServlet {
         String caminho = request.getServletPath();
 
         // Direcionado o cliente apartir do caminho que chegou no servlet
-        if (caminho.equals("/deletarContatoFuncionarios")) {
+        if (caminho.equals("/deletarContato")) {
             // Jogando ele no método para deletar dados do banco
             deletarContato(request,response);
-        } else if (caminho.equals("/alterarContatoFuncionarios")) {
+        } else if (caminho.equals("/alterarContato")) {
             // Jogando ele no método para alterar dados do banco
             alterarContato(request,response);
-        } else if (caminho.equals("/adicionarContatoFuncionarios")) {
+        } else if (caminho.equals("/adicionarContato")) {
             // Jogando ele no método para adicionar dados do banco
             adicionarContato(request,response);
         }
@@ -99,8 +108,8 @@ public class ContatoFuncionarios extends HttpServlet {
 
     protected void alterarContato(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Capturando os parâmetros de condenaId, nomeCondena e tipo que estam saindo de um formulario
-        int id = Integer.parseInt(request.getParameter("contatoId"));
-        String contato = request.getParameter("contato");
+        int id = Integer.parseInt(request.getParameter("idTelefone"));
+        String contato = Regex.formatarTelefone(request.getParameter("telefone"));
 
         // Usando o método da classe CondenasDao para alterar os dados daquele registro
         boolean alterado = telefoneDao.atualizarTelefone(new Telefone(id,contato));
@@ -114,11 +123,11 @@ public class ContatoFuncionarios extends HttpServlet {
 
     protected void adicionarContato(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Capturando os parâmetros de nomeCondena, tipo e descricao que estam saindo de um formulario
-        String nomeContato = request.getParameter("nomeContato");
+        int id = Integer.parseInt(request.getParameter("funcionarioId"));
         String contato = request.getParameter("contato");
 
         // Usando o método da classe CondenasDao para adicioanar um registro
-        boolean adicionado = telefoneDao.inserirTelefone(new Telefone(nomeContato,contato));
+        boolean adicionado = telefoneDao.inserirTelefone(new Telefone(contato,id));
 
         // Colocando o atributo adicionado no request
         request.setAttribute("adicionado",adicionado ? "true" : "false");

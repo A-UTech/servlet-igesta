@@ -15,7 +15,7 @@
 <body>
 <section>
   <h1>Criar conta</h1>
-  <form action="criarContaEmpresa" method="post">
+  <form action="criarContaEmpresa" method="post" id="criarContaEmpresa">
     <input type="hidden" name="plano" value="<%=plano%>">
     <input type="text" name="name" placeholder="Nome" required autofocus pattern="^[A-Z][a-z '-]*$" title="Caso o sistema não permita seu nome original, faça cadastro com outro nome, depois entre em contato conosco">
     <input type="email" name="email" placeholder="E-mail" required minlength="10" autocomplete="email" pattern="^[a-zA-Z0-9_\.\-]{1,}@[a-zA-Z_\.\-]{2,}\.(com|br|org|me)$" title="Coloque um dominio .com, ou .br, ou .org, ou .me">
@@ -51,7 +51,7 @@
       <option value="RS"></option>
       <option value="SC"></option>
     </datalist>
-    <button type="submit" id="buttonSubmit">Entrar</button>
+    <button type="button" onclick="enviarFormulario('buttonSubmit','criarContaEmpresa')" id="buttonSubmit">Entrar</button>
   </form>
 </section>
 <div class="mens">
@@ -64,5 +64,6 @@
     <p>Voltar</p>
   </a>
 </div>
+<script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <%@ page import="com.backigesta.model.Telefone" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="com.backigesta.model.ContatoFuncionario" %>
+<%@ page import="com.backigesta.model.Funcionarios" %>
+<%@ page import="java.util.*" %>
 <%@ page import="com.backigesta.model.Admin" %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -19,39 +19,46 @@
             return;
         }
 
-        ArrayList<ContatoFuncionario> contatos = (ArrayList<ContatoFuncionario>) request.getAttribute("contatos");
-        ArrayList<String> funcionarios = (ArrayList<String>) request.getAttribute("funcionarios");
+        HashMap<Funcionarios,ArrayList<Telefone>> mapa = (HashMap<Funcionarios, ArrayList<Telefone>>) request.getAttribute("contatos");
+        Map<Funcionarios, ArrayList<Telefone>> contatos = new TreeMap<>(
+                Comparator.comparing(p -> p.getNome())
+        );
+        contatos.putAll(mapa);
+
+        ArrayList<Funcionarios> funcionarios = (ArrayList<Funcionarios>) request.getAttribute("funcionarios");
 
         String adicionado = (String) request.getAttribute("adicionado");
         String alterado = (String) request.getAttribute("alterado");
         String deletado = (String) request.getAttribute("deletado");
     %>
 </head>
-    <aside>
-        <a href=""><img src="${pageContext.request.contextPath}/assets/logos/logo-branca.png"></a>
-        <div>
-            <a href=""><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"></a>
-            <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"></a>
-            <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"></a>
-            <a href="selectContatoFuncionarios"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"></a>
-            <a href=""><img src="${pageContext.request.contextPath}/assets/icons/aside-adm.svg"></a>
-        </div>
-        <a href=""><img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg"></a>
-    </aside>
+<aside>
+    <a href="${pageContext.request.contextPath}/index.jsp" class="logo"><img src="${pageContext.request.contextPath}/assets/logos/igesta-outlined.svg"> <h2>IGesta</h2></a>
+
+    <nav>
+        <a href="selectEmpresas"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresa</span></a>
+        <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"><span>Condenas</span></a>
+        <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"><span>Mensalidades</span></a>
+        <a href="selectContato"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"><span>Contato dos funcionários</span></a>
+        <a href="selectAdmin"><img src="${pageContext.request.contextPath}/assets/icons/aside-adm.svg"><span>Administradores</span></a>
+    </nav>
+
+    <a href="" class="perfil"><img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg"> <span>Lucas Lima</span></a>
+</aside>
 
     <main>
         <header>
             <h1>Contato dos Funcionários</h1>
             <menu>
-                <form action="selectContatoFuncionarios" id="searchName" class="search">
+                <form action="selectContato" id="searchName" class="search">
                     <input type="text" name="searchName" placeholder="Pesquisar por nome">
-                    <button type="submit" class="functions">
+                    <button type="button" onclick="enviarFormulario('buttonSearchNome','searchName')" id="buttonSearchNome" class="functions">
                         <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
                     </button>
                 </form>
-                <form action="selectContatoFuncionarios" id="searchPhone" class="search">
-                    <input type="text" name="searchPhone" placeholder="Pesquisar por telefone">
-                    <button type="submit" class="functions">
+                <form action="selectContato" id="searchEmail" class="search">
+                    <input type="text" name="searchEmail" placeholder="Pesquisar por email">
+                    <button type="button" onclick="enviarFormulario('buttonSearchTelefone','searchEmail')" id="buttonSearchTelefone" class="functions">
                         <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
                     </button>
                 </form>
@@ -71,35 +78,40 @@
                         <li>Ações</li>
                     </ul>
 
-                    <% for (ContatoFuncionario contatoFuncionario : contatos) { %>
+                    <% for (Funcionarios contato : contatos.keySet()) { %>
                         <ul>
-                            <li><%=contatoFuncionario.getNomeEmpresa()%></li>
-                            <li><%=contatoFuncionario.getNome()%></li>
-                            <li><%=contatoFuncionario.getEmail()%></li>
-                            <li><%=contatoFuncionario.getTelefone()%></li>
+                            <li><%=contato.getNomeEmpresa()%></li>
+                            <li><%=contato.getNome()%></li>
+                            <li><%=contato.getEmail()%></li>
                             <li>
-                                <a onclick="alterarContato(<%=contatoFuncionario.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/edit.svg"></a>
-                                <input type="hidden" id="contatoFuncionarioAlterar<%=contatoFuncionario.getId()%>" value="<%=contatoFuncionario.getNome()%>;<%=contatoFuncionario.getTelefone()%>">
-                                <a onclick="deletarContato(<%=contatoFuncionario.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/trash.svg"></a>
+                                <select class="selectPhone" name="telefone" id="telefoneContato<%=contato.getId()%>">
+                                    <option value="" selected hidden disabled>Telefones</option>
+                                    <% for (Telefone telefone : contatos.get(contato)) { %>
+                                        <option value="<%=telefone.getId()%>"><%=telefone.getTelefone()%></option>
+                                    <% } %>
+                                </select>
+                            </li>
+                            <li>
+                                <a onclick='alterarContato(<%=contato.getId()%>)'><img src="${pageContext.request.contextPath}/assets/icons/edit.svg"></a>
+                                <a onclick="deletarContato(<%=contato.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/trash.svg"></a>
                             </li>
                         </ul>
                     <% } %>
-
                 </div>
         </section>
     </main>
     <dialog id="add" class="popupInputs">
         <h2>Adicionar condena</h2>
-        <form action="adicionarContatoFuncionarios" method="post" autocomplete="off">
+        <form action="adicionarContato" method="post" autocomplete="off" id="adicionarContato">
             <a onclick="document.getElementById('add').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
-            <select name="nomeContato">
+            <select id="funcionarios" name="funcionarioId">
                 <option value="" disabled selected >Funcionário</option>
-                <% for (String funcionario : funcionarios) { %>
-                    <option value="<%=funcionario%>"><%=funcionario%></option>
+                <% for (Funcionarios funcionario : funcionarios) { %>
+                    <option value="<%=funcionario.getId()%>"><%=funcionario.getNome()%></option>
                 <% } %>
             </select>
             <input type="text" name="contato" placeholder="Telefone" class="inputCapitalize" pattern="^\(?[0-9]{2}\)? ?[0-9]{5}\-?[0-9]{4}">
-            <button type="submit">Adicionar</button>
+            <button type="button" id="buttonAdicionar" onclick="enviarFormulario('buttonAdicionar','adicionarContato')" >Adicionar</button>
         </form>
     </dialog>
     <dialog id="delete" class="popupButtons">
@@ -107,20 +119,19 @@
         <h2>Excluir condena?</h2>
         <div>
             <button onclick="document.getElementById('delete').close()">Não</button>
-            <form action="deletarContatoFuncionarios" method="post">
-                <input type="hidden" id="deletarContato" name="contatoId">
-                <button type="submit">Sim</button>
+            <form action="deletarContato" method="post" id="deletarContato">
+                <input type="hidden" id="idContato" name="contatoId">
+                <button type="button" id="buttonDeletar" onclick="enviarFormulario('buttonDeletar','deletarContato')">Sim</button>
             </form>
         </div>
     </dialog>
     <dialog id="alterar" class="popupInputs">
         <h2>Alterar condena</h2>
         <a onclick="document.getElementById('alterar').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
-        <form action="alterarContatoFuncionarios" method="post">
-            <input type="hidden" name="contatoId" id="contatoId">
-            <input type="text" id="nomeContato" name="nomeContato" disabled class="inputCapitalize">
-            <input type="text" id="contato" name="contato" class="inputCapitalize" pattern="^\(?[0-9]{2}\)? ?[0-9]{5}\-?[0-9]{4}">
-            <button type="submit">Alterar</button>
+        <form action="alterarContato" method="post" id="alterarContato">
+            <input type="text" id="telefone" name="telefone">
+            <input type="hidden" id="idTelefone" name="idTelefone" value="">
+            <button type="button" id="buttonAlterar" onclick="enviarFormulario('buttonAlterar','alterarContato')">Alterar</button>
         </form>
     </dialog>
     <div class="overlay" id="popupOverlay">
@@ -135,6 +146,7 @@
     </div>
     <script src="${pageContext.request.contextPath}/scripts/areaRestritaContato.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
     <script>
         <% if (adicionado != null) { %>
         <%

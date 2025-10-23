@@ -1,7 +1,7 @@
 package com.backigesta.servlet;
 
 import com.backigesta.dao.EmpresasDAO;
-import jakarta.servlet.RequestDispatcher;
+import com.backigesta.dao.PlanoDao;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,13 +9,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+<<<<<<< HEAD
 import java.lang.reflect.Executable;
 import java.util.HashMap;
 import java.util.List;
+=======
+import java.util.ArrayList;
+>>>>>>> main
 
 @WebServlet(urlPatterns = {"/selectEmpresas", "/adicionarEmpresas", "/alterarEmpresas", "/deletarEmpresas"})
 public class Empresas extends HttpServlet {
     EmpresasDAO daoEmpresas = new EmpresasDAO();
+    PlanoDao planoDao = new PlanoDao();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(request.getServletPath().equals("/selectEmpresas")){
@@ -26,7 +31,11 @@ public class Empresas extends HttpServlet {
         String procura = request.getParameter("search");
         String regiao = request.getParameter("regiao");
 
+<<<<<<< HEAD
         List<com.backigesta.model.Empresas> empresas;
+=======
+        ArrayList<com.backigesta.model.Empresas> empresas;
+>>>>>>> main
         if (regiao != null && !regiao.equals("todos")) {
             empresas = daoEmpresas.selecionarPorRegiao(regiao);
         }
@@ -36,6 +45,9 @@ public class Empresas extends HttpServlet {
         else {
             empresas = daoEmpresas.selecionarPorNome(procura);
         }
+
+        ArrayList<String> planos = planoDao.buscarNomes();
+        request.setAttribute("planos",planos);
         request.setAttribute("empresas", empresas);
         request.getRequestDispatcher("/WEB-INF/view/company.jsp").forward(request, response);
     }

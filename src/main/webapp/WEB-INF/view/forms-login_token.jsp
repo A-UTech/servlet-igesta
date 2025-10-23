@@ -18,10 +18,10 @@
     </div>
     <section class="token">
         <div>
-            <h1>Token</h1>
+            <h1>Código</h1>
             <p>Um token de 5 dígitos foi enviado para o e-mail <%=email%></p>
         </div>
-        <form action="verificarToken" method="post" autocomplete="off" class="token">
+        <form action="verificarToken" method="post" autocomplete="off" class="token" id="verificarToken">
             <div>
                 <input type="text" name="token1" required maxlength="1" pattern="[0-9]">
                 <input type="text" name="token2" required maxlength="1" pattern="[0-9]">
@@ -29,7 +29,7 @@
                 <input type="text" name="token4" required maxlength="1" pattern="[0-9]">
                 <input type="text" name="token5" required maxlength="1" pattern="[0-9]">
             </div>
-            <button type="submit" id="buttonSubmit">Entrar</button>
+            <button type="button" onclick="enviarFormulario('buttonSubmit','verificarToken')" id="buttonSubmit">Entrar</button>
         </form>
     </section>
     <div class="tokenBack">
@@ -50,6 +50,7 @@
     </div>
     <script src="${pageContext.request.contextPath}/scripts/token.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
     <script>
         <% if (erro != null) { %>
             abrirPopupInformacoes("wrong.svg","Token incorreto","O token informado está incorreto. Um novo código foi enviado ao seu e-mail.")

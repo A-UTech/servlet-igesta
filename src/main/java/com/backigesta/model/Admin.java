@@ -24,12 +24,12 @@ public class Admin extends Usuarios{
     }
 
     //Sem Foto
-    public Admin(int id, String nome, String sobrenome, String email, String senha) {
+    public Admin(int id, String nome, String email, String senha) {
         super(id, nome, email, senha);
     }
 
     //Sem ID
-    public Admin(String nome, String sobrenome, String email, String senha, byte[] foto) {
+    public Admin(String nome, String email, String senha, byte[] foto) {
         super(nome, email, senha, foto);
     }
 

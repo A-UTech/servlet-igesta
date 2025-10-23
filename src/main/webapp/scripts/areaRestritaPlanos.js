@@ -20,7 +20,7 @@ function deletarPlano(numero) {
     document.getElementById('delete').showModal();
 
     // Coloca o valor do numero no input hidden do dialog delete
-    document.getElementById('deletarPlano').value = numero;
+    document.getElementById('idPlano').value = numero;
 }
 
 function abrirPopup(idElemento) {

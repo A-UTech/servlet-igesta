@@ -20,6 +20,10 @@ public class Funcionarios extends Usuarios{
     public Funcionarios() {
     }
 
+    public Funcionarios(int id,String nome) {
+        super(id,nome);
+    }
+
     //Completo
     public Funcionarios(int id ,String nome,String email, String cpf, String senha, String nomeEmpresa, String nomeCargo, int idPermissoes, LocalTime turno, byte[] foto) {
         super(id, nome, email, senha, foto);

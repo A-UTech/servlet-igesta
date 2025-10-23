@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+::-webkit-scrollbar {display: none}
+::selection {background: var(--corVE)}
+
+:root {
+    --corCinza: #2F3034;    /* Cinza */
+    --corBranco: #FCFCFC;   /* Branco */
+    --corVE: #1A7B66;       /* Verde escuro */
+    --corVC: #A1E1D3;       /* Verde claro */
+    --corPreto: #141414;    /* Preto */
+
+    --fontText: 'Poppins';
+}
+
+* {
+    margin: 0;
+    padding: 0;
+
+    font-family: var(--fontText);
+    color: var(--corBranco);
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 3rem;
+    text-align: center;
+
+}
+
+body {
+    background: var(--corPreto);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 50px;
+}
+
+div.errorContainer > p {
+    margin-top: -5px;
+    width: 40vw;
+}
+
+img {
+    width: 15vw;
+}
+
+a {
+   position: absolute;
+   bottom: 20px;
+   transition: 500ms;
+   border: 1px solid var(--corBranco);
+   border-radius: 10px;
+   padding: 10px 20px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 15px;
+}

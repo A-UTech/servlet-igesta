@@ -16,10 +16,10 @@
 <body>
     <section>
         <h1>Login de empresa</h1>
-        <form action="loginEmpresa" method="post">
+        <form action="loginEmpresa" method="post" id="loginEmpresa">
             <input type="email" name="email" placeholder="E-mail" required minlength="10" autocomplete="email" value="<%=email == null ? "" : email%>" autofocus>
             <input type="password" name="password" placeholder="Senha" required minlength="6" autocomplete="current-password" value="<%=senha == null ? "" : senha%>">
-            <button type="submit" id="buttonSubmit">Entrar</button>
+            <button type="button" onclick="enviarFormulario('buttonSubmit','loginEmpresa')" id="buttonSubmit">Entrar</button>
         </form>
     </section>
     <div class="mens">
@@ -43,6 +43,7 @@
         </div>
     </div>
     <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
     <script>
         <% if ("true".equals(loginCorreto)) { %>
             abrirPopupInformacoes("wrong.svg","Usuário ou senha incorreta","O email ou senha informado estão incorretos")

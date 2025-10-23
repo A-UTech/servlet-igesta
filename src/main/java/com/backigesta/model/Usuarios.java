@@ -74,7 +74,7 @@ public abstract class Usuarios {
     //Completo
     public Usuarios(int id, String nome, String email, String senha, byte[] foto) {
         this.id = id;
-        this.nome = nome.toLowerCase();
+        this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.foto = foto;
@@ -88,14 +88,14 @@ public abstract class Usuarios {
     //Sem foto
     public Usuarios(int id, String nome, String email, String senha) {
         this.id = id;
-        this.nome = nome.toLowerCase();
+        this.nome = nome;
         this.email = email;
         this.senha = senha;
     }
 
     //Sem Id
     public Usuarios(String nome, String email, String senha, byte[] foto) {
-        this.nome = nome.toLowerCase();
+        this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.foto = foto;
@@ -103,9 +103,14 @@ public abstract class Usuarios {
 
     //Sem ID nem Foto
     public Usuarios(String nome, String email, String senha) {
-        this.nome = nome.toLowerCase();
+        this.nome = nome;
         this.email = email;
         this.senha = senha;
+    }
+
+    public Usuarios(int id, String nome) {
+        this.id = id;
+        this.nome = nome;
     }
     //=======================METODOS GET=======================\\
 

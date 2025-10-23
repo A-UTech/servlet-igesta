@@ -18,7 +18,7 @@ public class FuncionariosDAO{
         boolean retorno = false;
         Connection conn = banco.conectar();
         try{
-            PreparedStatement ps = conn.prepareStatement("select id from empresas where nome = ?");
+            PreparedStatement ps = conn.prepareStatement("select id from empresa where nome = ?");
             ps.setString(1,func.getNomeEmpresa());
             ResultSet rs = ps.executeQuery();
             int empresaId = -1;
@@ -40,7 +40,11 @@ public class FuncionariosDAO{
             rs.close();
 
 
+<<<<<<< HEAD
             ps = conn.prepareStatement("INSERT INTO funcionarios(cpf, nome, email, senha, id_empresa, turno, id_cargo, id_permissao) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+=======
+            ps = conn.prepareStatement("INSERT INTO funcionario(cpf, nome, email, senha, id_empresa, turno, id_cargo, id_permissao, foto) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+>>>>>>> main
             Time turno = new Time(func.getTurno().getHour(), func.getTurno().getMinute(), func.getTurno().getSecond());
             ps.setString(1, func.getCpf());
             ps.setString(2, func.getNome());
@@ -106,7 +110,11 @@ public class FuncionariosDAO{
         Connection conn = banco.conectar();
         Funcionarios retorno = null;
         try{
+<<<<<<< HEAD
             PreparedStatement ps = conn.prepareStatement("select f.id, f.nome, f.email, f.cpf, f.senha, e.nome, c.nome, f.id_permissao, f.turno, f.foto from funcionarios f join empresas e on f.id_empresa = e.id join cargos c on f.id_cargo = c.id where f.id = ?");
+=======
+            PreparedStatement ps = conn.prepareStatement("select f.id, f.nome, f.email, f.cpf, f.senha, e.nome, c.nome, f.id_permissao, f.turno, f.foto from funcionario f join empresa e on f.id = e.id join cargo c on f.id_cargo = c.id where f.id = ?");
+>>>>>>> main
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
@@ -133,12 +141,20 @@ public class FuncionariosDAO{
         }
     }
 
+<<<<<<< HEAD
     public List<Funcionarios> selecionarTodos(int id_empresa){
         Connection conn = banco.conectar();
         List<Funcionarios> funcionarios = new ArrayList<>();
         try{
             PreparedStatement ps = conn.prepareStatement("select f.id, f.nome, f.email, f.cpf, f.senha, e.nome, c.nome, f.id_permissao, f.turno, f.foto from funcionarios f  join empresas e on f.id_empresa  = e.id join cargos c on f.id_cargo = c.id where f.id_empresa=?");
             ps.setInt(1, id_empresa);
+=======
+    public ArrayList<Funcionarios> selecionarTodosComTelefone() {
+        Connection conn = banco.conectar();
+        ArrayList<Funcionarios> funcionarios = new ArrayList<>();
+        try{
+            PreparedStatement ps = conn.prepareStatement("select f.id, f.nome, f.email, f.cpf, f.senha, e.nome, c.nome, f.id_permissao, f.turno, f.foto from funcionario f join empresa e on f.id_empresa = e.id join cargo c on f.id_cargo = c.id join telefone t on t.id_funcionario = f.id");
+>>>>>>> main
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 funcionarios.add(new Funcionarios(
@@ -158,6 +174,100 @@ public class FuncionariosDAO{
         }
         catch(SQLException sqle){
             System.out.println("!!SQLException ao chamar FuncionariosDAO.selecionarTodos(String)");
+            sqle.printStackTrace();
+        }
+        finally {
+            return funcionarios;
+        }
+    }
+    public ArrayList<Funcionarios> selecionarTodos(){
+        Connection conn = banco.conectar();
+        ArrayList<Funcionarios> funcionarios = new ArrayList<>();
+        try{
+            PreparedStatement ps = conn.prepareStatement("select f.id, f.nome, f.email, f.cpf, f.senha, e.nome, c.nome, f.id_permissao, f.turno, f.foto from funcionario f join empresa e on f.id_empresa = e.id join cargo c on f.id_cargo = c.id");
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                funcionarios.add(new Funcionarios(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getInt(8),
+                        rs.getTime(9).toLocalTime(),
+                        rs.getBytes(10)
+                ));
+            }
+            conn.close();
+        }
+        catch(SQLException sqle){
+            System.out.println("!!SQLException ao chamar FuncionariosDAO.selecionarPorNome(String)");
+            sqle.printStackTrace();
+        }
+        finally {
+            return funcionarios;
+        }
+    }
+
+    public ArrayList<Funcionarios> selecionarPorNomeComTelefone(String nome){
+        Connection conn = banco.conectar();
+        ArrayList<Funcionarios> funcionarios = new ArrayList<>();
+        try{
+            PreparedStatement ps = conn.prepareStatement("select f.id, f.nome, f.email, f.cpf, f.senha, e.nome, c.nome, f.id_permissao, f.turno, f.foto from funcionario f join empresa e on f.id_empresa = e.id join cargo c on f.id_cargo = c.id join telefone t on t.id_funcionario = f.id where lower(f.nome) like lower(?)");
+            ps.setString(1,nome + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                funcionarios.add(new Funcionarios(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getInt(8),
+                        rs.getTime(9).toLocalTime(),
+                        rs.getBytes(10)
+                ));
+            }
+            conn.close();
+        }
+        catch(SQLException sqle){
+            System.out.println("!!SQLException ao chamar FuncionariosDAO.selecionarPorNome(String)");
+            sqle.printStackTrace();
+        }
+        finally {
+            return funcionarios;
+        }
+    }
+
+    public ArrayList<Funcionarios> selecionarPorEmailComTelefone(String email){
+        Connection conn = banco.conectar();
+        ArrayList<Funcionarios> funcionarios = new ArrayList<>();
+        try{
+            PreparedStatement ps = conn.prepareStatement("select f.id, f.nome, f.email, f.cpf, f.senha, e.nome, c.nome, f.id_permissao, f.turno, f.foto from funcionario f join empresa e on f.id_empresa = e.id join cargo c on f.id_cargo = c.id join telefone t on t.id_funcionario = f.id where lower(f.email) like lower(?)");
+            ps.setString(1,email + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                funcionarios.add(new Funcionarios(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getInt(8),
+                        rs.getTime(9).toLocalTime(),
+                        rs.getBytes(10)
+                ));
+            }
+            conn.close();
+        }
+        catch(SQLException sqle){
+            System.out.println("!!SQLException ao chamar FuncionariosDAO.selecionarPorNome(String)");
             sqle.printStackTrace();
         }
         finally {
@@ -239,7 +349,7 @@ public class FuncionariosDAO{
         Connection conn = banco.conectar();
         byte[] foto = null;
         try{
-            String sql = "SELECT foto FROM funcionarios WHERE id=?";
+            String sql = "SELECT foto FROM funcionario WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id_empresa);
             ResultSet rs = ps.executeQuery();
@@ -249,7 +359,7 @@ public class FuncionariosDAO{
             conn.close();
         }
         catch(SQLException sqle){
-            System.out.println("!!SQLException ao chamar FuncionariosDAO.selecionarFotoPorId(int)!!");
+            System.out.println("!!SQLException ao chamar funcionarioDAO.selecionarFotoPorId(int)!!");
             sqle.printStackTrace();
         }
         finally {
@@ -257,18 +367,18 @@ public class FuncionariosDAO{
         }
     }
 
-    public ArrayList<String> buscarApenasNome() {
+    public ArrayList<Funcionarios> buscarNomeId() {
         Connection conn = banco.conectar();
-        ArrayList<String> lista = new ArrayList<>();
+        ArrayList<Funcionarios> lista = new ArrayList<>();
         try{
-            PreparedStatement ps = conn.prepareStatement("select nome from funcionarios");
+            PreparedStatement ps = conn.prepareStatement("select id,nome from funcionario");
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                lista.add(rs.getString(1));
+                lista.add(new Funcionarios(rs.getInt(1),rs.getString(2)));
             }
         }
         catch(SQLException sqle){
-            System.out.println("!!SQLException ao chamar FuncionariosDAO.selecionarPorId(int)!!");
+            System.out.println("!!SQLException ao chamar funcionarioDAO.selecionarPorId(int)!!");
             sqle.printStackTrace();
         }
         finally{
@@ -282,7 +392,7 @@ public class FuncionariosDAO{
         boolean retorno = false;
         Connection conn = banco.conectar();
         try{
-            PreparedStatement ps = conn.prepareStatement("select id from empresas where nome = ?");
+            PreparedStatement ps = conn.prepareStatement("select id from empresa where nome = ?");
             ps.setString(1,func.getNomeEmpresa());
             ResultSet rs = ps.executeQuery();
             int empresaId = -1;
@@ -304,7 +414,7 @@ public class FuncionariosDAO{
             rs.close();
 
 
-            ps = conn.prepareStatement("UPDATE funcionarios SET nome=?, cpf=?, email=?, senha=?, id_empresa=?, id_cargo=?, id_permissao=?, turno=?, foto=? where id=?");
+            ps = conn.prepareStatement("UPDATE funcionario SET nome=?, cpf=?, email=?, senha=?, id_empresa=?, id_cargo=?, id_permissao=?, turno=?, foto=? where id=?");
 
             ps.setString(1, func.getNome());
             ps.setString(2, func.getCpf());
@@ -374,7 +484,7 @@ public class FuncionariosDAO{
         boolean retorno = false;
         Connection conn = banco.conectar();
         try{
-            String sql = "UPDATE funcionarios SET foto=? WHERE id=?";
+            String sql = "UPDATE funcionario SET foto=? WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setBytes(1, foto);
             ps.setInt(2, id);
@@ -396,7 +506,7 @@ public class FuncionariosDAO{
         boolean retorno = false;
         Connection conn = banco.conectar();
         try{
-            String sql = "DELETE FROM funcionarios WHERE id=?";
+            String sql = "DELETE FROM funcionario WHERE id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
 
