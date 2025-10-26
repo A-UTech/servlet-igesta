@@ -72,16 +72,16 @@ public class Admin extends HttpServlet {
 
     protected void deletarAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Capturando os parâmetros de condenaId que estam saindo de um formulario
-        int id = Integer.parseInt(request.getParameter("condenaId"));
+        int id = Integer.parseInt(request.getParameter("adminId"));
 
-//        // Usando o método da classe CondenasDao para deletar um registro
-//        boolean deletado = daoCondenas.deletarCondena(id);
-//
-//        // Colocando o atributo deletado no request
-//        request.setAttribute("deletado",deletado ? "true" : "false");
-//
-//        // Jogando ele no método para mostrar os selects do banco
-//        mostrarSelects(request,response);
+        // Usando o método da classe CondenasDao para deletar um registro
+        boolean deletado = adminDAO.deletar(id);
+
+        // Colocando o atributo deletado no request
+        request.setAttribute("deletado",deletado ? "true" : "false");
+
+        // Jogando ele no método para mostrar os selects do banco
+        mostrarSelects(request,response);
     }
 
     protected void alterarAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -102,21 +102,18 @@ public class Admin extends HttpServlet {
     }
 
     protected void adicionarAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        com.backigesta.model.Admin admin = (com.backigesta.model.Admin) session.getAttribute("admin");
-
         // Capturando os parâmetros de nomeCondena, tipo e descricao que estam saindo de um formulario
-        String nomeCondena = request.getParameter("nomeCondena");
-        String tipoCondena = request.getParameter("tipo");
-        String descricaoCondena = request.getParameter("descricaoCondena");
+        String nomeAdmin = request.getParameter("nomeAdmin");
+        String emailAdmin = request.getParameter("emailAdmin");
+        String senhaAdmin = request.getParameter("senhaAdmin");
 
-//        // Usando o método da classe CondenasDao para adicioanar um registro
-//        boolean adicionado = daoCondenas.adicionarCondena(new com.backigesta.model.Condenas(nomeCondena,admin.getNome(),descricaoCondena,tipoCondena));
-//
-//        // Colocando o atributo adicionado no request
-//        request.setAttribute("adicionado",adicionado ? "true" : "false");
-//
-//        // Jogando ele no método para mostrar os selects do banco
-//        mostrarSelects(request,response);
+        // Usando o método da classe CondenasDao para adicioanar um registro
+        boolean adicionado = adminDAO.inserir(new com.backigesta.model.Admin(nomeAdmin,emailAdmin,senhaAdmin));
+
+        // Colocando o atributo adicionado no request
+        request.setAttribute("adicionado",adicionado ? "true" : "false");
+
+        // Jogando ele no método para mostrar os selects do banco
+        mostrarSelects(request,response);
     }
 }

@@ -1,155 +1,174 @@
 package com.backigesta.dao;
 
 import com.backigesta.conexao.Conexao;
-import com.backigesta.model.Condenas;
 import com.backigesta.model.Planos;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class PlanoDao {
-
-    //==========ATRIBUTOS==========\\
     private Connection conn;
-    private Conexao conexao = new Conexao();
+    private Conexao banco = new Conexao();
 
-    //==========MÉTODOS DA CLASSE==========\\
-    public ArrayList<Planos> buscarPlanos() {
-        conn = conexao.conectar();
+//=======================MÉTODOS CREATE=======================\\
+
+    public boolean inserir(Planos planos) {
+        boolean retorno = false;
+        try {
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO plano(nome,mensalidade,armazenamento) VALUES(?,?,?)");
+            ps.setString(1,planos.getNome());
+            ps.setDouble(2,planos.getMensalidade());
+            ps.setInt(3,planos.getArmazenamento());
+            retorno = ps.executeUpdate() == 0;
+        } catch (SQLException sql) {
+            sql.printStackTrace();
+        } finally {
+            banco.desconectar(conn);
+            return retorno;
+        }
+    } // Método para adicionar um plano
+
+//=======================MÉTODOS READ=======================\\
+
+    public ArrayList<Planos> selecionarTodos() {
         ArrayList<Planos> listas = new ArrayList<>();
         try {
-            Statement pstmt = conn.createStatement();
-            ResultSet rs = pstmt.executeQuery("select * from plano order by nome,mensalidade");
+            conn = banco.conectar();
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM plano ORDER BY nome,mensalidade");
             while (rs.next()) {
                 listas.add(new Planos(rs.getInt(1),rs.getString(2), rs.getDouble(3), rs.getInt(4)));
             }
         } catch (SQLException sql) {
-            return null;
+            sql.printStackTrace();
         } finally {
-            conexao.desconectar(conn);
+            banco.desconectar(conn);
+            return listas;
         }
-        return listas;
-    } // Método que busca todos planos do banco de dados
+    } // Método que seleciona todos planos
 
-    public ArrayList<Planos> buscarPlanosNome(String procura) {
-        conn = conexao.conectar();
+    public ArrayList<Planos> selecionarPorNome(String procura) {
         ArrayList<Planos> listas = new ArrayList<>();
         try {
-            PreparedStatement pstmt = conn.prepareStatement("select * from plano where lower(nome) like ? order by nome,mensalidade");
+            conn = banco.conectar();
+            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM plano WHERE lower(nome) LIKE lower(?) ORDER BY nome,mensalidade");
             pstmt.setString(1,procura+"%");
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 listas.add(new Planos(rs.getInt(1),rs.getString(2), rs.getDouble(3), rs.getInt(4)));
             }
         } catch (SQLException sql) {
-            return null;
+            sql.printStackTrace();
         } finally {
-            conexao.desconectar(conn);
+            banco.desconectar(conn);
+            return listas;
         }
-        return listas;
-    } // Método que busca as condenas por seu nome no banco de dados
+    } // Método que selecionar planos pelo seu nome
 
-    public ArrayList<String> buscarNomes() {
-        conn = conexao.conectar();
+    public ArrayList<String> selecionarNomes() {
         ArrayList<String> listas = new ArrayList<>();
         try {
-            PreparedStatement pstmt = conn.prepareStatement("select nome from planos");
-            ResultSet rs = pstmt.executeQuery();
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT nome FROM plano");
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 listas.add(rs.getString(1));
             }
         } catch (SQLException sql) {
-            return null;
+            sql.printStackTrace();
         } finally {
-            conexao.desconectar(conn);
+            banco.desconectar(conn);
+            return listas;
         }
-        return listas;
-    }
+    } // Método para selecionar todos os nomes de planos que existem
 
-    public boolean deletarPlano(int id) {
-        conn = conexao.conectar();
-        ArrayList<Integer> listaId = new ArrayList<>();
+//=======================MÉTODOS UPDATE=======================\\
+
+    public boolean atualizar(Planos plano) {
+        boolean retorno = false;
         try {
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("UPDATE plano SET nome = ?, mensalidade = ?, armazenamento = ? WHERE id = ?");
+            ps.setString(1,plano.getNome());
+            ps.setDouble(2,plano.getMensalidade());
+            ps.setInt(3,plano.getArmazenamento());
+            ps.setInt(4,plano.getId());
+            retorno = ps.executeUpdate() == 0;
+        } catch (SQLException sql) {
+            sql.printStackTrace();
+        } finally {
+            banco.desconectar(conn);
+            return retorno;
+        }
+    } // Método atualiaza dados dos planos
+
+//=======================MÉTODOS DELETE=======================\\
+
+    public boolean deletar(int id) {
+        boolean retorno = false;
+        try {
+            conn = banco.conectar();
             conn.setAutoCommit(false);
 
-
-            PreparedStatement pstmt = conn.prepareStatement("select t.id from planos p join empresa e on e.id_planos = p.id join funcionario f on f.id_empresa = e.id join telefone t on f.id = t.id_funcionario where p.id = ?");
-            pstmt.setInt(1,id);
-            ResultSet rs = pstmt.executeQuery();
+            PreparedStatement ps = conn.prepareStatement("SELECT t.id FROM planos p JOIN empresa e ON e.id_planos = p.id JOIN funcionario f ON f.id_empresa = e.id JOIN telefone t ON f.id = t.id_funcionario WHERE p.id = ?");
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                listaId.add(rs.getInt(1));
+                ps = conn.prepareStatement("DELETE FROM telefone WHERE id = ?");
+                ps.setInt(1,rs.getInt(1));
+                ps.execute();
             }
-            pstmt.close();
-            for (int i = 0; i < listaId.size(); i++) {
-                pstmt = conn.prepareStatement("delete from telefone where id = ?");
-                pstmt.setInt(1,listaId.get(i));
-                pstmt.execute();
-                pstmt.close();
-            }
+            ps.close();
+            rs.close();
 
 
-            pstmt = conn.prepareStatement("select qc.id from plano p join empresa e on e.id_planos = p.id join funcionario f on f.id_empresa = e.id join medicao m on f.id = m.cod_gestor join quantidadecondena qc on m.id = qc.cod_medicao where p.id = ?");
-            pstmt.setInt(1,id);
-            rs = pstmt.executeQuery();
-            listaId = new ArrayList<>();
+            ps = conn.prepareStatement("SELECT qc.id FROM plano p JOIN empresa e ON e.id_planos = p.id JOIN funcionario f ON f.id_empresa = e.id JOIN medicao m ON f.id = m.cod_gestor JOIN quantidadecondena qc ON m.id = qc.cod_medicao WHERE p.id = ?");
+            ps.setInt(1,id);
+            rs = ps.executeQuery();
             while (rs.next()) {
-                listaId.add(rs.getInt(1));
+                ps = conn.prepareStatement("DELETE FROM quantidadecondena WHERE id = ?");
+                ps.setInt(1,rs.getInt(1));
+                ps.execute();
             }
-            pstmt.close();
-            for (int i = 0;i < listaId.size();i++) {
-                pstmt = conn.prepareStatement("delete from quantidadecondena where id = ?");
-                pstmt.setInt(1,listaId.get(i));
-                pstmt.execute();
-                pstmt.close();
-            }
+            ps.close();
+            rs.close();
 
 
-            pstmt = conn.prepareStatement("select m.id from plano p join empresa e on e.id_planos = p.id join funcionario f on f.id_empresa = e.id join medicao m on f.id = m.cod_gestor where p.id = ?");
-            pstmt.setInt(1,id);
-            rs = pstmt.executeQuery();
-            listaId = new ArrayList<>();
+            ps = conn.prepareStatement("SELECT m.id FROM plano p JOIN empresa e ON e.id_planos = p.id JOIN funcionario f ON f.id_empresa = e.id JOIN medicao m ON f.id = m.cod_gestor WHERE p.id = ?");
+            ps.setInt(1,id);
+            rs = ps.executeQuery();
             while (rs.next()) {
-                listaId.add(rs.getInt(1));
+                ps = conn.prepareStatement("DELETE FROM medicao WHERE id = ?");
+                ps.setInt(1,rs.getInt(1));
+                ps.execute();
             }
-            pstmt.close();
-            for (int i = 0;i < listaId.size();i++) {
-                pstmt = conn.prepareStatement("delete from medicao where id = ?");
-                pstmt.setInt(1,listaId.get(i));
-                pstmt.execute();
-                pstmt.close();
-            }
+            ps.close();
 
 
-            pstmt = conn.prepareStatement("select f.id from plano p join empresa e on e.id_planos = p.id join funcionario f on f.id_empresa = e.id where p.id = ?");
-            pstmt.setInt(1,id);
-            rs = pstmt.executeQuery();
-            listaId = new ArrayList<>();
+            ps = conn.prepareStatement("SELECT f.id FROM plano p JOIN empresa e ON e.id_planos = p.id JOIN funcionario f ON f.id_empresa = e.id WHERE p.id = ?");
+            ps.setInt(1,id);
+            rs = ps.executeQuery();
             while (rs.next()) {
-                listaId.add(rs.getInt(1));
+                ps = conn.prepareStatement("DELETE FROM funcionario WHERE id = ?");
+                ps.setInt(1,rs.getInt(1));
+                ps.execute();
             }
-            pstmt.close();
-            for (int i = 0;i < listaId.size();i++) {
-                pstmt = conn.prepareStatement("delete from funcionario where id = ?");
-                pstmt.setInt(1,listaId.get(i));
-                pstmt.execute();
-                pstmt.close();
-            }
-
-            pstmt = conn.prepareStatement("delete from empresa where id_planos = ?");
-            pstmt.setInt(1,id);
-            pstmt.execute();
-            pstmt.close();
+            ps.close();
 
 
-            pstmt = conn.prepareStatement("delete from plano where id = ?");
-            pstmt.setInt(1,id);
-            if (pstmt.executeUpdate() > 0) {
-                pstmt.close();
-                conn.commit();
-                return true;
-            }
-            pstmt.close();
-            return false;
+            ps = conn.prepareStatement("DELETE FROM empresa WHERE id_planos = ?");
+            ps.setInt(1,id);
+            ps.execute();
+            ps.close();
+
+
+            ps = conn.prepareStatement("DELETE FROM plano WHERE id = ?");
+            ps.setInt(1,id);
+            retorno = ps.executeUpdate() == 0;
+            ps.close();
+
+            conn.commit();
         } catch (SQLException sql) {
             try {
                 conn.rollback();
@@ -157,54 +176,14 @@ public class PlanoDao {
                 sql1.printStackTrace();
             }
             sql.printStackTrace();
-            return false;
         } finally {
             try {
                 conn.setAutoCommit(true);
-                conexao.desconectar(conn);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
+            banco.desconectar(conn);
+            return retorno;
         }
-    } // Método que deleta um registro de plano por seu id no banco de dados
-
-    public boolean alterarPlano(Planos plano) {
-        conn = conexao.conectar();
-        System.out.println(plano);
-        try {
-            PreparedStatement pstmt = conn.prepareStatement("update plano set nome = ?, mensalidade = ?, armazenamento = ? where id = ?");
-            pstmt.setString(1,plano.getNome());
-            pstmt.setDouble(2,plano.getMensalidade());
-            pstmt.setInt(3,plano.getArmazenamento());
-            pstmt.setInt(4,plano.getId());
-            if (pstmt.executeUpdate() > 0) {
-                return true;
-            }
-            return false;
-        } catch (SQLException sql) {
-            return false;
-        } finally {
-            conexao.desconectar(conn);
-        }
-    } // Método de alterar um registro de plano por seu id no banco de dados
-
-    public boolean adicionarPlano(Planos planos) {
-        conn = conexao.conectar();
-        try {
-            PreparedStatement pstmt = conn.prepareStatement("insert into plano(nome,mensalidade,armazenamento) values(?,?,?)");
-            pstmt.setString(1,planos.getNome());
-            pstmt.setDouble(2,planos.getMensalidade());
-            pstmt.setInt(3,planos.getArmazenamento());
-            if (pstmt.executeUpdate() > 0) {
-                return true;
-            }
-            return false;
-        } catch (SQLException sql) {
-            sql.printStackTrace();
-            return false;
-        } finally {
-            conexao.desconectar(conn);
-        }
-    } // Método de adicionar um plano no banco de dados
+    } // Método que deleta um registro de plano por id
 }

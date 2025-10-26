@@ -5,26 +5,18 @@ import java.time.LocalTime;
 //Classe criada por Artur ;)
 public class Funcionarios extends Usuarios{
 //=======================ATRIBUTOS=======================\\
+
     private LocalTime turno;
     private String cpf;
     private String nomeEmpresa;
     private String nomeCargo;
     private int idPermissoes;
-//=======================MÉTODOS DA CLASSE=======================\\
-
-    //nenhum aqui tbm :P
 
 //=======================CONSTRUTORES=======================\\
 
-    //Vazio
     public Funcionarios() {
-    }
+    } // Construtor vazio
 
-    public Funcionarios(int id,String nome) {
-        super(id,nome);
-    }
-
-    //Completo
     public Funcionarios(int id ,String nome,String email, String cpf, String senha, String nomeEmpresa, String nomeCargo, int idPermissoes, LocalTime turno, byte[] foto) {
         super(id, nome, email, senha, foto);
         this.turno = turno;
@@ -32,9 +24,12 @@ public class Funcionarios extends Usuarios{
         this.nomeEmpresa = nomeEmpresa;
         this.nomeCargo = nomeCargo;
         this.idPermissoes = idPermissoes;
-    }
+    } // Construtor completo
 
-    //Sem Id
+    public Funcionarios(int id,String nome) {
+        super(id,nome);
+    } // Construtor com id e nome
+
     public Funcionarios(String nome, String email, String cpf, String senha, String nomeEmpresa, String nomeCargo, int idPermissoes, LocalTime turno, byte[] foto) {
         super(nome, email, senha, foto);
         this.turno = turno;
@@ -42,9 +37,8 @@ public class Funcionarios extends Usuarios{
         this.nomeEmpresa = nomeEmpresa;
         this.nomeCargo = nomeCargo;
         this.idPermissoes = idPermissoes;
-    }
+    } // Construtor com nome, email, cpf, senha, nomeEmpresa, nomeCargo, idPermissoes, turno e foto
 
-    //Sem foto
     public Funcionarios(int id ,String nome, String email, String cpf, String senha, String nomeEmpresa, String nomeCargo, int idPermissoes, LocalTime turno) {
         super(id, nome, email, senha);
         this.turno = turno;
@@ -52,9 +46,8 @@ public class Funcionarios extends Usuarios{
         this.nomeEmpresa = nomeEmpresa;
         this.nomeCargo = nomeCargo;
         this.idPermissoes = idPermissoes;
-    }
+    } // Construtor com id, nome, email, cpf, senha, nomeEmpresa, nomeCargo, idPermissoes e turno
 
-    //Sem Foto nem Id
     public Funcionarios(String nome, String email, String cpf, String senha, String nomeEmpresa, String nomeCargo, int idPermissoes, LocalTime turno) {
         super(nome, email, senha);
         this.turno = turno;
@@ -62,7 +55,7 @@ public class Funcionarios extends Usuarios{
         this.nomeEmpresa = nomeEmpresa;
         this.nomeCargo = nomeCargo;
         this.idPermissoes = idPermissoes;
-    }
+    } // Construtor com nome, email, cpf, senha, nomeEmpresa, nomeCargo, idPermissoes e turno
 
 //=======================MÉTODOS GET=======================\\
 
@@ -73,7 +66,6 @@ public class Funcionarios extends Usuarios{
     public String getCpf() {
         return cpf;
     }
-
 
     public String getNomeEmpresa() {
         return nomeEmpresa;
@@ -89,7 +81,6 @@ public class Funcionarios extends Usuarios{
 
 //=======================MÉTODOS SET=======================\\
 
-
     public void setTurno(LocalTime turno) {
         this.turno = turno;
     }
@@ -103,7 +94,6 @@ public class Funcionarios extends Usuarios{
     }
 
 //=======================TO STRING=======================\\
-
 
     @Override
     public String toString() {

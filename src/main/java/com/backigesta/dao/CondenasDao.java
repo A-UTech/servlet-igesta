@@ -5,139 +5,162 @@ import com.backigesta.model.Condenas;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CondenasDao{
-
-    //==========ATRIBUTOS==========\\
     private Connection conn;
-    private Conexao conexao = new Conexao();
+    private Conexao banco = new Conexao();
 
-    //==========MÉTODOS DA CLASSE==========\\
-    public ArrayList<Condenas> buscarCondenas() {
-        conn = conexao.conectar();
-        ArrayList<Condenas> listas = new ArrayList<>();
-        try {
-            Statement pstmt = conn.createStatement();
-            ResultSet rs = pstmt.executeQuery("select c.id,c.nome,a.nome,c.descricao,c.tipo_condena from condena c join admin a on a.id = c.cod_admin order by c.nome");
-            while (rs.next()) {
-                listas.add(new Condenas(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
-            }
-        } catch (SQLException sql) {
-            return null;
-        } finally {
-            conexao.desconectar(conn);
-        }
-        return listas;
-    } // Método que busca todas as condenas do banco de dados
+//=======================MÉTODOS CREATE=======================\\
 
-    public ArrayList<Condenas> buscarCondenasTipo(String tipo_condena) {
-        conn = conexao.conectar();
-        ArrayList<Condenas> listas = new ArrayList<>();
+    public boolean inserir(Condenas condena) {
+        boolean retorno = false;
         try {
-            PreparedStatement pstmt = conn.prepareStatement("select c.id,c.nome,a.nome,c.descricao,c.tipo_condena from condena c join admin a on a.id = c.cod_admin where lower(c.tipo_condena) = ? order by c.nome");
-            pstmt.setString(1,tipo_condena);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                listas.add(new Condenas(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
-            }
-        } catch (SQLException sql) {
-            return null;
-        } finally {
-            conexao.desconectar(conn);
-        }
-        return listas;
-    } // Método que busca as condenas por seu tipo de condena no banco de daddos
-
-    public ArrayList<Condenas> buscarCondenasNome(String procura) {
-        conn = conexao.conectar();
-        ArrayList<Condenas> listas = new ArrayList<>();
-        try {
-            PreparedStatement pstmt = conn.prepareStatement("select c.id,c.nome,a.nome,c.descricao,c.tipo_condena from condena c join admin a on a.id = c.cod_admin where lower(c.nome) like ? order by c.nome");
-            pstmt.setString(1,procura+"%");
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                listas.add(new Condenas(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
-            }
-        } catch (SQLException sql) {
-            return null;
-        } finally {
-            conexao.desconectar(conn);
-        }
-        return listas;
-    } // Método que busca as condenas por seu nome no banco de dados
-
-    public boolean deletarCondena(int id) {
-        conn = conexao.conectar();
-        try {
-            PreparedStatement pstmt1 = conn.prepareStatement("delete from quantidadecondena where cod_condena = ?");
-            pstmt1.setInt(1,id);
-            pstmt1.execute();
-            PreparedStatement pstmt2 = conn.prepareStatement("delete from condena where id = ?");
-            pstmt2.setInt(1,id);
-            if (pstmt2.executeUpdate() > 0) {
-                return true;
-            }
-            return false;
-        } catch (SQLException sql) {
-            sql.printStackTrace();
-            return false;
-        } finally {
-            conexao.desconectar(conn);
-        }
-    } // Método que deleta um registro de condena por seu id no banco de dados
-
-    public boolean alterarCondena(Condenas condena) {
-        conn = conexao.conectar();
-        try {
-            PreparedStatement pstmt = conn.prepareStatement("update condena set tipo_condena = ?, nome = ?, descricao = ? where id = ?");
-            pstmt.setString(1,condena.getTipoCondena());
-            pstmt.setString(2,condena.getNome());
-            if (condena.getDescricao().equals("") || condena.getDescricao().toLowerCase().equals("sem descricao")) {
-                pstmt.setNull(3,java.sql.Types.VARCHAR);
-            } else {
-                pstmt.setString(3, condena.getDescricao());
-            }
-            pstmt.setInt(4,condena.getId());
-            if (pstmt.executeUpdate() > 0) {
-                return true;
-            }
-            return false;
-        } catch (SQLException sql) {
-            return false;
-        } finally {
-            conexao.desconectar(conn);
-        }
-    } // Método de alterar um registro de condena por seu id no banco de dados
-
-    public boolean adicionarCondena(Condenas condena) {
-        conn = conexao.conectar();
-        try {
-            PreparedStatement pstmt1 = conn.prepareStatement("select id from admin where lower(nome) = ?");
-            pstmt1.setString(1,condena.getNomeAdmin().toLowerCase());
-            ResultSet rs = pstmt1.executeQuery();
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT id FROM admin WHERE lower(nome) = ?");
+            ps.setString(1,condena.getNomeAdmin().toLowerCase());
+            ResultSet rs = ps.executeQuery();
             int id = 0;
             while (rs.next()) {
                 id = rs.getInt(1);
             }
-            PreparedStatement pstmt2 = conn.prepareStatement("insert into condena(nome,cod_admin,descricao,tipo_condena) values(?,?,?,?)");
-            pstmt2.setString(1,condena.getNome());
-            pstmt2.setInt(2,id);
+            ps.close();
+
+            ps = conn.prepareStatement("INSERT INTO condena(nome,cod_admin,descricao,tipo_condena) VALUES(?,?,?,?)");
+            ps.setString(1,condena.getNome());
+            ps.setInt(2,id);
             if (condena.getDescricao().equals("") || condena.getDescricao().toLowerCase().equals("sem descricao")) {
-                pstmt2.setNull(3, java.sql.Types.VARCHAR);
+                ps.setNull(3, java.sql.Types.VARCHAR);
             } else {
-                pstmt2.setString(3, condena.getDescricao());
+                ps.setString(3, condena.getDescricao());
             }
-            pstmt2.setString(4,condena.getTipoCondena());
-            if (pstmt2.executeUpdate() > 0) {
-                return true;
-            }
-            return false;
+            ps.setString(4,condena.getTipoCondena());
+
+            retorno = ps.executeUpdate() == 0;
         } catch (SQLException sql) {
             sql.printStackTrace();
-            return false;
         } finally {
-            conexao.desconectar(conn);
+            banco.desconectar(conn);
+            return retorno;
         }
-    } // Método de adicionar uma condena no banco de dados
+    } // Método que inseri uma condena
+
+//=======================MÉTODOS READ=======================\\
+
+    public ArrayList<Condenas> selecionarTodos() {
+        ArrayList<Condenas> listas = new ArrayList<>();
+        try {
+            conn = banco.conectar();
+            Statement ps = conn.createStatement();
+            ResultSet rs = ps.executeQuery("SELECT c.id,c.nome,a.nome,c.descricao,c.tipo_condena FROM condena c JOIN admin a on a.id = c.cod_admin ORDER BY c.nome");
+            while (rs.next()) {
+                listas.add(new Condenas(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+            }
+        } catch (SQLException sql) {
+            return null;
+        } finally {
+            banco.desconectar(conn);
+            return listas;
+        }
+    } // Método que seleciona todas as condenas
+
+    public ArrayList<Condenas> selecionarPorTipo(String tipoCondena) {
+        ArrayList<Condenas> listas = new ArrayList<>();
+        try {
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT c.id,c.nome,a.nome,c.descricao,c.tipo_condena FROM condena c JOIN admin a on a.id = c.cod_admin WHERE lower(c.tipo_condena) = ? ORDER BY c.nome");
+            ps.setString(1,tipoCondena);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                listas.add(new Condenas(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+            }
+        } catch (SQLException sql) {
+            return null;
+        } finally {
+            banco.desconectar(conn);
+            return listas;
+        }
+    } // Método que seleciona condenas por tipoCondena
+
+    public ArrayList<Condenas> selecionarPorNome(String procura) {
+        ArrayList<Condenas> listas = new ArrayList<>();
+        try {
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT c.id,c.nome,a.nome,c.descricao,c.tipo_condena FROM condena c JOIN admin a on a.id = c.cod_admin WHERE lower(c.nome) LIKE lower(?) ORDER BY c.nome");
+            ps.setString(1,procura+"%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                listas.add(new Condenas(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+            }
+        } catch (SQLException sql) {
+            return null;
+        } finally {
+            banco.desconectar(conn);
+            return listas;
+        }
+    } // Método que seleciona condenas por nome
+
+//=======================MÉTODOS UPDATE=======================\\
+
+    public boolean atualizar(Condenas condena) {
+        boolean retorno = false;
+        try {
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("UPDATE condena SET tipo_condena = ?, nome = ?, descricao = ? WHERE id = ?");
+            ps.setString(1,condena.getTipoCondena());
+            ps.setString(2,condena.getNome());
+            if (condena.getDescricao().equals("") || condena.getDescricao().toLowerCase().equals("sem descricao")) {
+                ps.setNull(3,java.sql.Types.VARCHAR);
+            } else {
+                ps.setString(3, condena.getDescricao());
+            }
+            ps.setInt(4,condena.getId());
+
+            retorno = ps.executeUpdate() == 0;
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        } finally {
+            banco.desconectar(conn);
+            return retorno;
+        }
+    } // Método de atualiza dados de uma condena por id
+
+//=======================MÉTODOS DELETE=======================\\
+
+    public boolean deletar(int id) {
+        boolean retorno = false;
+        try {
+            conn = banco.conectar();
+            conn.setAutoCommit(false);
+
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM quantidadecondena WHERE cod_condena = ?");
+            ps.setInt(1,id);
+            ps.execute();
+            ps.close();
+
+            ps = conn.prepareStatement("DELETE FROM condena WHERE id = ?");
+            ps.setInt(1,id);
+
+            retorno = ps.executeUpdate() == 1;
+
+            conn.commit();
+        } catch (SQLException sqle) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                    System.out.println("Erro no método deletarAdmin()");
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            sqle.printStackTrace();
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            banco.desconectar(conn);
+            return retorno;
+        }
+    } // Método que deleta um registro de condena por id
 }

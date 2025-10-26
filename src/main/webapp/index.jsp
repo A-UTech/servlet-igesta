@@ -42,16 +42,13 @@
             <a href="loginEmpresa">
                 <div>Entrar como empresa</div>
             </a>
-        <a href="selectContato">
-            <div>teste</div>
-        </a>
         <% } else { %>
             <% if (session.getAttribute("admin") != null) { %>
                 <a href="htmls/splash.html">
                     <div>Área restrita</div>
                 </a>
             <% } else { %>
-                <a href="">
+                <a href="selectCollab">
                     <div>Ver lideres e gestores</div>
                 </a>
             <% } %>

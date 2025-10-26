@@ -42,13 +42,13 @@ public class CadastroEmpresa extends HttpServlet {
         // pega o id salvo na sessão
         int empresaId = (int) session.getAttribute("empresaId");
 
-        if (empresasDAO.criaSenha(empresaId, senha, confSenha)) {
+        if (empresasDAO.inserirSenha(empresaId, senha, confSenha)) {
             Empresas empresa = empresasDAO.selecionarPorId(empresaId);
             request.setAttribute("email",empresa.getEmail());
             request.setAttribute("senha",empresa.getSenha());
             // limpa o id da sessão
             request.getSession(false).removeAttribute("empresaId");
-            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/forms-login_cmp.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("loginEmpresa");
             rd.forward(request,response);
         }
     }
@@ -61,10 +61,11 @@ public class CadastroEmpresa extends HttpServlet {
         String email = request.getParameter("email");
         String cnpj = request.getParameter("cnpj").replaceAll("[^0-9]", "");
         String unidade = request.getParameter("unitArea");
+        String cidade = request.getParameter("cidade");
         String estado = request.getParameter("states");
 
         // define objeto que irá chamar os métodos
-        int empresaId = empresasDAO.criaConta(new Empresas(nome,email,cnpj,plano,estado,unidade));
+        int empresaId = empresasDAO.inserirConta(new Empresas(nome,email,cnpj,plano,estado,cidade,unidade));
 
         if (empresaId != -1) {
             // guarda o id da empresa criada na sessão

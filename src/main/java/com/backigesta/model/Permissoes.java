@@ -1,27 +1,29 @@
 package com.backigesta.model;
 
 public class Permissoes {
-    //========== ATRIBUTOS ==========\\
+//========== ATRIBUTOS ==========\\
+
     private int id;
     private boolean visualizacao;
     private boolean enviar_contagens;
     private boolean historico_contagens;
 
-    //========== CONSTRUTORES ==========\\
-    public Permissoes() {} // Vazio
+//========== CONSTRUTORES ==========\\
+
+    public Permissoes() {} // Construtor Vazio
 
     public Permissoes(int id, boolean visualizacao, boolean enviar_contagens, boolean historico_contagens) {
         this.id = id;
         this.visualizacao = visualizacao;
         this.enviar_contagens = enviar_contagens;
         this.historico_contagens = historico_contagens;
-    } // Completo
+    } // Construtor Completo
 
     public Permissoes(boolean visualizacao) {
         this.visualizacao = visualizacao;
         this.enviar_contagens = false;
         this.historico_contagens = false;
-    } // Apenas visualização
+    } // Construtor com visualizacao
 
     public Permissoes(boolean admin, boolean marcador) {
         if (admin) {
@@ -31,7 +33,8 @@ public class Permissoes {
         }
     } // Construtor para admin (usei 2 parâmetros pra diferenciar do outro boolean)
 
-    //========== MÉTODOS GET ==========\\
+//========== MÉTODOS GET ==========\\
+
     public int getId() {
         return id;
     }
@@ -48,7 +51,8 @@ public class Permissoes {
         return historico_contagens;
     }
 
-    //========== MÉTODOS SET ==========\\
+//========== MÉTODOS SET ==========\\
+
     public void setId(int id) {
         this.id = id;
     }
@@ -65,7 +69,8 @@ public class Permissoes {
         this.historico_contagens = historico_contagens;
     }
 
-    //========== TO STRING ==========\\
+//========== TO STRING ==========\\
+
     @Override
     public String toString() {
         return "Permissoes { " +

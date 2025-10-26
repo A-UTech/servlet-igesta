@@ -16,6 +16,11 @@ public class Token extends HttpServlet {
 
     JavaMail javaMail = new JavaMail();
 
+    public void entrarToken(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/forms-login_token.jsp");
+        rd.forward(request,response);
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String caminho = request.getServletPath();
@@ -44,7 +49,7 @@ public class Token extends HttpServlet {
             response.sendRedirect("index.jsp");
         } else {
             request.setAttribute("erro","true");
-            gerarToken(request,response);
+            entrarToken(request,response);
         }
     }
 
@@ -60,7 +65,6 @@ public class Token extends HttpServlet {
         session.setAttribute("token",token);
         javaMail.enviarToken(email,token);
         request.setAttribute("email", com.backigesta.util.Token.AnonimizarEmail(email));
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/forms-login_token.jsp");
-        rd.forward(request,response);
+        entrarToken(request,response);
     }
 }

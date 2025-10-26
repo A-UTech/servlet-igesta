@@ -1,6 +1,7 @@
 <%@ page import="com.backigesta.model.Empresas" %>
 <%@ page import="com.backigesta.model.Admin" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="com.backigesta.util.Regex" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -38,7 +39,14 @@
         <a href="selectAdmin"><img src="${pageContext.request.contextPath}/assets/icons/aside-adm.svg"><span>Administradores</span></a>
     </nav>
 
-    <a href="" class="perfil"><img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg"> <span>Lucas Lima</span></a>
+    <a href="entrarPerfil" class="perfil">
+        <% if (admin.getFoto() == null) { %>
+            <img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
+        <% } else { %>
+            <img src="getFoto?id=<%=admin.getId()%>&tipo=Admin">
+        <% } %>
+        <span><%=admin.getNome()%></span>
+    </a>
 </aside>
 
     <main>
@@ -96,6 +104,7 @@
                     <li>Email</li>
                     <li>CNPJ</li>
                     <li>Estado</li>
+                    <li>Cidade</li>
                     <li>Unidade</li>
                     <li>Plano</li>
                     <li>Ações</li>
@@ -104,13 +113,14 @@
                     <ul>
                         <li><%=empresa.getNome()%></li>
                         <li><%=empresa.getEmail()%></li>
-                        <li><%=empresa.getCnpj()%></li>
-                        <li><%=empresa.getRegiao()%></li>
+                        <li><%=Regex.formatarCnpj(empresa.getCnpj())%></li>
+                        <li><%=empresa.getEstado()%></li>
+                        <li><%=empresa.getCidade()%></li>
                         <li><%=empresa.getUnidade()%></li>
                         <li><%=empresa.getNomePlano()%></li>
                         <li>
                             <a onclick="alterarEmpresa(<%=empresa.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/edit.svg"></a>
-                            <input type="hidden" id="empresaAlterar" value="<%=empresa.getNome()%>;<%=empresa.getEmail()%>;<%=empresa.getRegiao()%>;<%=empresa.getUnidade()%>;<%=empresa.getNomePlano()%>">
+                            <input type="hidden" id="empresaAlterar<%=empresa.getId()%>" value="<%=empresa.getNome()%>;<%=empresa.getEmail()%>;<%=empresa.getEstado()%>;<%=empresa.getCidade()%>;<%=empresa.getUnidade()%>;<%=empresa.getNomePlano()%>">
                             <a onclick="deletarEmpresa(<%=empresa.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/trash.svg"></a>
                         </li>
                     </ul>
@@ -155,6 +165,7 @@
                     <option value="SE">Sergipe</option>
                     <option value="TO">Tocantins</option>
                 </select>
+                <input type="text" name="cidadeEmpresa" placeholder="Cidade">
                 <input type="text" name="unidadeEmpresa" placeholder="Unidade da Empresa">
                 <select name="planoEmpresa">
                     <option selected disabled hidden>Plano de Assinatura</option>
@@ -179,6 +190,7 @@
         <dialog id="alterar" class="popupInputs">
             <h2>Editar Empresa</h2>
             <form action="alterarEmpresas" method="post" id="alterarEmpresa">
+                <a onclick="document.getElementById('alterar').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
                 <input type="hidden" name="idEmpresa" id="idEmpresa">
                 <input type="text" name="nomeEmpresa" id="nomeEmpresa" placeholder="Nome">
                 <input type="email" name="emailEmpresa" id="emailEmpresa" placeholder="Email">
@@ -211,6 +223,7 @@
                     <option value="SE">Sergipe</option>
                     <option value="TO">Tocantins</option>
                 </select>
+                <input type="text" name="cidadeEmpresa" placeholder="Cidade" id="cidadeEmpresa">
                 <input type="text" name="unidadeEmpresa" id="unidadeEmpresa" placeholder="Unidade">
                 <select name="planoEmpresa" id="planoEmpresa" name="planoEmpresa">
                     <option selected disabled hidden>Plano de Assinatura</option>

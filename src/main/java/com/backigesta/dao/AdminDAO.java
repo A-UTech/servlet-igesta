@@ -10,95 +10,65 @@ import java.util.List;
 
 import com.backigesta.conexao.Conexao;
 import com.backigesta.model.Admin;
-import com.backigesta.model.Usuarios;
 
-public class AdminDAO extends DAO{
+public class AdminDAO {
     private Conexao banco = new Conexao();
+    private Connection conn;
 
-    //=======================MÉTODOS CREATE=======================\\
+//=======================MÉTODOS CREATE=======================\\
     public boolean inserir(Admin adm){
         boolean retorno = false;
-        Connection conn = banco.conectar();
         try{
-            String sql = "INSERT INTO admin(nome, email, senha, foto) VALUES(?, ?, ?, ?)";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO admin(nome, email, senha, foto) VALUES(?, ?, ?, ?)");
 
             ps.setString(1, adm.getNome());
             ps.setString(2, adm.getEmail());
             ps.setString(3, adm.getSenha());
             ps.setBytes(4, adm.getFoto());
 
-            retorno = ps.executeUpdate()==1;
-            conn.close();
+            retorno = ps.executeUpdate() == 1;
         }
         catch(SQLException sqle){
             System.out.println("!!SQLException ao chamar AdminDAO.inserir(Admin)!!");
             sqle.printStackTrace();
         }
         finally{
+            banco.desconectar(conn);
             return retorno;
         }
-    }
+    } // Método que inseri um admin
 
-    //=======================MÉTODOS READ=======================\\
-    public Admin selecionarPorId(int id){
-        Connection conn = banco.conectar();
-        Admin adm = null;
-        try{
-            String sql = "SELECT * FROM admin WHERE id=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if(rs.next()) {
-                adm = new Admin(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("email"),
-                        rs.getString("senha"),
-                        rs.getBytes("foto")
-                );
-            }
-            conn.close();
-        }
-        catch(SQLException sqle){
-            System.out.println("!!SQLException ao chamar AdminDAO.selecionarPorId(int)!!");
-            sqle.printStackTrace();
-        }
-        finally {
-            return adm;
-        }
-    }
+//=======================MÉTODOS READ=======================\\
 
     public boolean verificaLoginAdmin(String email, String senha) {
-        Connection conn = null;
+        boolean retorno = false;
         try {
             conn = banco.conectar();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM admin WHERE email = ? AND senha = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM admin WHERE email LIKE ? AND senha LIKE ?");
             ps.setString(1,email);
             ps.setString(2,senha);
 
-            ResultSet rset = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
-            if (rset.next()) {
-                return true;
+            if (rs.next()) {
+                retorno = true;
             }
         } catch (Exception e) {
             System.out.println("!!SQLException ao chamar EmpresasDAO.verificaLoginEmp(String email, String senha)!!");
             e.printStackTrace();
         } finally {
             banco.desconectar(conn);
+            return retorno;
         }
-        return false;
-    }
+    } // Método que verifica se existe aquela conta de admin
 
     public List<Admin> selecionarTodos(){
-        Connection conn = banco.conectar();
         List<Admin> admins = new ArrayList<>();
         try{
-            String sql = "SELECT * FROM admin";
+            conn = banco.conectar();
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+            ResultSet rs = st.executeQuery("SELECT * FROM admin");
 
             while(rs.next()){
                 admins.add(new Admin(
@@ -109,25 +79,24 @@ public class AdminDAO extends DAO{
                         rs.getBytes("foto")
                 ));
             }
-
-            conn.close();
         }
         catch(SQLException sqle){
             System.out.println("!!SQLException ao chamar AdminDAO.selecionarTodos()!!");
             sqle.printStackTrace();
         }
         finally {
+            banco.desconectar(conn);
             return admins;
         }
-    }
+    } // Método que seleciona todos os admins
 
     public List<Admin> selecionarPorNome(String nome){
-        Connection conn = banco.conectar();
         List<Admin> admins = new ArrayList<>();
         try{
-            String sql = "SELECT * FROM admin WHERE lower(nome) like lower(?)";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM admin WHERE lower(nome) like lower(?)");
             ps.setString(1, nome+"%");
+
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 admins.add(new Admin(
@@ -138,26 +107,24 @@ public class AdminDAO extends DAO{
                         rs.getBytes("foto")
                 ));
             }
-
-            conn.close();
         }
         catch(SQLException sqle){
             System.out.println("!!SQLException ao chamar AdminDAO.selecionarPorNome(String)");
             sqle.printStackTrace();
         }
         finally {
+            banco.desconectar(conn);
             return admins;
         }
-    }
+    } // Método que seleciona admins por nome
 
     public Admin selecionarPorEmail(String email){
-        Connection conn = null;
         Admin admin = null;
         try{
             conn = banco.conectar();
-            String sql = "SELECT * FROM admin WHERE email like ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM admin WHERE email like ?");
             ps.setString(1, email);
+
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 admin = new Admin(
@@ -177,113 +144,130 @@ public class AdminDAO extends DAO{
             banco.desconectar(conn);
             return admin;
         }
-    }
+    } // Método que seleciona admins por email
+
     public byte[] selecionarFotoPorId(int id){
-        Connection conn = banco.conectar();
         byte[] foto = null;
         try{
-            String sql = "SELECT foto FROM admin WHERE id=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT foto FROM admin WHERE id = ?");
             ps.setInt(1, id);
+
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 foto = rs.getBytes(1);
             }
-            conn.close();
         }
         catch(SQLException sqle){
             System.out.println("!!SQLException ao chamar AdminDAO.selecionarFotoPorId(int)!!");
             sqle.printStackTrace();
         }
         finally {
+            banco.desconectar(conn);
             return foto;
         }
-    }
+    } // Método que seleciona a foto de um admin por id
 
-    //=======================MÉTODOS UPDATE=======================\\
+//=======================MÉTODOS UPDATE=======================\\
 
-    public boolean atualizar(Usuarios user){
-        Admin adm = (Admin) user;
+    public boolean atualizar(Admin admin){
         boolean retorno = false;
-        Connection conn = banco.conectar();
         try{
-            String sql = "UPDATE admin SET nome=?, email=?, senha=? WHERE id=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, adm.getNome());
-            ps.setString(2, adm.getEmail());
-            ps.setString(3, adm.getSenha());
-            ps.setInt(4, adm.getId());
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("UPDATE admin SET nome = ?, email = ?, senha = ? WHERE id = ?");
+            ps.setString(1, admin.getNome());
+            ps.setString(2, admin.getEmail());
+            ps.setString(3, admin.getSenha());
+            ps.setInt(4, admin.getId());
 
-            retorno = ps.executeUpdate()>=1;
-            conn.close();
+            retorno = ps.executeUpdate() >= 1;
         }
         catch(SQLException sqle){
             System.out.println("!!SQLException ao chamar AdminDAO.atualizar(Admin)!!");
             sqle.printStackTrace();
         }
         finally {
+            banco.desconectar(conn);
             return retorno;
         }
-    }
+    } // Método que atualiza dados de um admin por id
 
     public boolean atualizarFoto(int id, byte[] foto){
         boolean retorno = false;
-        Connection conn = banco.conectar();
         try{
-            String sql = "UPDATE admin SET foto=? WHERE id=?";
+            conn = banco.conectar();
+            String sql = "UPDATE admin SET foto = ? WHERE id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setBytes(1, foto);
             ps.setInt(2, id);
 
-            retorno = ps.executeUpdate()>=1;
-            conn.close();
+            retorno = ps.executeUpdate() >= 1;
         }
         catch(SQLException sqle){
             System.out.println("!!SQLException ao chamar AdminDAO.atualizarFoto(int, byte[])!!");
             sqle.printStackTrace();
         }
         finally {
+            banco.desconectar(conn);
             return retorno;
         }
-    }
+    } // Método que atualiza a foto de um admin por id
 
-    public boolean verificaLoginAdm(String email, String senha) {
-        boolean valido = false;
-        try {
-            Connection conn = banco.conectar();
-            String sql = "SELECT * FROM admin WHERE email = ? AND senha = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-
-            ResultSet rset = ps.executeQuery();
-
-            if (rset.next()) {
-                valido = true;
-            }
-        } catch (Exception e) {
-            System.out.println("!!SQLException ao chamar AdminDAO.verificaLoginAdm(String email, String senha)!!");
-            e.printStackTrace();
-        }
-        return valido;
-    }
-
-    //=======================MÉTODOS DELETE=======================\\
+//=======================MÉTODOS DELETE=======================\\
     public boolean deletar(int id){
         boolean retorno = false;
-        Connection conn = banco.conectar();
         try{
-            String sql = "DELETE FROM admin WHERE id=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            conn = banco.conectar();
+            conn.setAutoCommit(false);
+
+            PreparedStatement ps = conn.prepareStatement("select qc.id from admin a join condena c on c.cod_admin = a.id join quantidadecondena qc on qc.cod_condena = c.id where a.id = ?");
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ps = conn.prepareStatement("delete from quantidadecondena where id = ?");
+                ps.setInt(1,rs.getInt(1));
+                ps.execute();
+            }
+            rs.close();
+            ps.close();
+
+            ps = conn.prepareStatement("select c.id from admin a join condena c on c.cod_admin = a.id where a.id = ?");
+            ps.setInt(1,id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                ps = conn.prepareStatement("delete from condena where id = ?");
+                ps.setInt(1,rs.getInt(1));
+                ps.execute();
+            }
+            rs.close();
+            ps.close();
+
+            ps = conn.prepareStatement("DELETE FROM admin WHERE id=?");
             ps.setInt(1, id);
 
-            retorno = ps.executeUpdate()>=1;
-            conn.close();
+            retorno = ps.executeUpdate() >= 1;
+
+            conn.commit();
         }
         catch(SQLException sqle){
-            System.out.println("!!SQLException ao chamar AdminDAO.deletar(int)!!");
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                    System.out.println("Erro no método deletarAdmin()");
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
             sqle.printStackTrace();
         }
         finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            banco.desconectar(conn);
             return retorno;
         }
-    }
+    } // Método que deleta um admin por id
 }

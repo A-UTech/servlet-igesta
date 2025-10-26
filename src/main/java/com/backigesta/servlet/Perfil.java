@@ -1,12 +1,9 @@
 package com.backigesta.servlet;
 
 import com.backigesta.dao.AdminDAO;
-import com.backigesta.dao.DAO;
 import com.backigesta.dao.EmpresasDAO;
-import com.backigesta.dao.FuncionariosDAO;
 import com.backigesta.model.Admin;
 import com.backigesta.model.Empresas;
-import com.backigesta.model.Funcionarios;
 import com.backigesta.model.Usuarios;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -24,14 +21,31 @@ public class Perfil extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String caminho = request.getServletPath();
         if (caminho.equals("/entrarPerfil")) {
-            entrarPerfil(request,response);
+            paginaVolta(request,response);
         }
     }
 
+    public void paginaVolta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        String pagina = request.getHeader("referer");
+        pagina = pagina.substring(pagina.lastIndexOf("/") + 1);
+        System.out.println(pagina);
+        if (pagina.toLowerCase().matches(".*condena.*") ) {
+            session.setAttribute("caminhoVolta","selectCondena");
+        } else if (pagina.toLowerCase().matches(".*admin.*")) {
+            session.setAttribute("caminhoVolta","selectAdmin");
+        } else if (pagina.toLowerCase().matches(".*contato.*")) {
+            session.setAttribute("caminhoVolta","selectContato");
+        } else if (pagina.toLowerCase().matches(".*empresas.*")) {
+            session.setAttribute("caminhoVolta","selectEmpresas");
+        } else if (pagina.toLowerCase().matches(".*plano.*")) {
+            session.setAttribute("caminhoVolta","selectPlano");
+        }
+        entrarPerfil(request, response);
+    }
     protected void entrarPerfil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("WEB-INF/view/perfil.jsp").forward(request, response);
     }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -50,7 +64,8 @@ public class Perfil extends HttpServlet {
         String email = request.getParameter("email");
         String senha = request.getParameter("password");
 
-        Usuarios user = (Admin) session.getAttribute("admin");
+        Admin user = (Admin) session.getAttribute("admin");
+        Empresas empresa = (Empresas) session.getAttribute("empresa");
         if(user != null) {
             user.setNome(nome);
             user.setEmail(email);
@@ -59,11 +74,10 @@ public class Perfil extends HttpServlet {
             session.setAttribute("admin",user);
         }
         else{
-            user = (Empresas) request.getSession().getAttribute("empresa");
             user.setNome(nome);
             user.setEmail(email);
             user.setSenha(senha);
-            daoEmpresas.atualizar(user);
+            daoEmpresas.atualizar(empresa);
             session.setAttribute("empresa",user);
         }
 

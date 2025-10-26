@@ -46,7 +46,7 @@
                     <div>Área restrita</div>
                 </a>
                 <% } else { %>
-                <a href="">
+                <a href="selectCollab">
                     <div>Ver lideres e gestores</div>
                 </a>
                 <% } %>

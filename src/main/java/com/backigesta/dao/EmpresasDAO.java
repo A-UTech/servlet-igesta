@@ -1,24 +1,21 @@
 package com.backigesta.dao;
 
 import com.backigesta.conexao.Conexao;
-import com.backigesta.model.Admin;
 import com.backigesta.model.Empresas;
-import com.backigesta.model.Usuarios;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
-public class EmpresasDAO extends DAO{
+public class EmpresasDAO{
     private Connection conn;
     private final Conexao banco = new Conexao();
-    //=======================MÉTODOS CREATE=======================\\
+    
+//=======================MÉTODOS CREATE=======================\\
     public boolean inserir(Empresas empresas){
         boolean retorno = false;
-        Connection conn = banco.conectar();
         try{
-            PreparedStatement ps = conn.prepareStatement("select id from plano where lower(nome) = lower(?)");
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT id FROM plano WHERE lower(nome) = lower(?)");
             ps.setString(1,empresas.getNomePlano());
             ResultSet rs = ps.executeQuery();
             int planoId = -1;
@@ -28,34 +25,35 @@ public class EmpresasDAO extends DAO{
             rs.close();
             ps.close();
 
-            ps = conn.prepareStatement("INSERT INTO empresa(cnpj, nome, email, senha, id_planos, foto, regiao, unidade) VALUES (?,?,?,?,?,?,?,?)");
+            ps = conn.prepareStatement("INSERT INTO empresa(cnpj, nome, email, senha, id_plano, foto, estado, cidade, unidade) VALUES (?,?,?,?,?,?,?,?,?)");
             ps.setString(1, empresas.getCnpj());
             ps.setString(2, empresas.getNome());
             ps.setString(3, empresas.getEmail());
             ps.setString(4, empresas.getSenha());
             ps.setInt(5, planoId);
             ps.setBytes(6, empresas.getFoto());
-            ps.setString(7, empresas.getRegiao());
-            ps.setString(8, empresas.getUnidade());
+            ps.setString(7, empresas.getEstado());
+            ps.setString(8,empresas.getCidade());
+            ps.setString(9, empresas.getUnidade());
 
-            retorno = ps.executeUpdate()==1;
-            conn.close();
+            retorno = ps.executeUpdate() == 1;
         }
         catch(SQLException sqle){
             System.out.println("!!SQLException ao chamar EmpresasDAO.inserir(Empresa)");
             sqle.printStackTrace();
         }
         finally{
+            banco.desconectar(conn);
             return retorno;
         }
-    }
+    } // Método que inseri uma empresa
 
-    public int criaConta(Empresas empresa) {
+    public int inserirConta(Empresas empresa) {
         int idGerado = -1;
-        Connection conn = banco.conectar();
         try {
             int id = -1;
-            PreparedStatement ps = conn.prepareStatement("select id from plano where lower(nome) = lower(?)");
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT id FROM plano WHERE lower(nome) = lower(?)");
             ps.setString(1,empresa.getNomePlano());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -64,17 +62,18 @@ public class EmpresasDAO extends DAO{
             rs.close();
             ps.close();
 
-            ps = conn.prepareStatement("INSERT INTO empresa (nome, email, cnpj, unidade, regiao, id_planos) VALUES (?, ?, ?, ?, ?, ?)");
+            ps = conn.prepareStatement("INSERT INTO empresa (nome, email, cnpj, unidade, estado, cidade, id_plano) VALUES (?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, empresa.getNome());
             ps.setString(2, empresa.getEmail());
             ps.setString(3, empresa.getCnpj());
             ps.setString(4, empresa.getUnidade());
-            ps.setString(5, empresa.getRegiao());
-            ps.setInt(6, id);
+            ps.setString(5, empresa.getEstado());
+            ps.setString(6,empresa.getCidade());
+            ps.setInt(7, id);
             ps.execute();
             ps.close();
 
-            ps = conn.prepareStatement("select id from empresa where lower(email) = lower(?) and lower(cnpj) = lower(?)");
+            ps = conn.prepareStatement("SELECT id FROM empresa WHERE lower(email) = lower(?) AND lower(cnpj) = lower(?)");
             ps.setString(1,empresa.getEmail());
             ps.setString(2,empresa.getCnpj());
             rs = ps.executeQuery();
@@ -91,35 +90,35 @@ public class EmpresasDAO extends DAO{
             return idGerado;
         }
 
-    }
+    } // Método qeu inseri uma conta de empresa
 
-    public boolean criaSenha(int empresaId, String senha, String confSenha) {
-        boolean sucesso = false;
-        Connection conn = banco.conectar();
+    public boolean inserirSenha(int empresaId, String senha, String confSenha) {
+        boolean retorno = false;
         try {
+            conn = banco.conectar();
             if (senha.equals(confSenha)) {
                 String sql = "UPDATE empresa SET senha = ? WHERE id = ?";
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ps.setString(1, senha);
                 ps.setInt(2, empresaId);
 
-                sucesso = ps.executeUpdate() > 0;
+                retorno = ps.executeUpdate() == 1;
             }
-            conn.close();
         } catch (SQLException e) {
             System.out.println("!!SQLException ao chamar EmpresasDAO.criaConta(...)");
             e.printStackTrace();
+        } finally {
+            banco.desconectar(conn);
+            return retorno;
         }
-        return sucesso;
-    }
+    } // Método que inseri a senha de uma conta de empresa pelo seu id
 
-    //=======================MÉTODOS READ=======================\\
+//=======================MÉTODOS READ=======================\\
     public Empresas selecionarPorId(int id){
-        Connection conn = banco.conectar();
         Empresas empresas = null;
         try{
-            String sql = "SELECT * FROM empresa WHERE id=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM empresa WHERE id = ? ORDER BY nome");
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -130,62 +129,52 @@ public class EmpresasDAO extends DAO{
                         rs.getString("email"),
                         rs.getString("cnpj"),
                         rs.getString("senha"),
-                        rs.getString("id_planos"),
-                        rs.getString("regiao"),
+                        rs.getString("id_plano"),
+                        rs.getString("estado"),
+                        rs.getString("cidade"),
                         rs.getString("unidade"),
                         rs.getBytes("foto")
                 );
             }
-            conn.close();
         }
         catch(SQLException sqle){
             System.out.println("!!SQLException ao chamar EmpresasDAO.selecionarPorId(int)!!");
             sqle.printStackTrace();
         }
         finally {
+            banco.desconectar(conn);
             return empresas;
         }
-    }
+    } // Método que seleciona a empresa por id
 
-    public ArrayList<Empresas> selecionarPorRegiao(String regiao){
-        Connection conn = banco.conectar();
-        ArrayList<Empresas> empresa = new ArrayList<>();
+    public String selecionarInformacoesPlano(int id_empresa){
+        String retorno = null;
         try{
-            String sql = "SELECT e.*, p.nome AS plano FROM empresa e JOIN plano p ON p.id=e.id_planos where e.regiao like ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, regiao);
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT count(*) filter(WHERE f.id_cargo = 1) AS gestores, count(*) filter(WHERE f.id_cargo = 2) AS lideres, p.nome AS nomePlano, p.mensalidade, p.armazenamento FROM funcionario f RIGHT JOIN empresa e ON e.id = f.id_empresa JOIN plano p ON p.id = e.id_plano WHERE e.id = ? GROUP BY(p.nome, p.mensalidade, p.armazenamento)");
+            ps.setInt(1, id_empresa);
             ResultSet rs = ps.executeQuery();
-
-            while(rs.next()) {
-                empresa.add(new Empresas(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("email"),
-                        rs.getString("cnpj"),
-                        rs.getString("senha"),
-                        rs.getString("plano"),
-                        rs.getString("regiao"),
-                        rs.getString("unidade"),
-                        rs.getBytes("foto")
-                ));
+            if(rs.next()){
+                retorno = "";
+                retorno += rs.getInt("gestores")+";"+rs.getInt("lideres")+";"+rs.getString("nomeplano")+";"+rs.getDouble("mensalidade")+";"+rs.getInt("armazenamento");
             }
-            conn.close();
         }
         catch(SQLException sqle){
-            System.out.println("!!SQLException ao chamar EmpresasDAO.selecionarPorRegiao(String)!!");
+            System.out.println("!!SQLException ao chamar EmpresasDAO.selecionarInformacoesPlano(int)!!");
             sqle.printStackTrace();
         }
         finally {
-            return empresa;
+            banco.desconectar(conn);
+            return retorno;
         }
-    }
+    } // Método que seleciona informações do plano da empresa por id_empresa
 
-    public ArrayList<Empresas> selecionarPorNome(String nome){
-        Connection conn = banco.conectar();
+    public ArrayList<Empresas> selecionarPorEstado(String estado){
         ArrayList<Empresas> empresa = new ArrayList<>();
         try{
-            PreparedStatement ps = conn.prepareStatement("SELECT e.*, p.nome AS plano FROM empresa e JOIN plano p ON p.id=e.id_planos where lower(e.nome) like lower(?)");
-            ps.setString(1, nome);
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT e.*, p.nome AS plano FROM empresa e JOIN plano p ON p.id=e.id_plano WHERE lower(e.estado) LIKE lower(?) ORDER BY e.nome");
+            ps.setString(1, estado);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
@@ -196,29 +185,62 @@ public class EmpresasDAO extends DAO{
                         rs.getString("cnpj"),
                         rs.getString("senha"),
                         rs.getString("plano"),
-                        rs.getString("regiao"),
+                        rs.getString("estado"),
+                        rs.getString("cidade"),
                         rs.getString("unidade"),
                         rs.getBytes("foto")
                 ));
             }
-            conn.close();
+        }
+        catch(SQLException sqle){
+            System.out.println("!!SQLException ao chamar EmpresasDAO.selecionarPorestado(String)!!");
+            sqle.printStackTrace();
+        }
+        finally {
+            banco.desconectar(conn);
+            return empresa;
+        }
+    } // Método que seleciona empresas por estado
+
+    public ArrayList<Empresas> selecionarPorNome(String nome){
+        ArrayList<Empresas> empresa = new ArrayList<>();
+        try{
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT e.*, p.nome AS plano FROM empresa e JOIN plano p ON p.id=e.id_plano WHERE lower(e.nome) LIKE lower(?) ORDER BY e.nome");
+            ps.setString(1, nome+"%");
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                empresa.add(new Empresas(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("cnpj"),
+                        rs.getString("senha"),
+                        rs.getString("plano"),
+                        rs.getString("estado"),
+                        rs.getString("cidade"),
+                        rs.getString("unidade"),
+                        rs.getBytes("foto")
+                ));
+            }
         }
         catch(SQLException sqle){
             System.out.println("!!SQLException ao chamar EmpresasDAO.selecionarPorNome(String)!!");
             sqle.printStackTrace();
         }
         finally {
+            banco.desconectar(conn);
             return empresa;
         }
-    }
+    } // Método que seleciona as empresas por nome
 
     public ArrayList<Empresas> selecionarTodos(){
-        Connection conn = banco.conectar();
         ArrayList<Empresas> empresa = new ArrayList<>();
         try{
-            String sql = "SELECT e.*, p.nome AS plano FROM empresa e JOIN plano p ON p.id=e.id_planos";
+            conn = banco.conectar();
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+            ResultSet rs = st.executeQuery("SELECT e.*, p.nome AS plano FROM empresa e JOIN plano p ON p.id = e.id_plano ORDER BY e.nome");
 
             while(rs.next()) {
                 empresa.add(new Empresas(
@@ -228,29 +250,28 @@ public class EmpresasDAO extends DAO{
                         rs.getString("cnpj"),
                         rs.getString("senha"),
                         rs.getString("plano"),
-                        rs.getString("regiao"),
+                        rs.getString("estado"),
+                        rs.getString("cidade"),
                         rs.getString("unidade"),
                         rs.getBytes("foto")
                 ));
             }
-            conn.close();
         }
         catch(SQLException sqle){
             System.out.println("!!SQLException ao chamar EmpresasDAO.selecionarTodos()!!");
             sqle.printStackTrace();
         }
         finally {
+            banco.desconectar(conn);
             return empresa;
         }
-    }
+    } // Método que seleciona todas as empresas
 
     public Empresas selecionarPorEmail(String email){
-        Connection conn = null;
         Empresas empresas = null;
         try{
             conn = banco.conectar();
-            String sql = "SELECT * FROM empresa WHERE email like ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM empresa WHERE email LIKE ? ORDER BY e.nome");
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
@@ -260,8 +281,9 @@ public class EmpresasDAO extends DAO{
                         rs.getString("email"),
                         rs.getString("cnpj"),
                         rs.getString("senha"),
-                        rs.getString("id_planos"),
-                        rs.getString("regiao"),
+                        rs.getString("id_plano"),
+                        rs.getString("estado"),
+                        rs.getString("cidade"),
                         rs.getString("unidade"),
                         rs.getBytes("foto")
                 );
@@ -275,32 +297,31 @@ public class EmpresasDAO extends DAO{
             banco.desconectar(conn);
             return empresas;
         }
-    }
+    } // Método que seleciona empresas por email
 
     public byte[] selecionarFotoPorId(int id){
-        Connection conn = banco.conectar();
         byte[] foto = null;
         try{
-            String sql = "SELECT foto FROM empresa WHERE id=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT foto FROM empresa WHERE id = ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 foto = rs.getBytes(1);
             }
-            conn.close();
         }
         catch(SQLException sqle){
             System.out.println("!!SQLException ao chamar EmpresasDAO.selecionarFotoPorId(int)!!");
             sqle.printStackTrace();
         }
         finally {
+            banco.desconectar(conn);
             return foto;
         }
-    }
+    } // Método que seleciona foto da empresa por id
 
     public boolean verificaLoginEmpresa(String email, String senha) {
-        Connection conn = null;
+        boolean retorno = false;
         try {
             conn = banco.conectar();
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM empresa WHERE email = ? AND senha = ?");
@@ -310,173 +331,153 @@ public class EmpresasDAO extends DAO{
             ResultSet rset = ps.executeQuery();
 
             if (rset.next()) {
-                return true;
+                retorno = true;
             }
         } catch (Exception e) {
             System.out.println("!!SQLException ao chamar EmpresasDAO.verificaLoginEmp(String email, String senha)!!");
             e.printStackTrace();
         } finally {
             banco.desconectar(conn);
+            return retorno;
         }
-        return false;
-    }
+    } // Método que verifica se aquela conta de empresa existe
 
-    //=======================MÉTODOS UPDATE=======================\\
-    public boolean atualizar(Usuarios user){
-        Empresas empresas = (Empresas) user;
+//=======================MÉTODOS UPDATE=======================\\
+    public boolean atualizar(Empresas empresa){
         boolean retorno = false;
-        Connection conn = banco.conectar();
         try{
-            PreparedStatement ps = conn.prepareStatement("select id from plano where lower(nome) = lower(?)");
-            ps.setString(1,empresas.getNomePlano());
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT id FROM plano WHERE lower(nome) = lower(?)");
+            ps.setString(1,empresa.getNomePlano());
             ResultSet rs = ps.executeQuery();
             int planoId = -1;
             while (rs.next()) {
                 planoId = rs.getInt(1);
             }
-            rs.close();;
+            rs.close();
             ps.close();
 
-            ps = conn.prepareStatement("UPDATE empresa SET cnpj=?, nome=?, email=?, senha=?, id_planos=?, regiao=?, unidade=? WHERE id=?");
-            ps.setString(1, empresas.getCnpj());
-            ps.setString(2, empresas.getNome());
-            ps.setString(3, empresas.getEmail());
-            ps.setString(4, empresas.getSenha());
-            ps.setInt(5, planoId);
-            ps.setString(6, empresas.getRegiao());
-            ps.setString(7, empresas.getUnidade());
-            ps.setInt(8, empresas.getId());
+            ps = conn.prepareStatement("UPDATE empresa SET nome = ?, email = ?, senha = ?, id_plano = ?, estado = ?,cidade = ?, unidade = ? WHERE id = ?");
+            ps.setString(1, empresa.getNome());
+            ps.setString(2, empresa.getEmail());
+            if (empresa.getSenha().equals("")) {
+                ps.setNull(3, java.sql.Types.VARCHAR);
+            } else {
+                ps.setString(3, empresa.getSenha());
+            }
+            ps.setInt(4, planoId);
+            ps.setString(5, empresa.getEstado());
+            ps.setString(6,empresa.getCidade());
+            ps.setString(7, empresa.getUnidade());
+            ps.setInt(8, empresa.getId());
 
-            retorno = ps.executeUpdate()>=1;
-            conn.close();
+            retorno = ps.executeUpdate() >= 1;
         }
         catch(SQLException sqle){
             System.out.println("!!SQLException ao chamar EmpresasDAO.atualizar(Empresas)!!");
             sqle.printStackTrace();
         }
         finally {
+            banco.desconectar(conn);
             return retorno;
         }
-    }
+    } // Método que atualiza dados da empresa por id
 
     public boolean atualizarFoto(int id, byte[] foto){
         boolean retorno = false;
-        Connection conn = banco.conectar();
         try{
-            String sql = "UPDATE empresa SET foto=? WHERE id=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("UPDATE empresa SET foto = ? WHERE id = ?");
             ps.setBytes(1, foto);
             ps.setInt(2, id);
 
-            retorno = ps.executeUpdate()>=1;
-            conn.close();
+            retorno = ps.executeUpdate() >= 1;
         }
         catch(SQLException sqle){
             System.out.println("!!SQLException ao chamar EmpresasDAO.atualizarFoto(int, byte[])!!");
             sqle.printStackTrace();
         }
         finally {
+            banco.desconectar(conn);
             return retorno;
         }
-    }
+    } // Método que atualiza a foto da empresa por id
 
-    //=======================MÉTODOS DELETE=======================\\
-    public boolean deletar(int id){
-        conn = banco.conectar();
-        ArrayList<Integer> listaId = new ArrayList<>();
+//=======================MÉTODOS DELETE=======================\\
+
+    public boolean deletar(int id) {
+        boolean retorno = false;
         try {
+            conn = banco.conectar();
             conn.setAutoCommit(false);
-
-
-            PreparedStatement pstmt = conn.prepareStatement("select t.id from empresa e join funcionario f on f.id_empresa = e.id join telefone t on f.id = t.id_funcionario where e.id = ?");
-            pstmt.setInt(1,id);
-            ResultSet rs = pstmt.executeQuery();
+            
+            PreparedStatement ps = conn.prepareStatement("SELECT t.id FROM empresa e JOIN funcionario f ON f.id_empresa = e.id JOIN telefone t ON f.id = t.id_funcionario WHERE e.id = ?");
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                listaId.add(rs.getInt(1));
+                ps = conn.prepareStatement("DELETE FROM telefone WHERE id = ?");
+                ps.setInt(1,rs.getInt(1));
+                ps.execute();
             }
-            pstmt.close();
-            for (int i = 0; i < listaId.size(); i++) {
-                pstmt = conn.prepareStatement("delete from telefones where id = ?");
-                pstmt.setInt(1,listaId.get(i));
-                pstmt.execute();
-                pstmt.close();
-            }
-
-
-            pstmt = conn.prepareStatement("select qc.id from empresa e join funcionario f on f.id_empresa = e.id join medicao m on f.id = m.cod_gestor join quantidadecondena qc on m.id = qc.cod_medicao where e.id = ?");
-            pstmt.setInt(1,id);
-            rs = pstmt.executeQuery();
-            listaId = new ArrayList<>();
+            ps.close();
+            
+            
+            ps = conn.prepareStatement("SELECT qc.id FROM empresa e JOIN funcionario f ON f.id_empresa = e.id JOIN medicao m ON f.id = m.cod_gestor JOIN quantidadecondena qc ON m.id = qc.cod_medicao WHERE e.id = ?");
+            ps.setInt(1,id);
+            rs = ps.executeQuery();
             while (rs.next()) {
-                listaId.add(rs.getInt(1));
+                ps = conn.prepareStatement("DELETE FROM quantidadecondena WHERE id = ?");
+                ps.setInt(1,rs.getInt(1));
+                ps.execute();
             }
-            pstmt.close();
-            for (int i = 0;i < listaId.size();i++) {
-                pstmt = conn.prepareStatement("delete from quantidadecondena where id = ?");
-                pstmt.setInt(1,listaId.get(i));
-                pstmt.execute();
-                pstmt.close();
-            }
-
-
-            pstmt = conn.prepareStatement("select m.id from empresa e join funcionario f on f.id_empresa = e.id join medicao m on f.id = m.cod_gestor where e.id = ?");
-            pstmt.setInt(1,id);
-            rs = pstmt.executeQuery();
-            listaId = new ArrayList<>();
+            ps.close();
+            rs.close();
+            
+            
+            ps = conn.prepareStatement("SELECT m.id FROM empresa e JOIN funcionario f ON f.id_empresa = e.id JOIN medicao m ON f.id = m.cod_gestor WHERE e.id = ?");
+            ps.setInt(1,id);
+            rs = ps.executeQuery();
             while (rs.next()) {
-                listaId.add(rs.getInt(1));
+                ps = conn.prepareStatement("DELETE FROM medicao WHERE id = ?");
+                ps.setInt(1,rs.getInt(1));
+                ps.execute();
             }
-            pstmt.close();
-            for (int i = 0;i < listaId.size();i++) {
-                pstmt = conn.prepareStatement("delete from medicao where id = ?");
-                pstmt.setInt(1,listaId.get(i));
-                pstmt.execute();
-                pstmt.close();
-            }
+            rs.close();
+            ps.close();
 
 
-            pstmt = conn.prepareStatement("select f.id from empresa e join funcionario f on f.id_empresa = e.id where e.id = ?");
-            pstmt.setInt(1,id);
-            rs = pstmt.executeQuery();
-            listaId = new ArrayList<>();
+            ps = conn.prepareStatement("SELECT f.id FROM empresa e JOIN funcionario f ON f.id_empresa = e.id WHERE e.id = ?");
+            ps.setInt(1,id);
+            rs = ps.executeQuery();
             while (rs.next()) {
-                listaId.add(rs.getInt(1));
+                ps = conn.prepareStatement("DELETE FROM funcionario WHERE id = ?");
+                ps.setInt(1,rs.getInt(1));
+                ps.execute();
             }
-            pstmt.close();
-            for (int i = 0;i < listaId.size();i++) {
-                pstmt = conn.prepareStatement("delete from funcionario where id = ?");
-                pstmt.setInt(1,listaId.get(i));
-                pstmt.execute();
-                pstmt.close();
-            }
+            ps.close();
+            rs.close();
+            
 
-            pstmt = conn.prepareStatement("delete from empresa where id = ?");
-            pstmt.setInt(1,id);
-            if (pstmt.executeUpdate() > 0) {
-                pstmt.close();
-                conn.commit();
-                return true;
-            }
-            pstmt.close();
-            return false;
+            ps = conn.prepareStatement("DELETE FROM empresa WHERE id = ?");
+            ps.setInt(1,id);
+            retorno = ps.executeUpdate() == 1;
+            ps.close();
+            conn.commit();
         } catch (SQLException sql) {
-            try {
+            try { 
                 conn.rollback();
             } catch (SQLException sql1) {
                 sql1.printStackTrace();
             }
             sql.printStackTrace();
-            return false;
         } finally {
             try {
                 conn.setAutoCommit(true);
-                banco.desconectar(conn);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
+            banco.desconectar(conn);
+            return retorno;
         }
-    }
-
-    //=======================MÉTODOS DELETE=======================\\
+    } // Método que deleta empresa por id
 }

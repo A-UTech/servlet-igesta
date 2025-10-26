@@ -26,17 +26,15 @@ public class Empresas extends HttpServlet {
         String regiao = request.getParameter("regiao");
 
         ArrayList<com.backigesta.model.Empresas> empresas;
-        if (regiao != null && !regiao.equals("todos")) {
-            empresas = daoEmpresas.selecionarPorRegiao(regiao);
-        }
-        else if(procura == null || regiao.equals("todos")){
+        if (regiao != null && !"todos".equals(regiao)) {
+            empresas = daoEmpresas.selecionarPorEstado(regiao);
+        } else if(procura == null || "todos".equals(regiao)){
             empresas = daoEmpresas.selecionarTodos();
-        }
-        else {
+        } else {
             empresas = daoEmpresas.selecionarPorNome(procura);
         }
 
-        ArrayList<String> planos = planoDao.buscarNomes();
+        ArrayList<String> planos = planoDao.selecionarNomes();
         request.setAttribute("planos",planos);
         request.setAttribute("empresas", empresas);
         request.getRequestDispatcher("/WEB-INF/view/company.jsp").forward(request, response);
@@ -67,20 +65,13 @@ public class Empresas extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("idEmpresa"));
         String nome = request.getParameter("nomeEmpresa");
         String email = request.getParameter("emailEmpresa");
-        String regiao = request.getParameter("regiaoEmpresa");
+        String estado = request.getParameter("regiaoEmpresa");
+        String cidade = request.getParameter("cidadeEmpresa");
         String unidade = request.getParameter("unidadeEmpresa");
         String senha = request.getParameter("senhaEmpresa");
         String plano = request.getParameter("planoEmpresa");
 
-        com.backigesta.model.Empresas empresa = daoEmpresas.selecionarPorId(id);
-        empresa.setNome(nome);
-        empresa.setEmail(email);
-        empresa.setRegiao(regiao);
-        empresa.setUnidade(unidade);
-        if(!senha.equals("")){
-            empresa.setSenha(senha);
-        }
-        empresa.setNomePlano(plano);
+        com.backigesta.model.Empresas empresa = new com.backigesta.model.Empresas(id,nome,email,senha,plano,estado,cidade,unidade);
         boolean alterado = daoEmpresas.atualizar(empresa);
 
         request.setAttribute("alterado", alterado ? "true" : "false");
@@ -93,11 +84,12 @@ public class Empresas extends HttpServlet {
         String email = request.getParameter("emailEmpresa");
         String cnpj = request.getParameter("cnpjEmpresa");
         String estado = request.getParameter("regiaoEmpresa");
+        String cidade = request.getParameter("cidadeEmpresa");
         String unidade = request.getParameter("unidadeEmpresa");
         String senha = request.getParameter("senhaEmpresa");
         String plano = request.getParameter("planoEmpresa");
 
-        boolean retorno = daoEmpresas.inserir(new com.backigesta.model.Empresas(nome,email,cnpj, senha, plano,estado,unidade));
+        boolean retorno = daoEmpresas.inserir(new com.backigesta.model.Empresas(nome,email,cnpj, senha, plano,estado,cidade, unidade));
         request.setAttribute("adicionado", retorno ? "true" : "false");
         mostrarEmpresa(request, response);
     }

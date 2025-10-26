@@ -1,6 +1,5 @@
 package com.backigesta.model;
 
-//Classe criada por Artur ;)
 public class Cargo {
 //=======================ATRIBUTOS=======================\\
 
@@ -8,42 +7,32 @@ public class Cargo {
     private String nome;
     private String descricao;
 
-//=======================MÉTODOS DA CLASSE=======================\\
-
-    //nenhum ainda... :P
-
 //=======================CONSTRUTORES=======================\\
 
-
-    //Vazio
     public Cargo() {
-    }
+    } // Construtor vazio
 
-    //Completo
     public Cargo(int id, String nome, String descricao) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
-    }
+    } // Construtor completo
 
-    //Sem Id
     public Cargo(String nome, String descricao) {
         this.nome = nome;
         this.descricao = descricao;
-    }
+    } // Construtor nome e descricao
 
-    //Sem descricao
     public Cargo(int id, String nome) {
         this.id = id;
         this.nome = nome;
-    }
+    } // Construtor com id e nome
 
-    //Sem Id nem Descricao
     public Cargo(String nome) {
         this.nome = nome;
-    }
+    } // Construtor com nome
 
-    //=======================MÉTODOS GET=======================\\
+//=======================MÉTODOS GET=======================\\
 
     public int getId() {
         return id;
@@ -68,7 +57,6 @@ public class Cargo {
     }
 
 //=======================TO STRING=======================\\
-
 
     @Override
     public String toString() {

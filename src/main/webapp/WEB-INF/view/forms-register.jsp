@@ -51,6 +51,7 @@
       <option value="RS"></option>
       <option value="SC"></option>
     </datalist>
+    <input type="text" placeholder="Cidade" required name="cidade">
     <button type="button" onclick="enviarFormulario('buttonSubmit','criarContaEmpresa')" id="buttonSubmit">Entrar</button>
   </form>
 </section>

@@ -43,7 +43,14 @@
         <a href="selectAdmin"><img src="${pageContext.request.contextPath}/assets/icons/aside-adm.svg"><span>Administradores</span></a>
     </nav>
 
-    <a href="" class="perfil"><img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg"> <span>Lucas Lima</span></a>
+    <a href="entrarPerfil" class="perfil">
+        <% if (admin.getFoto() == null) { %>
+            <img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
+        <% } else { %>
+            <img src="getFoto?id=<%=admin.getId()%>&tipo=Admin">
+        <% } %>
+        <span><%=admin.getNome()%></span>
+    </a>
 </aside>
 
     <main>

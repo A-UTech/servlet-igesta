@@ -11,7 +11,9 @@ public class TelefoneDao {
     private Connection conn;
     private final Conexao conexao = new Conexao();
 
-    public boolean inserirTelefone(Telefone telefone) {
+//=======================MÉTODOS CREATE=======================\\
+
+    public boolean inserir(Telefone telefone) {
         boolean retorno = false;
         try {
             conn = conexao.conectar();
@@ -27,14 +29,15 @@ public class TelefoneDao {
             conexao.desconectar(conn);
             return retorno;
         }
-    }
+    } // Método que inserir um novo Telefone no banco
 
-    public ArrayList<Telefone> buscarPorIdFuncionario(int id) {
-        boolean retorno = false;
+//=======================MÉTODOS READ=======================\\
+
+    public ArrayList<Telefone> selecionarPorIdFuncionario(int id) {
         ArrayList<Telefone> telefones = new ArrayList<>();
         try {
             conn = conexao.conectar();
-            PreparedStatement ps = conn.prepareStatement("select * from telefone where id_funcionario = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM telefone WHERE id_funcionario = ?");
             ps.setInt(1,id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -48,17 +51,19 @@ public class TelefoneDao {
             conexao.desconectar(conn);
             return telefones;
         }
-    }
+    } // Método para selecionar os telefones por o IdFuncionario
 
-    public boolean atualizarTelefone(Telefone telefone) {
+//=======================MÉTODOS UPDATE=======================\\
+
+    public boolean atualizar(Telefone telefone) {
         boolean retorno = false;
         try{
             conn = conexao.conectar();
-            PreparedStatement ps = conn.prepareStatement("UPDATE telefone SET telefone=? where id = ?");
+            PreparedStatement ps = conn.prepareStatement("UPDATE telefone SET telefone = ? WHERE id = ?");
             ps.setString(1,telefone.getTelefone());
             ps.setInt(2,telefone.getId());
 
-            retorno = ps.executeUpdate()==1;
+            retorno = ps.executeUpdate() == 1;
         }
         catch(SQLException sqle){
             System.out.println("!!SQLException ao chamar FuncionariosDAO.atualizar(Funcionarios)!!");
@@ -68,13 +73,15 @@ public class TelefoneDao {
             conexao.desconectar(conn);
             return retorno;
         }
-    }
+    } // Método para atualizar dados do telefone
 
-    public boolean deletarTelefone(int id) {
+//=======================MÉTODOS DELETE=======================\\
+
+    public boolean deletar(int id) {
         boolean retorno = false;
         try{
             conn = conexao.conectar();
-            PreparedStatement ps = conn.prepareStatement("delete from telefone where id = ?");
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM telefone WHERE id = ?");
             ps.setInt(1,id);
 
             retorno = ps.executeUpdate()==1;
@@ -87,5 +94,5 @@ public class TelefoneDao {
             conexao.desconectar(conn);
             return retorno;
         }
-    }
+    } // Método para deletar um registro de telefone por id
 }

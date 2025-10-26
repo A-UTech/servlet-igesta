@@ -22,103 +22,85 @@
     text-decoration: none;
     scroll-behavior: smooth;
     list-style-type: none;
-    box-sizing: border-box;
     border: 0;
     outline: 0;
 }
 
 body {
     background: var(--corPreto);
-    height: 100vh;
-    width: 100%;
     display: grid;
-    grid-template-columns: 75px auto;
-    transition: 500ms;
-
-}
-
-body:has(aside:hover) {grid-template-columns: 270px auto}
-
-h1, h2 {font: bold 3em var(--fontText)}
-
-aside, aside a.logo, aside > nav a, aside a.perfil,
-header, menu, menu button.functions, .search, li:last-child {
-    display: flex;
+    grid-template-columns: 10% 85%;
+    gap: 25px;
     align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
+h1, h2 {
+    font: bold 3em var(--fontText);
+}
+
+aside > div, header, menu, menu button.functions, li:last-child, div.perfil {
+    display: flex;
+    align-items: center}
 ul:first-child > li, button.options:hover {color: var(--corPreto)}
 
-/* sidebar */
+/* aside */
+aside, main {
+    height: 90vh;
+}
 aside {
-    background: var(--corCinza);
-    height: 100vh;
-    padding-left: 10px;
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    place-items: center;
+    gap: 30px;
 }
 
-aside a.logo {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    gap: 15px;
+aside > img {
+    width: 80px;
 }
 
-aside a.logo img {width: 50px;}
-
-aside > nav > a:not(:last-child) {margin-bottom: 20px}
-
-aside > nav img {width: 30px}
-
-aside > a.perfil > img {
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
-    border-radius: 50%;
+aside > div {
+    background-color: var(--corCinza);
+    height: 100%;
+    width: 100%;
+    border-radius: 15px;
+    flex-direction: column;
+    justify-content: center;
 }
 
-aside > nav a, aside a.perfil {
-    gap: 20px;
-    width: 250px;
-    padding: 10px;
-    border-radius: 10px;
-    transition: 500ms;
+aside > div > h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
-aside nav a:hover, aside a.perfil:hover {background-color: #202020}
-
-aside span, aside a.logo h2 {
-    display: none;
-    width: 200px;
-    opacity: 0;
-}
-
-aside:hover span, aside:hover a.logo h2 {
-    display: block;
-    opacity: 1;
-    transition: 500ms;
-}
-
-aside > .perfil {
-    position: absolute;
-    bottom: 7px;
-    left: 7px;
-}
-
-
-/* main */
-main {
-    padding: 0 20px 20px 20px;
-}
 
 main {
     display: grid;
-    grid-template-rows: 15% 85%;
+    grid-template-rows: 17% 83%;
     width: 100%;
-    height: 100vh;
 }
 
-header {justify-content: space-between}
+header {
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 20px;
+}
 
+div.perfil {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    justify-content: center;
+    gap: 20px;
+    font-size: 1.2rem;
+}
+
+div.perfil > img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+}
 
 /* menu */
 menu {gap: 5px;}
@@ -129,7 +111,6 @@ menu button {
     height: 40px;
     border-radius: 100px}
 
-
 /* menu, functions */
 menu .functions {
     background: var(--corCinza);
@@ -137,7 +118,6 @@ menu .functions {
     width: 40px;
     justify-content: space-evenly}
 menu .functions:hover {background: #4d4d56}
-
 
 /* menu, options */
 menu > form > button.options {
@@ -148,9 +128,11 @@ menu > form > button.options {
     font-weight: 500}
 menu > form > button.options:hover {background: var(--corVC);}
 
-
 /* menu, search */
-.search {
+/* ===== Barra de pesquisa ===== */
+#search {
+    display: flex;
+    align-items: center;
     background: var(--corCinza);
     border-radius: 50px;
     width: 40px;
@@ -159,23 +141,18 @@ menu > form > button.options:hover {background: var(--corVC);}
     position: relative;
 }
 
-form.search {transition: 800ms}
-
-form.search input {
+form#search {transition: 800ms}
+form#search > input {
     display: none;
     background: transparent;
     width: 120px;
-    text-align: center;
-}
-
-form.search:hover {
+    text-align: center}
+form#search:hover {
     width: 200px;
     justify-content: space-evenly;
 }
-
-form.search:hover input{display: block}
-
-form.search:hover img{content: url(../assets/icons/sent.svg)}
+form#search:hover > input{display: block}
+form#search:hover img{content: url(../assets/icons/edit.svg)}
 
 section {
     background: var(--corCinza);
@@ -193,11 +170,9 @@ div.table {
     max-height: 100%;
     overflow-y: auto;
     display: block;
-}
+  }
 
-div.company > ul {grid-template-columns: repeat(8, 1fr)}
-div.condemn > ul, div.employeeContact > ul {grid-template-columns: repeat(5, 1fr)}
-div.payment > ul, div.adm > ul {grid-template-columns: repeat(4, 1fr)}
+div > ul {grid-template-columns: repeat(6, 1fr)}
 
 ul {
     display: grid;
@@ -217,7 +192,6 @@ ul:first-child {
 ul:not(:first-child) {
     transition: 500ms;
 }
-
 ul:not(:first-child):hover {background: #292a2d}
 
 li:last-child {gap: 10px}
@@ -229,20 +203,6 @@ div.condemn ul li:nth-child(3) {
     text-align: center;
 }
 
-li {
-    max-width: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
-}
-
-select.selectPhone {
-    background: var(--corCinza);
-    color: var(--corBranco);
-    padding: 2px;
-    border-radius: 5px;
-}
-
-
 dialog {
     border: none;
     border-radius: 10px;
@@ -251,19 +211,20 @@ dialog {
     background: var(--corCinza);
     color: var(--corCinza);
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+
+    /* centraliza na tela */
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
-
 dialog input,textarea,option,select {
-    background-color: var(--corBranco);
-    color: var(--corPreto);
+    background-color: white;
+    color: black;
 }
 
 dialog input::placeholder, textarea::placeholder, option::placeholder {
-    color: var(--corPreto);
+    color: black;
 }
 
 #fotoPerfil {
@@ -277,7 +238,7 @@ dialog {
     align-items: center;
     justify-content: space-around;
     border-radius: 20px;
-    background-color: var(--corPreto);
+    background-color: #141414;
 }
 dialog[open] {
     display: flex;
@@ -285,7 +246,7 @@ dialog[open] {
 
 dialog.popupInputs {
     width: 700px;
-    height: 600px;
+    height: 500px;
 }
 
 dialog.popupInputs > h2 {
@@ -302,7 +263,7 @@ dialog.popupInputs input, dialog.popupInputs select, dialog.popupInputs textarea
     height: 70px;
     resize: none;
     padding: 20px;
-    background: var(--corBranco);
+    background: #FCFCFC;
     border-radius: 15px;
 }
 
@@ -311,16 +272,15 @@ dialog.popupInputs textarea {
 }
 
 dialog.popupInputs button {
-    background: var(--corVC);
+    background: #A1E1D3;
 }
 
-dialog.popupInputs > form, .form {
+dialog.popupInputs > form {
     width: 300px;
     height: 400px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    row-gap: 10px;
+    justify-content: space-around;
 }
 
 dialog img {
@@ -353,7 +313,7 @@ dialog.popupButtons button {
     width: 120px;
     height: 40px;
     border-radius: 50px;
-    color: var(--corBranco);
+    color: #FCFCFC;
     font-weight: bold;
 }
 
@@ -362,5 +322,5 @@ dialog.popupButtons button:first-child {
 }
 
 dialog.popupButtons button:last-child {
-    background-color: var(--corVE);
+    background-color: #1A7B66;
 }

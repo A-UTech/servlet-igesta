@@ -15,6 +15,7 @@
             return;
         }
 
+        String caminhoVolta = (String) session.getAttribute("caminhoVolta");
         Admin admin = (Admin) session.getAttribute("admin");
         Empresas empresa = (Empresas) session.getAttribute("empresa");
         String tipo = "Empresa";
@@ -52,7 +53,7 @@
     </div>
 
     <section>
-        <a href="javascript:history.back()">
+        <a href="<%=caminhoVolta%>">
             <img src="${pageContext.request.contextPath}/assets/icons/arrow-right.svg">
             <span>Voltar</span>
         </a>

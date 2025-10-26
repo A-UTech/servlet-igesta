@@ -1,10 +1,11 @@
 function alterarEmpresa(idEmpresa){
-    let[nome, email, regiao, unidade, plano] = document.getElementById('empresaAlterar').value.split(';')
+    let[nome, email, regiao,cidade , unidade, plano] = document.getElementById('empresaAlterar'+idEmpresa).value.split(';')
 
     document.getElementById('nomeEmpresa').value = nome;
     document.getElementById('emailEmpresa').value = email;
     document.getElementById(plano).selected = true;
     document.getElementById('regiaoEmpresa').value = regiao;
+    document.getElementById('cidadeEmpresa').value = cidade;
     document.getElementById('unidadeEmpresa').value = unidade;
     document.getElementById('idEmpresa').value = idEmpresa;
 

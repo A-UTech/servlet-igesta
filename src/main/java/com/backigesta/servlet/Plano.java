@@ -36,9 +36,9 @@ public class Plano extends HttpServlet {
 
         // Direcionado qual método de procura será usado
         if (procura != null) {
-            lista = planoDao.buscarPlanosNome(procura.toLowerCase());
+            lista = planoDao.selecionarPorNome(procura.toLowerCase());
         } else {
-            lista = planoDao.buscarPlanos();
+            lista = planoDao.selecionarTodos();
         }
 
         // Colocando o atributo lista no request
@@ -76,7 +76,7 @@ public class Plano extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("planoId"));
 
         // Usando o método da classe CondenasDao para deletar um registro
-        boolean deletado = planoDao.deletarPlano(id);
+        boolean deletado = planoDao.deletar(id);
         System.out.println(deletado);
 
         // Colocando o atributo deletado no request
@@ -94,7 +94,7 @@ public class Plano extends HttpServlet {
         int armazenamento = Integer.parseInt(request.getParameter("armazenamento"));
 
         // Usando o método da classe CondenasDao para alterar os dados daquele registro
-        boolean alterado = planoDao.alterarPlano(new Planos(id,nomePlano,mensalidade,armazenamento));
+        boolean alterado = planoDao.atualizar(new Planos(id,nomePlano,mensalidade,armazenamento));
 
         // Colocando o atributo alterado no request
         request.setAttribute("alterado",alterado ? "true" : "false");
@@ -110,7 +110,7 @@ public class Plano extends HttpServlet {
         int armazenamento = Integer.parseInt(request.getParameter("armazenamento"));
 
         // Usando o método da classe CondenasDao para adicioanar um registro
-        boolean adicionado = planoDao.adicionarPlano(new Planos(nomePlano,mensalidade,armazenamento));
+        boolean adicionado = planoDao.inserir(new Planos(nomePlano,mensalidade,armazenamento));
 
         // Colocando o atributo adicionado no request
         request.setAttribute("adicionado",adicionado ? "true" : "false");
