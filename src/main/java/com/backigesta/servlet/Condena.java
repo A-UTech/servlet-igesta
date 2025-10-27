@@ -14,9 +14,10 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+//Servlet usada para o CRUD de condenas da Area Restrita
 @WebServlet(urlPatterns = {"/selectCondena","/adicionarCondena","/alterarCondena","/deletarCondena"})
 public class Condena extends HttpServlet {
-
+    // Declarando os DAO's utilizados.
     CondenaDao daoCondenas = new CondenaDao();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

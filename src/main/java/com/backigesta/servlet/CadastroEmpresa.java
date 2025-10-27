@@ -12,11 +12,17 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+//Servlet usada para ações de entrar/cadastrar uma conta de empresa
 @WebServlet(urlPatterns = {"/criarContaEmpresa", "/criarSenhaEmpresa","/entrarCadastroEmpresa"})
 public class CadastroEmpresa extends HttpServlet {
+    //Declarando os DAO's utilizados.
     EmpresaDAO empresaDAO = new EmpresaDAO();
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //Capturando o caminho utilizado para chegar no método doPost
         String caminho = request.getServletPath();
+
+        // Direcionando o cliente à um método a partir do caminho
         if (caminho.equals("/criarContaEmpresa")) {
             cadastrarEmpresa(request, response);
         } else if (caminho.equals("/criarSenhaEmpresa")) {
@@ -26,6 +32,7 @@ public class CadastroEmpresa extends HttpServlet {
         }
     }
 
+    // Método para logar em uma empresa
     protected void entrarCadastroEmpresa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String plano = request.getParameter("plano");
         request.setAttribute("plano",plano);
@@ -33,19 +40,24 @@ public class CadastroEmpresa extends HttpServlet {
         rd.forward(request,response);
     }
 
+    // Método para definir a senha da conta Empresarial.
     protected void criarSenha(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //Declarando o objeto da sessão.
         HttpSession session = request.getSession(false);
+
+        // Capturando a senha dada no Formulario.
         String senha = request.getParameter("password");
 
-
-        // pega o id salvo na sessão
+        // Pegando o objeto Empresa salvo na sessão
         com.backigesta.model.Empresa empresa = (com.backigesta.model.Empresa) session.getAttribute("contaEmpresa");
 
+        //Alterando a senha do objeto
         empresa.setSenha(senha);
+        // Inserindo a objeto empresa no banco
         empresaDAO.inserir(empresa);
         request.setAttribute("email",empresa.getEmail());
         request.setAttribute("senha",empresa.getSenha());
-        // limpa a empresa da sessão
+        // limpando o objeto empresa da sessão
         request.getSession(false).removeAttribute("contaEmpresa");
         RequestDispatcher rd = request.getRequestDispatcher("loginEmpresa");
         rd.forward(request,response);
@@ -62,13 +74,16 @@ public class CadastroEmpresa extends HttpServlet {
         String cidade = request.getParameter("cidade");
         String estado = request.getParameter("states");
 
-        // define objeto que irá chamar os métodos
+        // define um objeto com os parâmetros passados.
         com.backigesta.model.Empresa empresa = new com.backigesta.model.Empresa(nome,email,cnpj,plano,estado,cidade,unidade);
 
+        // Checando se o email e cnpj fornecidos existem no Banco?
         if (!empresaDAO.existeCnpjOrEmail(empresa.getEmail(),empresa.getCnpj())) {
+            //Enviando o objeto de Empresa para a Session.
             request.getSession().setAttribute("contaEmpresa", empresa);
             response.sendRedirect(request.getContextPath() + "/htmls/forms-register_password.html");
         } else {
+            //!!!!
             request.setAttribute("existeConta","true");
             RequestDispatcher rd = request.getRequestDispatcher("entrarCadastroEmpresa");
             rd.forward(request,response);

@@ -1,6 +1,7 @@
 package com.backigesta.servlet;
 
 import com.backigesta.dao.FuncionarioDAO;
+
 import com.backigesta.dao.TelefoneDao;
 import com.backigesta.model.Funcionario;
 import com.backigesta.model.Telefone;
@@ -13,9 +14,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+//Servlet usada para o CRUD de contatos da Area Restrita
 @WebServlet(urlPatterns = {"/selectContato","/adicionarContato","/alterarContato","/deletarContato"})
 public class Contato extends HttpServlet {
-
+    // Declarando os DAO's utilizados.
     FuncionarioDAO funcionariosDAO = new FuncionarioDAO();
     TelefoneDao telefoneDao = new TelefoneDao();
 

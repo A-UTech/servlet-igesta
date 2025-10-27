@@ -8,8 +8,10 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
+//Servlet usada no CRUD de planos da Area Restrita
 @WebServlet(urlPatterns = {"/selectPlano","/adicionarPlano","/alterarPlano","/deletarPlano"})
 public class Plano extends HttpServlet {
+    // Declarando os DAO's utilizados.
     PlanoDao planoDao = new PlanoDao();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

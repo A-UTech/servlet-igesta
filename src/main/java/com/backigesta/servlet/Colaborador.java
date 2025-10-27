@@ -36,8 +36,9 @@ public class Colaborador extends HttpServlet {
         }
     }
 
-    //Função que retorna Hashmap de todos os funcionarios
+    //Função que retorna Hashmap de todos os funcionarios, com seus contatos
     protected void mostrarSelects(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //Declarando a session
         HttpSession session = request.getSession(false);
 
         //Buscando os parâmetros de filtragem (Procura por nome / Tipo de Cargo)
@@ -49,11 +50,14 @@ public class Colaborador extends HttpServlet {
 
         //Criando e preenchendo
         List<Funcionario> funcionarios;
-        if (procura != null) { //Caso HOUVE pesquisa por nome:
+        if (procura != null) {
+            //Caso HOUVE pesquisa por nome:
             funcionarios = daoFuncionarios.selecionarPorNome(procura, idEmpresa);
-        } else if (cargo == null || cargo.equals("")) { //Caso não houve o uso de filtros
+        } else if (cargo == null || cargo.equals("")) {
+            //Caso não houve o uso de filtros
             funcionarios = daoFuncionarios.selecionarTodos(idEmpresa);
-        } else { //Caso HOUVE filtragem por cargo.
+        } else {
+            //Caso HOUVE filtragem por cargo.
             funcionarios = daoFuncionarios.selecionarPorCargo(cargo, idEmpresa);
         }
 
@@ -82,21 +86,27 @@ public class Colaborador extends HttpServlet {
         //Buscando os Endpoints vindos de Formularios, e redirecionando para os respectivos métodos.
         String caminho = request.getServletPath();
         if(caminho.equals("/adicionarCollab")) {
+            //Método de adicionar registro de colaborador
             adicionarColaborador(request,response);
         }
         else if(caminho.equals("/deletarCollab")) {
+            //Método de deletar registro de colaborador
             deletarColaborador(request,response);
         }
         else if(caminho.equals("/alterarCollab")) {
+            //Método de alterar um registro de colaborador
             alterarColaborador(request,response);
         }
         else if(caminho.equals("/adicionarContatoCollab")) {
+            //Método de adicionar contato ao colaborador
             adicionarContatoEmpresa(request,response);
         }
         else if(caminho.equals("/alterarContatoCollab")) {
+            //Método de alterar contato de um colaborador
             alterarContatoEmpresa(request,response);
         }
         else if(caminho.equals("/deletarContatoCollab")) {
+            //Método de deletar contato de um colaborador
             deletarContatoEmpresa(request,response);
         }
     }
@@ -109,8 +119,7 @@ public class Colaborador extends HttpServlet {
         String cpf = request.getParameter("cpf");
         String senha = request.getParameter("senha");
 
-        //O input de Cargo, retorna um Value no seguinte formato: cargo;id
-        //Separando ambas as informacoes com um Split, podemos definir com maior facilidade a permissao, e nome do cargo atribuido ao funcionario.
+        //O input de Cargo, retorna uma concatenação do nome e id de cargo, separados por ";"
         String[] cargo = request.getParameter("cargo").split(";");
         String nomeCargo = cargo[0];
         int idPermissao = Integer.parseInt(cargo[1]);
@@ -118,7 +127,7 @@ public class Colaborador extends HttpServlet {
         //Transformando o input de tempo para LocalTime.
         String[] tempo = request.getParameter("turno").split(":");
         LocalTime turno = new Time(Integer.parseInt(tempo[0]), Integer.parseInt(tempo[1]), 0).toLocalTime();
-        //Encontrando informacoes da empresa.
+        //Buscando as informações da empresa pelo objeto na Session.
         String nomeEmpresa = ((Empresa) request.getSession().getAttribute("empresa")).getNome();
         int idEmpresa = ((Empresa) request.getSession().getAttribute("empresa")).getId();
 
@@ -159,6 +168,7 @@ public class Colaborador extends HttpServlet {
         //Alterando todos os atributos com os parâmetros passados no formulario.
         funcionario.setNome(request.getParameter("nome"));
         funcionario.setEmail(request.getParameter("email"));
+        //O input de Cargo, retorna uma concatenação do nome e id de cargo, dessa separados por "_"
         String[] cargo = request.getParameter("cargo").split("_");
         funcionario.setNomeCargo(cargo[0]);
         funcionario.setIdPermissoes(Integer.parseInt(cargo[1]));
