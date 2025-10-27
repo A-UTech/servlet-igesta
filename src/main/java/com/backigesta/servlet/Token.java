@@ -1,9 +1,9 @@
 package com.backigesta.servlet;
 
 import com.backigesta.dao.AdminDAO;
-import com.backigesta.dao.EmpresasDAO;
+import com.backigesta.dao.EmpresaDAO;
 import com.backigesta.model.Admin;
-import com.backigesta.model.Empresas;
+import com.backigesta.model.Empresa;
 import com.backigesta.util.JavaMail;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -36,14 +36,14 @@ public class Token extends HttpServlet {
         String token = (String) session.getAttribute("token");
         String email = (String) session.getAttribute("email");
         AdminDAO adminDAO = new AdminDAO();
-        EmpresasDAO empresasDAO = new EmpresasDAO();
+        EmpresaDAO empresasDAO = new EmpresaDAO();
         String verificao = request.getParameter("token1") + request.getParameter("token2") + request.getParameter("token3") + request.getParameter("token4") + request.getParameter("token5");
         if (verificao.equals(token)) {
             Admin admin = adminDAO.selecionarPorEmail(email);
             if (admin != null) {
                 session.setAttribute("admin", admin);
             } else {
-                Empresas empresa = empresasDAO.selecionarPorEmail(email);
+                Empresa empresa = empresasDAO.selecionarPorEmail(email);
                 session.setAttribute("empresa",empresa);
             }
             response.sendRedirect("index.jsp");

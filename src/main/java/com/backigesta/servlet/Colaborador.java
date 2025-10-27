@@ -1,10 +1,10 @@
 package com.backigesta.servlet;
 
-import com.backigesta.dao.EmpresasDAO;
-import com.backigesta.dao.FuncionariosDAO;
+import com.backigesta.dao.EmpresaDAO;
+import com.backigesta.dao.FuncionarioDAO;
 import com.backigesta.dao.TelefoneDao;
-import com.backigesta.model.Empresas;
-import com.backigesta.model.Funcionarios;
+import com.backigesta.model.Empresa;
+import com.backigesta.model.Funcionario;
 import com.backigesta.model.Telefone;
 import com.backigesta.util.Regex;
 import jakarta.servlet.ServletException;
@@ -18,16 +18,15 @@ import java.io.IOException;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 //Servlet usada para as ações do CRUD de Colaboradores, da area da empresa.
 @WebServlet(urlPatterns = {"/selectCollab", "/alterarCollab", "/deletarCollab", "/adicionarCollab", "/adicionarContatoCollab", "/alterarContatoCollab", "/deletarContatoCollab"})
-public class Colaboradores extends HttpServlet {
+public class Colaborador extends HttpServlet {
     //Definindo os DAOs que são utilizados nos métodos.
-    FuncionariosDAO daoFuncionarios = new FuncionariosDAO();
-    EmpresasDAO daoEmpresas = new EmpresasDAO();
+    FuncionarioDAO daoFuncionarios = new FuncionarioDAO();
+    EmpresaDAO daoEmpresas = new EmpresaDAO();
     TelefoneDao daoTelefones = new TelefoneDao();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,10 +45,10 @@ public class Colaboradores extends HttpServlet {
         String cargo = request.getParameter("filter");
 
         //Buscando o Id da empresa em sessão.
-        int idEmpresa = ((Empresas) session.getAttribute("empresa")).getId();
+        int idEmpresa = ((Empresa) session.getAttribute("empresa")).getId();
 
         //Criando e preenchendo
-        List<Funcionarios> funcionarios;
+        List<Funcionario> funcionarios;
         if (procura != null) { //Caso HOUVE pesquisa por nome:
             funcionarios = daoFuncionarios.selecionarPorNome(procura, idEmpresa);
         } else if (cargo == null || cargo.equals("")) { //Caso não houve o uso de filtros
@@ -59,13 +58,13 @@ public class Colaboradores extends HttpServlet {
         }
 
         //Definindo um HashMap, que carrega o objeto do funcionario, mais uma ArrayList de seus telefones registrados.
-        HashMap<Funcionarios, ArrayList<Telefone>> funcMap = new HashMap<>();
-        for (Funcionarios func : funcionarios) {
+        HashMap<Funcionario, ArrayList<Telefone>> funcMap = new HashMap<>();
+        for (Funcionario func : funcionarios) {
             funcMap.put(func, daoTelefones.selecionarPorIdFuncionario(func.getId()));
         }
 
         //Selecionando todos os funcionarios com telefone.
-        ArrayList<Funcionarios> funcionariosComTelefone = daoFuncionarios.selecionarTodosComTelefone();
+        ArrayList<Funcionario> funcionariosComTelefone = daoFuncionarios.selecionarTodosComTelefone();
 
         //Buscando informações do Plano atual da empresa
         String infoPlano = daoEmpresas.selecionarInformacoesPlano(idEmpresa);
@@ -120,12 +119,12 @@ public class Colaboradores extends HttpServlet {
         String[] tempo = request.getParameter("turno").split(":");
         LocalTime turno = new Time(Integer.parseInt(tempo[0]), Integer.parseInt(tempo[1]), 0).toLocalTime();
         //Encontrando informacoes da empresa.
-        String nomeEmpresa = ((Empresas) request.getSession().getAttribute("empresa")).getNome();
-        int idEmpresa = ((Empresas) request.getSession().getAttribute("empresa")).getId();
+        String nomeEmpresa = ((Empresa) request.getSession().getAttribute("empresa")).getNome();
+        int idEmpresa = ((Empresa) request.getSession().getAttribute("empresa")).getId();
 
         //Inserindo a classe ao banco com seu DAO
         boolean adicionado = daoFuncionarios.inserir(
-                new Funcionarios(nome, email, cpf, senha, nomeEmpresa, nomeCargo, idPermissao, turno), idEmpresa
+                new Funcionario(nome, email, cpf, senha, nomeEmpresa, nomeCargo, idPermissao, turno), idEmpresa
         );
         //O Atributo "adicionado" servirá para mostrar o Popup de confirmação de ação na Area Restrita e da Empresa.
         request.setAttribute("adicionado",adicionado ? "true" : "false");
@@ -148,10 +147,10 @@ public class Colaboradores extends HttpServlet {
     protected void alterarColaborador(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Buscando o id do funcionario e da empresa.
         int id = Integer.parseInt(request.getParameter("id"));
-        int idEmpresa = ((Empresas) request.getSession().getAttribute("empresa")).getId();
+        int idEmpresa = ((Empresa) request.getSession().getAttribute("empresa")).getId();
 
         //Buscando o objeto do funcionario no Banco a partir do DAO.
-        Funcionarios funcionario = daoFuncionarios.selecionarPorId(id);
+        Funcionario funcionario = daoFuncionarios.selecionarPorId(id);
 
         //Transformando o Value de Tempo em um LocalTime
         String[] tempo = request.getParameter("turno").split(":");

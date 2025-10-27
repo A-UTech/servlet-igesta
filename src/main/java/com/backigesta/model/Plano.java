@@ -1,6 +1,6 @@
 package com.backigesta.model;
 
-public class Planos {
+public class Plano {
 //==========ATRIBUTOS==========\\
 
     private int id;
@@ -10,22 +10,22 @@ public class Planos {
 
 //==========CONSTRUTORES==========\\
 
-    public Planos(){} // Construtor Vazio
+    public Plano(){} // Construtor Vazio
 
-    public Planos(int id, String nome, double mensalidade, int armazenamento){
+    public Plano(int id, String nome, double mensalidade, int armazenamento){
         this.id = id;
         this.nome = nome;
         this.mensalidade = mensalidade;
         this.armazenamento = armazenamento;
     } // Construtor Completo
 
-    public Planos(String nome, double mensalidade, int armazenamento){
+    public Plano(String nome, double mensalidade, int armazenamento){
         this.nome = nome;
         this.mensalidade = mensalidade;
         this.armazenamento = armazenamento;
     } // Construtor com nome, mensalidade e armazenamento
 
-    public Planos(String nome, int mensalidade) {
+    public Plano(String nome, int mensalidade) {
         this.nome = nome;
         this.mensalidade = mensalidade;
     } // Construtor com nome e mensalidade

@@ -16,7 +16,7 @@
         <h1>Login de administrador</h1>
         <form action="loginAdmin" method="post" id="loginAdmin">
             <input type="email" name="email" placeholder="E-mail" required minlength="10" autocomplete="email" autofocus>
-            <input type="password" name="password" placeholder="Senha" required min="6" autocomplete="current-password">
+            <input type="password" name="password" placeholder="Senha" autocomplete="current-password" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
             <button type="button" onclick="enviarFormulario('buttonSubmit','loginAdmin')" id="buttonSubmit">Entrar</button>
         </form>
     </section>

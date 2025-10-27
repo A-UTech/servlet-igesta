@@ -1,18 +1,18 @@
 package com.backigesta.dao;
 
 import com.backigesta.conexao.Conexao;
-import com.backigesta.model.Condenas;
+import com.backigesta.model.Condena;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class CondenasDao{
+public class CondenaDao {
     private Connection conn;
     private Conexao banco = new Conexao();
 
 //=======================MÉTODOS CREATE=======================\\
 
-    public boolean inserir(Condenas condena) {
+    public boolean inserir(Condena condena) {
         boolean retorno = false;
         try {
             conn = banco.conectar();
@@ -37,6 +37,7 @@ public class CondenasDao{
 
             retorno = ps.executeUpdate() == 0;
         } catch (SQLException sql) {
+            System.out.println("!!SQLException ao chamar CondenaDAO.inserir(condena)!!");
             sql.printStackTrace();
         } finally {
             banco.desconectar(conn);
@@ -46,53 +47,56 @@ public class CondenasDao{
 
 //=======================MÉTODOS READ=======================\\
 
-    public ArrayList<Condenas> selecionarTodos() {
-        ArrayList<Condenas> listas = new ArrayList<>();
+    public ArrayList<Condena> selecionarTodos() {
+        ArrayList<Condena> listas = new ArrayList<>();
         try {
             conn = banco.conectar();
             Statement ps = conn.createStatement();
             ResultSet rs = ps.executeQuery("SELECT c.id,c.nome,a.nome,c.descricao,c.tipo_condena FROM condena c JOIN admin a on a.id = c.cod_admin ORDER BY c.nome");
             while (rs.next()) {
-                listas.add(new Condenas(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+                listas.add(new Condena(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
             }
         } catch (SQLException sql) {
-            return null;
+            System.out.println("!!SQLException ao chamar CondenaDAO.selecionarTodos()!!");
+            sql.printStackTrace();
         } finally {
             banco.desconectar(conn);
             return listas;
         }
     } // Método que seleciona todas as condenas
 
-    public ArrayList<Condenas> selecionarPorTipo(String tipoCondena) {
-        ArrayList<Condenas> listas = new ArrayList<>();
+    public ArrayList<Condena> selecionarPorTipo(String tipoCondena) {
+        ArrayList<Condena> listas = new ArrayList<>();
         try {
             conn = banco.conectar();
             PreparedStatement ps = conn.prepareStatement("SELECT c.id,c.nome,a.nome,c.descricao,c.tipo_condena FROM condena c JOIN admin a on a.id = c.cod_admin WHERE lower(c.tipo_condena) = ? ORDER BY c.nome");
             ps.setString(1,tipoCondena);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                listas.add(new Condenas(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+                listas.add(new Condena(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
             }
         } catch (SQLException sql) {
-            return null;
+            System.out.println("!!SQLException ao chamar CondenaDAO.selecionarPorTipo(tipoCondena)!!");
+            sql.printStackTrace();
         } finally {
             banco.desconectar(conn);
             return listas;
         }
     } // Método que seleciona condenas por tipoCondena
 
-    public ArrayList<Condenas> selecionarPorNome(String procura) {
-        ArrayList<Condenas> listas = new ArrayList<>();
+    public ArrayList<Condena> selecionarPorNome(String procura) {
+        ArrayList<Condena> listas = new ArrayList<>();
         try {
             conn = banco.conectar();
             PreparedStatement ps = conn.prepareStatement("SELECT c.id,c.nome,a.nome,c.descricao,c.tipo_condena FROM condena c JOIN admin a on a.id = c.cod_admin WHERE lower(c.nome) LIKE lower(?) ORDER BY c.nome");
             ps.setString(1,procura+"%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                listas.add(new Condenas(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+                listas.add(new Condena(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
             }
         } catch (SQLException sql) {
-            return null;
+            System.out.println("!!SQLException ao chamar CondenaDAO.selecionarPorNome(procura)!!");
+            sql.printStackTrace();
         } finally {
             banco.desconectar(conn);
             return listas;
@@ -101,7 +105,7 @@ public class CondenasDao{
 
 //=======================MÉTODOS UPDATE=======================\\
 
-    public boolean atualizar(Condenas condena) {
+    public boolean atualizar(Condena condena) {
         boolean retorno = false;
         try {
             conn = banco.conectar();
@@ -117,6 +121,7 @@ public class CondenasDao{
 
             retorno = ps.executeUpdate() == 0;
         } catch (SQLException sqle) {
+            System.out.println("!!SQLException ao chamar CondenaDAO.atualizar(condena)!!");
             sqle.printStackTrace();
         } finally {
             banco.desconectar(conn);
@@ -147,11 +152,11 @@ public class CondenasDao{
             if (conn != null) {
                 try {
                     conn.rollback();
-                    System.out.println("Erro no método deletarAdmin()");
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
             }
+            System.out.println("!!SQLException ao chamar CondenaDAO.deletar(id)!!");
             sqle.printStackTrace();
         } finally {
             try {

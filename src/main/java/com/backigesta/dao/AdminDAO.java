@@ -55,7 +55,7 @@ public class AdminDAO {
                 retorno = true;
             }
         } catch (Exception e) {
-            System.out.println("!!SQLException ao chamar EmpresasDAO.verificaLoginEmp(String email, String senha)!!");
+            System.out.println("!!SQLException ao chamar AdminDAO.verificaLoginAdmin(email,senha)!!");
             e.printStackTrace();
         } finally {
             banco.desconectar(conn);
@@ -68,7 +68,7 @@ public class AdminDAO {
         try{
             conn = banco.conectar();
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM admin");
+            ResultSet rs = st.executeQuery("SELECT * FROM admin ORDER BY nome");
 
             while(rs.next()){
                 admins.add(new Admin(
@@ -94,7 +94,7 @@ public class AdminDAO {
         List<Admin> admins = new ArrayList<>();
         try{
             conn = banco.conectar();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM admin WHERE lower(nome) like lower(?)");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM admin WHERE lower(nome) LIKE lower(?) ORDER BY nome");
             ps.setString(1, nome+"%");
 
             ResultSet rs = ps.executeQuery();
@@ -109,7 +109,7 @@ public class AdminDAO {
             }
         }
         catch(SQLException sqle){
-            System.out.println("!!SQLException ao chamar AdminDAO.selecionarPorNome(String)");
+            System.out.println("!!SQLException ao chamar AdminDAO.selecionarPorNome(nome)");
             sqle.printStackTrace();
         }
         finally {
@@ -122,7 +122,7 @@ public class AdminDAO {
         Admin admin = null;
         try{
             conn = banco.conectar();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM admin WHERE email like ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM admin WHERE email LIKE ? ORDER BY nome");
             ps.setString(1, email);
 
             ResultSet rs = ps.executeQuery();
@@ -137,7 +137,7 @@ public class AdminDAO {
             }
         }
         catch(SQLException sqle){
-            System.out.println("!!SQLException ao chamar AdminDAO.selecionarPorNome(String)");
+            System.out.println("!!SQLException ao chamar AdminDAO.selecionarPorEmail(email)");
             sqle.printStackTrace();
         }
         finally {
@@ -159,7 +159,7 @@ public class AdminDAO {
             }
         }
         catch(SQLException sqle){
-            System.out.println("!!SQLException ao chamar AdminDAO.selecionarFotoPorId(int)!!");
+            System.out.println("!!SQLException ao chamar AdminDAO.selecionarFotoPorId(id)!!");
             sqle.printStackTrace();
         }
         finally {
@@ -183,7 +183,7 @@ public class AdminDAO {
             retorno = ps.executeUpdate() >= 1;
         }
         catch(SQLException sqle){
-            System.out.println("!!SQLException ao chamar AdminDAO.atualizar(Admin)!!");
+            System.out.println("!!SQLException ao chamar AdminDAO.atualizar(admin)!!");
             sqle.printStackTrace();
         }
         finally {
@@ -204,7 +204,7 @@ public class AdminDAO {
             retorno = ps.executeUpdate() >= 1;
         }
         catch(SQLException sqle){
-            System.out.println("!!SQLException ao chamar AdminDAO.atualizarFoto(int, byte[])!!");
+            System.out.println("!!SQLException ao chamar AdminDAO.atualizarFoto(id, foto)!!");
             sqle.printStackTrace();
         }
         finally {
@@ -220,22 +220,22 @@ public class AdminDAO {
             conn = banco.conectar();
             conn.setAutoCommit(false);
 
-            PreparedStatement ps = conn.prepareStatement("select qc.id from admin a join condena c on c.cod_admin = a.id join quantidadecondena qc on qc.cod_condena = c.id where a.id = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT qc.id FROM admin a JOIN condena c ON c.cod_admin = a.id JOIN quantidadecondena qc ON qc.cod_condena = c.id where a.id = ?");
             ps.setInt(1,id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                ps = conn.prepareStatement("delete from quantidadecondena where id = ?");
+                ps = conn.prepareStatement("DELETE FROM quantidadecondena where id = ?");
                 ps.setInt(1,rs.getInt(1));
                 ps.execute();
             }
             rs.close();
             ps.close();
 
-            ps = conn.prepareStatement("select c.id from admin a join condena c on c.cod_admin = a.id where a.id = ?");
+            ps = conn.prepareStatement("SELECT c.id FROM admin a JOIN condena c ON c.cod_admin = a.id WHERE a.id = ?");
             ps.setInt(1,id);
             rs = ps.executeQuery();
             while (rs.next()) {
-                ps = conn.prepareStatement("delete from condena where id = ?");
+                ps = conn.prepareStatement("DELETE FROM condena WHERE id = ?");
                 ps.setInt(1,rs.getInt(1));
                 ps.execute();
             }
@@ -253,11 +253,11 @@ public class AdminDAO {
             if (conn != null) {
                 try {
                     conn.rollback();
-                    System.out.println("Erro no método deletarAdmin()");
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
             }
+            System.out.println("!!SQLException ao chamar AdminDAO.deletar(id)!!");
             sqle.printStackTrace();
         }
         finally {

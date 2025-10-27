@@ -1,6 +1,6 @@
 package com.backigesta.model;
 
-public class Condenas {
+public class Condena {
 //==========ATRIBUTOS==========\\
 
     private int id;
@@ -11,9 +11,9 @@ public class Condenas {
 
 //==========CONSTRUTORES==========\\
 
-    public Condenas() {} // Construtor vazio
+    public Condena() {} // Construtor vazio
 
-    public Condenas(int id, String nome, String nomeAdmin, String descricao, String tipoCondena){
+    public Condena(int id, String nome, String nomeAdmin, String descricao, String tipoCondena){
         this.id = id;
         this.nome = nome;
         this.nomeAdmin = nomeAdmin;
@@ -21,14 +21,14 @@ public class Condenas {
         this.tipoCondena = tipoCondena;
     } // Construtor completo
 
-    public Condenas(String nome, String nomeAdmin,String descricao, String tipoCondena) {
+    public Condena(String nome, String nomeAdmin, String descricao, String tipoCondena) {
         this.nome = nome;
         this.nomeAdmin = nomeAdmin;
         this.descricao = descricao;
         this.tipoCondena = tipoCondena;
     } // Construtor com nome, nomeAdmin, descricao e tipoCondena
 
-    public Condenas(int id,String nome,String descricao, String tipoCondena) {
+    public Condena(int id, String nome, String descricao, String tipoCondena) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;

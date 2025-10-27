@@ -324,3 +324,7 @@ dialog.popupButtons button:first-child {
 dialog.popupButtons button:last-child {
     background-color: #1A7B66;
 }
+
+input:invalid {
+    color: red;
+}

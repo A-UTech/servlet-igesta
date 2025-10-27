@@ -18,7 +18,7 @@
         <h1>Login de empresa</h1>
         <form action="loginEmpresa" method="post" id="loginEmpresa">
             <input type="email" name="email" placeholder="E-mail" required minlength="10" autocomplete="email" value="<%=email == null ? "" : email%>" autofocus>
-            <input type="password" name="password" placeholder="Senha" required minlength="6" autocomplete="current-password" value="<%=senha == null ? "" : senha%>">
+            <input type="password" name="password" placeholder="Senha" autocomplete="current-password" value="<%=senha == null ? "" : senha%>" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
             <button type="button" onclick="enviarFormulario('buttonSubmit','loginEmpresa')" id="buttonSubmit">Entrar</button>
         </form>
     </section>

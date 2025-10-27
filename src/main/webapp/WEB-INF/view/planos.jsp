@@ -1,5 +1,5 @@
 <%@ page import="com.backigesta.model.Admin" %>
-<%@ page import="com.backigesta.model.Planos" %>
+<%@ page import="com.backigesta.model.Plano" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -18,7 +18,7 @@
             return;
         }
 
-        List<Planos> planos = (List<Planos>) request.getAttribute("planos");
+        List<Plano> planos = (List<Plano>) request.getAttribute("planos");
 
         String adicionado = (String) request.getAttribute("adicionado");
         String alterado = (String) request.getAttribute("alterado");
@@ -29,7 +29,7 @@
     <a href="${pageContext.request.contextPath}/index.jsp" class="logo"><img src="${pageContext.request.contextPath}/assets/logos/igesta-outlined.svg"> <h2>IGesta</h2></a>
 
     <nav>
-        <a href="selectEmpresas"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresa</span></a>
+        <a href="selectEmpresa"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresa</span></a>
         <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"><span>Condenas</span></a>
         <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"><span>Mensalidades</span></a>
         <a href="selectContato"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"><span>Contato dos funcionários</span></a>
@@ -52,7 +52,7 @@
             <menu>
                 <form action="selectPlano" class="search" id="procuraPlanoNome">
                     <input type="text" name="search" placeholder="Pesquisar">
-                    <button type="button" onclick="enviarFormulario('ButtonSearchNome','buttonSearchNome')" id="ButtonSearchNome" class="functions">
+                    <button type="button" onclick="enviarFormulario('buttonSearchNome','procuraPlanoNome')" id="buttonSearchNome" class="functions">
                         <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
                     </button>
                 </form>
@@ -71,7 +71,7 @@
                         <li>Ações</li>
                     </ul>
 
-                    <% for (Planos plano : planos) { %>
+                    <% for (Plano plano : planos) { %>
                         <ul>
                             <li><%=plano.getNome()%></li>
                             <li>R$<%=plano.getMensalidade()%></li>
@@ -91,7 +91,7 @@
     <dialog id="add" class="popupInputs">
         <h2>Adicionar Plano</h2>
         <form action="adicionarPlano" method="post" autocomplete="off" id="adicionarPlano">
-            <a onclick="fecharPopup('add')"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
+            <a onclick="fecharPopup('add')"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
             <input type="text" name="nomePlano" placeholder="Nome" class="inputCapitalize" required>
             <input type="number" step="any" name="mensalidade" placeholder="Mensalidade" class="inputCapitalize" required>
             <input type="number" name="armazenamento" placeholder="Armazenamento" class="inputCapitalize" required>
@@ -99,7 +99,7 @@
         </form>
     </dialog>
     <dialog id="delete" class="popupButtons">
-        <a onclick="fecharPopup('delete')"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
+        <a onclick="fecharPopup('delete')"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
         <h2>Excluir Plano?</h2>
         <div>
             <button onclick="document.getElementById('delete').close()">Não</button>
@@ -111,7 +111,7 @@
     </dialog>
     <dialog id="alterar" class="popupInputs">
         <h2>Alterar Plano</h2>
-        <a onclick="fecharPopup('alterar')"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
+        <a onclick="fecharPopup('alterar')"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
         <form action="alterarPlano" method="post" id="alterarPlano">
             <input type="hidden" name="planoId" id="planoId">
             <input type="text" id="nomePlano" name="nomePlano" class="inputCapitalize" required>

@@ -1,10 +1,10 @@
 package com.backigesta.servlet;
 
 import com.backigesta.dao.AdminDAO;
-import com.backigesta.dao.EmpresasDAO;
+import com.backigesta.dao.EmpresaDAO;
 import com.backigesta.model.Admin;
-import com.backigesta.model.Empresas;
-import com.backigesta.model.Usuarios;
+import com.backigesta.model.Empresa;
+import com.backigesta.model.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,7 +16,7 @@ import java.io.IOException;
 @MultipartConfig
 public class Perfil extends HttpServlet {
     AdminDAO daoAdmin = new AdminDAO();
-    EmpresasDAO daoEmpresas = new EmpresasDAO();
+    EmpresaDAO daoEmpresas = new EmpresaDAO();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String caminho = request.getServletPath();
@@ -36,8 +36,8 @@ public class Perfil extends HttpServlet {
             session.setAttribute("caminhoVolta","selectAdmin");
         } else if (pagina.toLowerCase().matches(".*contato.*")) {
             session.setAttribute("caminhoVolta","selectContato");
-        } else if (pagina.toLowerCase().matches(".*empresas.*")) {
-            session.setAttribute("caminhoVolta","selectEmpresas");
+        } else if (pagina.toLowerCase().matches(".*empresa.*")) {
+            session.setAttribute("caminhoVolta","selectEmpresa");
         } else if (pagina.toLowerCase().matches(".*plano.*")) {
             session.setAttribute("caminhoVolta","selectPlano");
         }
@@ -65,7 +65,7 @@ public class Perfil extends HttpServlet {
         String senha = request.getParameter("password");
 
         Admin user = (Admin) session.getAttribute("admin");
-        Empresas empresa = (Empresas) session.getAttribute("empresa");
+        Empresa empresa = (Empresa) session.getAttribute("empresa");
         if(user != null) {
             user.setNome(nome);
             user.setEmail(email);
@@ -88,7 +88,7 @@ public class Perfil extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         //Coletando os parâmetros para encontrar o Usuario especificado.
-        Usuarios user = (Usuarios) session.getAttribute("admin");
+        Usuario user = (Usuario) session.getAttribute("admin");
 
         String tipo = user.getClass().getSimpleName();
 
@@ -102,7 +102,7 @@ public class Perfil extends HttpServlet {
                 new AdminDAO().atualizarFoto(user.getId(),bytea);
                 break;
             case "Empresas":
-                new EmpresasDAO().atualizarFoto(user.getId(),bytea);
+                new EmpresaDAO().atualizarFoto(user.getId(),bytea);
         }
         user.setFoto(bytea);
         session.setAttribute("admin",user);

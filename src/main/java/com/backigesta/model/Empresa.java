@@ -1,6 +1,6 @@
 package com.backigesta.model;
 
-public class Empresas extends Usuarios{
+public class Empresa extends Usuario {
 //=======================ATRIBUTOS=======================\\
 
     private String cnpj;
@@ -11,10 +11,10 @@ public class Empresas extends Usuarios{
 
 //=======================CONSTRUTORES=======================\\
 
-    public Empresas() {
+    public Empresa() {
     } // Construtor vazio
 
-    public Empresas(int id, String nome, String email, String cnpj, String senha, String nomePlano, String estado,String cidade, String unidade, byte[] foto) {
+    public Empresa(int id, String nome, String email, String cnpj, String senha, String nomePlano, String estado, String cidade, String unidade, byte[] foto) {
         super(id, nome, email, senha, foto);
         this.cnpj = cnpj;
         this.nomePlano = nomePlano;
@@ -23,7 +23,7 @@ public class Empresas extends Usuarios{
         this.unidade = unidade;
     } // Construtor completo
 
-    public Empresas(String nome, String email, String cnpj, String nomePlano, String estado, String unidade) {
+    public Empresa(String nome, String email, String cnpj, String nomePlano, String estado, String unidade) {
         super(nome, email);
         this.cnpj = cnpj;
         this.nomePlano = nomePlano;
@@ -31,7 +31,7 @@ public class Empresas extends Usuarios{
         this.unidade = unidade;
     } // Construtor com nome, email, cnpf, nomePlano, estado e unidade
 
-    public Empresas(String nome, String email, String cnpj, String senha, String nomePlano, String estado, String unidade, byte[] foto) {
+    public Empresa(String nome, String email, String cnpj, String senha, String nomePlano, String estado, String unidade, byte[] foto) {
         super(nome, email, senha, foto);
         this.cnpj = cnpj;
         this.nomePlano = nomePlano;
@@ -39,48 +39,47 @@ public class Empresas extends Usuarios{
         this.unidade = unidade;
     } // Construtor com nome, email, cnpj, senha, nomePlano, estado, unidade e foto
 
-    public Empresas(int id, String nome, String email, String senha, String nomePlano, String estado,String cidade, String unidade) {
+    public Empresa(int id, String nome, String email, String senha, String nomePlano, String estado, String cidade, String unidade) {
         super(id, nome, email, senha);
         this.nomePlano = nomePlano;
         this.estado = estado;
         this.cidade = cidade;
         this.unidade = unidade;
-    } // Construtor com id, nome, email, cnpj, senha, nomePlano, estado e unidade
+    } // Construtor com id, nome, email, senha, nomePlano, estado, cidade e unidade
 
-    public Empresas(int id, String nome, String email, String cnpj, String senha, String estado, String unidade, byte[] foto) {
+    public Empresa(int id, String nome, String email, String cnpj, String senha, String estado, String unidade, byte[] foto) {
         super(id, nome, email, senha, foto);
         this.cnpj = cnpj;
         this.estado = estado;
         this.unidade = unidade;
     } // Construtor com id, nome, email, cnpj, senha, estado, unidade e foto
 
-    public Empresas(String nome, String email, String cnpj, String senha, String nomePlano, String estado,String cidade, String unidade) {
+    public Empresa(String nome, String email, String cnpj, String senha, String nomePlano, String estado, String cidade, String unidade) {
         super(nome, email, senha);
         this.cnpj = cnpj;
         this.nomePlano = nomePlano;
         this.estado = estado;
         this.cidade = cidade;
         this.unidade = unidade;
-    } // Construtor com nome, email, cnpj, senha, nomePlano, estado e unidade
+    } // Construtor com nome, email, cnpj, senha, nomePlano, estado, cidade e unidade
 
-    public Empresas(String nome, String email, String cnpj, String nomePlano, String estado,String cidade, String unidade) {
+    public Empresa(String nome, String email, String cnpj, String nomePlano, String estado, String cidade, String unidade) {
         super(nome, email);
         this.cnpj = cnpj;
         this.nomePlano = nomePlano;
         this.estado = estado;
         this.cidade = cidade;
         this.unidade = unidade;
-    } // Construtor com nome, email, cnpj, senha, nomePlano, estado e unidade
+    } // Construtor com nome, email, cnpj, nomePlano, estado, cidade e unidade
 
-    // nome,email,cnpj,plano,estado,cidade,unidade
-    public Empresas(String nome, String email, String cnpj, String senha, String estado, String unidade, byte[] foto) {
+    public Empresa(String nome, String email, String cnpj, String senha, String estado, String unidade, byte[] foto) {
         super(nome, email, senha, foto);
         this.cnpj = cnpj;
         this.estado = estado;
         this.unidade = unidade;
     } // Construtor com nome, email, cnpj, senha, estado, unidade e foto
 
-    public Empresas(int id, String nome, String email, String cnpj, String senha, String estado, String unidade) {
+    public Empresa(int id, String nome, String email, String cnpj, String senha, String estado, String unidade) {
         super(id, nome, email, senha);
         this.cnpj = cnpj;
         this.estado = estado;

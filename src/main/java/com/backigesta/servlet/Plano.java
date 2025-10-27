@@ -1,10 +1,6 @@
 package com.backigesta.servlet;
 
-import com.backigesta.dao.CondenasDao;
 import com.backigesta.dao.PlanoDao;
-import com.backigesta.model.Admin;
-import com.backigesta.model.Condenas;
-import com.backigesta.model.Planos;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -32,11 +28,11 @@ public class Plano extends HttpServlet {
         String procura = request.getParameter("search");
 
         // Criando o objeto ArrayList com a interface List
-        List<Planos> lista = null;
+        List<com.backigesta.model.Plano> lista = null;
 
         // Direcionado qual método de procura será usado
         if (procura != null) {
-            lista = planoDao.selecionarPorNome(procura.toLowerCase());
+            lista = planoDao.selecionarPorNome(procura);
         } else {
             lista = planoDao.selecionarTodos();
         }
@@ -77,7 +73,6 @@ public class Plano extends HttpServlet {
 
         // Usando o método da classe CondenasDao para deletar um registro
         boolean deletado = planoDao.deletar(id);
-        System.out.println(deletado);
 
         // Colocando o atributo deletado no request
         request.setAttribute("deletado",deletado ? "true" : "false");
@@ -94,7 +89,7 @@ public class Plano extends HttpServlet {
         int armazenamento = Integer.parseInt(request.getParameter("armazenamento"));
 
         // Usando o método da classe CondenasDao para alterar os dados daquele registro
-        boolean alterado = planoDao.atualizar(new Planos(id,nomePlano,mensalidade,armazenamento));
+        boolean alterado = planoDao.atualizar(new com.backigesta.model.Plano(id,nomePlano,mensalidade,armazenamento));
 
         // Colocando o atributo alterado no request
         request.setAttribute("alterado",alterado ? "true" : "false");
@@ -110,7 +105,7 @@ public class Plano extends HttpServlet {
         int armazenamento = Integer.parseInt(request.getParameter("armazenamento"));
 
         // Usando o método da classe CondenasDao para adicioanar um registro
-        boolean adicionado = planoDao.inserir(new Planos(nomePlano,mensalidade,armazenamento));
+        boolean adicionado = planoDao.inserir(new com.backigesta.model.Plano(nomePlano,mensalidade,armazenamento));
 
         // Colocando o atributo adicionado no request
         request.setAttribute("adicionado",adicionado ? "true" : "false");

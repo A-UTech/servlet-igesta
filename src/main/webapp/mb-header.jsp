@@ -1,5 +1,5 @@
 <%@ page import="com.backigesta.model.Admin" %>
-<%@ page import="com.backigesta.model.Empresas" %>
+<%@ page import="com.backigesta.model.Empresa" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="pt-br">
 <head>
@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="styles/mb-header.css">
     <title>IGesta</title>
     <%
-        Empresas empresa = (Empresas) session.getAttribute("empresa");
+        Empresa empresa = (Empresa) session.getAttribute("empresa");
         Admin admin = (Admin) session.getAttribute("admin");
     %>
 </head>

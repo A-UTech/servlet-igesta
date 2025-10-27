@@ -364,3 +364,7 @@ dialog.popupButtons button:first-child {
 dialog.popupButtons button:last-child {
     background-color: var(--corVE);
 }
+
+input:invalid {
+    color: red;
+}

@@ -1,8 +1,9 @@
-<%@ page import="com.backigesta.model.Empresas" %>
-<%@ page import="com.backigesta.model.Funcionarios" %>
+<%@ page import="com.backigesta.model.Empresa" %>
+<%@ page import="com.backigesta.model.Funcionario" %>
 <%@ page import="com.backigesta.model.Telefone" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.HashMap" %>
+<%@ page import="com.backigesta.util.Regex" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -17,14 +18,14 @@
 
     <%
         //Checando caso o usuario atual têm uma session de "empresa". Caso o contrário, volta para a Landing.
-        Empresas empresa = (Empresas) session.getAttribute("empresa");
+        Empresa empresa = (Empresa) session.getAttribute("empresa");
         if (empresa == null) {
             response.sendRedirect("index.jsp");
             return;
         }
 
         //Declarando/Buscando as variaveis dadas pela Servlet.
-        HashMap<Funcionarios, ArrayList<Telefone>> funcionarios = (HashMap<Funcionarios, ArrayList<Telefone>>) request.getAttribute("funcionarios");
+        HashMap<Funcionario, ArrayList<Telefone>> funcionarios = (HashMap<Funcionario, ArrayList<Telefone>>) request.getAttribute("funcionarios");
 
         //infoPlano -> separa todas as informações do plano da empresa em um vetor. Sua síntaxe vem assim: numGestores;numLideres;nomePlano;preco;armazenamento
         String[] infoPlano = ((String) request.getAttribute("infoPlano")).split(";");
@@ -100,17 +101,18 @@
                 <li>Telefones</li>
                 <li>Ações</li>
             </ul>
-            <%for(Funcionarios func : funcionarios.keySet()){%>
+            <%for(Funcionario func : funcionarios.keySet()){%>
             <ul>
                 <li><%=func.getNome()%></li>
                 <li><%=func.getEmail()%></li>
-                <li><%=func.getCpf()%></li>
+                <li><%=Regex.formatarCpf(func.getCpf())%></li>
                 <li><%=func.getNomeCargo()%></li>
                 <li>
                     <%if(funcionarios.get(func).size()>0){%>
                     <select class="selectPhone" name="telefone" id="telefoneContato<%=func.getId()%>">
+                        <option value="" disabled selected>Telefones</option>
                         <%for (Telefone tel : funcionarios.get(func)){%>
-                        <option value="<%=tel.getId()%>"><%=tel.getTelefone()%></option>
+                            <option value="<%=tel.getId()%>"><%=Regex.formatarTelefone(tel.getTelefone())%></option>
                         <%}%>
                     </select>
                     <%} else {%>
@@ -140,32 +142,32 @@
 
 <dialog id="addCollab" class="popupInputs">
     <h2>Adicionar Funcionario</h2>
-    <form action="adicionarCollab" method="post">
+    <form action="adicionarCollab" method="post" id="adicionarCollab">
         <a onclick="document.getElementById('addCollab').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
         <input type="text" name="nome" class="inputCapitalize" placeholder="nome" required>
         <input type="email" name="email" placeholder="email" required>
-        <input type="text" name="cpf" placeholder="CPF" required>
+        <input type="text" name="cpf" placeholder="CPF" required pattern="[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}-?[0-9]{2}" title="Digite o CPF no formato 123.456.789-09 ou apenas os números.">
         <select name="cargo" required>
-            <option selected disabled hidden>Selecionar Cargo</option>
+            <option selected disabled value="">Selecionar Cargo</option>
             <option value="Gestor(a);1">Gestor</option>
             <option value="Lider;2">Líder</option>
         </select>
         <input type="time" name="turno" placeholder="Horario de Turno" required>
-        <input type="password" name="senha" placeholder="Senha" required>
-        <button type="submit">Adicionar</button>
+        <input type="password" name="senha" placeholder="Senha" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
+        <button type="button" id="buttonAdicionarCollab" onclick="enviarFormulario('buttonAdicionarCollab','adicionarCollab')">Adicionar</button>
     </form>
 </dialog>
 <dialog id="addTelefone" class="popupInputs">
     <a onclick="document.getElementById('addTelefone').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
     <h2>Adicionar telefone</h2>
     <form action="adicionarContatoCollab" method="post" autocomplete="off" id="adicionarContato">
-        <select id="funcionarios" name="funcionarioId">
+        <select id="funcionarios" name="funcionarioId" required>
             <option value="" disabled selected >Funcionário</option>
-            <% for (Funcionarios func : funcionarios.keySet()) {%>
+            <% for (Funcionario func : funcionarios.keySet()) {%>
             <option value="<%=func.getId()%>"><%=func.getNome()%></option>
             <% } %>
         </select>
-        <input type="text" name="contato" placeholder="Telefone" class="inputCapitalize" pattern="^\(?[0-9]{2}\)? ?[0-9]{5}\-?[0-9]{4}">
+        <input type="text" name="contato" placeholder="Telefone" class="inputCapitalize" pattern="\(?[0-9]{2}\)?\s?[0-9]{5}-?[0-9]{4}" required title="Digite um telefone no formato (11) 91234-5678 ou apenas os numeros">
         <button type="button" id="buttonAdicionar" onclick="enviarFormulario('buttonAdicionar','adicionarContato')" >Adicionar</button>
     </form>
 </dialog>
@@ -180,15 +182,15 @@
 <dialog id="alterarColaborador" class="popupInputs">
     <h2>Alterar Funcionario</h2>
     <a onclick="document.getElementById('alterarColaborador').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
-    <form action="alterarCollab" method="post">
-        <input type="text" name="nome" id="nomeColaborador">
-        <input type="email" name="email" id="emailColaborador">
+    <form action="alterarCollab" method="post" id="alterarCollab">
+        <input type="text" name="nome" id="nomeColaborador" required>
+        <input type="email" name="email" id="emailColaborador" required>
         <select name="cargo" id="cargoColaborador">
         </select>
-        <input type="time" name="turno" id="turnoColaborador">
-        <input type="password" name="senha" id="senhaColaborador">
+        <input type="time" name="turno" id="turnoColaborador" required>
+        <input type="password" name="senha" id="senhaColaborador" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
         <input type="hidden" name="id" id="idColaborador">
-        <button type="submit">Alterar</button>
+        <button type="button" id="buttonAlterarColab" onclick="enviarFormulario('buttonAlterarColab','alterarCollab')">Alterar</button>
     </form>
 </dialog>
 
@@ -196,13 +198,13 @@
     <h2>Alterar Telefone</h2>
     <a onclick="document.getElementById('alterarTelefone').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
     <form action="alterarContatoCollab" method="post" id="alterarContato">
-        <input type="text" id="telefone" name="telefone">
+        <input type="text" id="telefone" name="telefone" placeholder="Telefone" required pattern="\(?[0-9]{2}\)?\s?[0-9]{5}-?[0-9]{4}" required title="Digite um telefone no formato (11) 91234-5678 ou apenas os numeros">
         <input type="hidden" id="idTelefone" name="idTelefone" value="">
         <button type="button" id="buttonAlterar" onclick="enviarFormulario('buttonAlterar','alterarContato')">Alterar</button>
     </form>
     <form action="deletarContatoCollab" method="post" id="deletarContato">
         <input type="hidden" id="idTelefoneDelete" name="contatoId">
-        <button type="submit">Deletar</button>
+        <button type="button" id="buttonDeletarContato" onclick="enviarFormulario('buttonDeletarContato','deletarContato')">Deletar</button>
     </form>
 </dialog>
 
@@ -211,9 +213,9 @@
     <h2>Excluir Funcionario?</h2>
     <div>
         <button onclick="document.getElementById('delete').close()">Não</button>
-        <form action="deletarCollab" method="post">
+        <form action="deletarCollab" method="post" id="deletarCollab">
             <input type="hidden" id="deletarColaborador" name="idColaborador">
-            <button type="submit">Sim</button>
+            <button type="button" id="buttonDeletar" onclick="enviarFormulario('buttonDeletar','deletarCollab') ">Sim</button>
         </form>
     </div>
 </dialog>

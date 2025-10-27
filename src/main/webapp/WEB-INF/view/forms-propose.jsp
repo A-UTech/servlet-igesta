@@ -18,7 +18,7 @@
     <input type="text" name="name" placeholder="Nome" required autocomplete="name" autofocus>
     <input type="email" name="email" placeholder="E-Mail" required autocomplete="email" minlength="10" >
     <input type="text" name="cnpj" placeholder="CNPJ" required minlength="14" maxlength="14" pattern="^[0-9]{14}$" title="Digite apenas os números">
-    <textarea name="message" placeholder="Mensagem"></textarea>
+    <textarea name="message" placeholder="Mensagem" required></textarea>
     <button type="button" id="buttonProposta" onclick="enviarFormulario('buttonProposta','enviarProposta')">Entrar</button>
   </form>
 </section>

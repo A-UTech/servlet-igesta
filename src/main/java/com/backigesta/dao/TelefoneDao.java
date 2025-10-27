@@ -23,7 +23,7 @@ public class TelefoneDao {
 
             retorno = ps.executeUpdate() == 1;
         } catch (SQLException sqle) {
-            System.out.println("!!SQLException ao chamar FuncionariosDAO.inserir(Funcionario)!!");
+            System.out.println("!!SQLException ao chamar TelefoneDAO.inserir(telefone)!!");
             sqle.printStackTrace();
         } finally {
             conexao.desconectar(conn);
@@ -45,7 +45,7 @@ public class TelefoneDao {
             }
 
         } catch (SQLException sqle) {
-            System.out.println("!!SQLException ao chamar FuncionariosDAO.inserir(Funcionario)!!");
+            System.out.println("!!SQLException ao chamar TelefoneDAO.selecionarPorIdFuncionario(id)!!");
             sqle.printStackTrace();
         } finally {
             conexao.desconectar(conn);
@@ -66,7 +66,7 @@ public class TelefoneDao {
             retorno = ps.executeUpdate() == 1;
         }
         catch(SQLException sqle){
-            System.out.println("!!SQLException ao chamar FuncionariosDAO.atualizar(Funcionarios)!!");
+            System.out.println("!!SQLException ao chamar TelefoneDAO.atualizar(telefone)!!");
             sqle.printStackTrace();
         }
         finally {
@@ -87,7 +87,7 @@ public class TelefoneDao {
             retorno = ps.executeUpdate()==1;
         }
         catch(SQLException sqle){
-            System.out.println("!!SQLException ao chamar FuncionariosDAO.atualizar(Funcionarios)!!");
+            System.out.println("!!SQLException ao chamar TelefoneDAO.deletar(id)!!");
             sqle.printStackTrace();
         }
         finally {

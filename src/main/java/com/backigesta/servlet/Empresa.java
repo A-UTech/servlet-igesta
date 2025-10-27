@@ -1,7 +1,8 @@
 package com.backigesta.servlet;
 
-import com.backigesta.dao.EmpresasDAO;
+import com.backigesta.dao.EmpresaDAO;
 import com.backigesta.dao.PlanoDao;
+import com.backigesta.util.Regex;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,13 +12,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(urlPatterns = {"/selectEmpresas", "/adicionarEmpresas", "/alterarEmpresas", "/deletarEmpresas"})
-public class Empresas extends HttpServlet {
-    EmpresasDAO daoEmpresas = new EmpresasDAO();
+@WebServlet(urlPatterns = {"/selectEmpresa", "/adicionarEmpresa", "/alterarEmpresa", "/deletarEmpresa"})
+public class Empresa extends HttpServlet {
+    EmpresaDAO daoEmpresas = new EmpresaDAO();
     PlanoDao planoDao = new PlanoDao();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getServletPath().equals("/selectEmpresas")){
+        if(request.getServletPath().equals("/selectEmpresa")){
             mostrarEmpresa(request, response);
         }
     }
@@ -25,7 +26,7 @@ public class Empresas extends HttpServlet {
         String procura = request.getParameter("search");
         String regiao = request.getParameter("regiao");
 
-        ArrayList<com.backigesta.model.Empresas> empresas;
+        ArrayList<com.backigesta.model.Empresa> empresas;
         if (regiao != null && !"todos".equals(regiao)) {
             empresas = daoEmpresas.selecionarPorEstado(regiao);
         } else if(procura == null || "todos".equals(regiao)){
@@ -42,13 +43,13 @@ public class Empresas extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getServletPath().equals("/adicionarEmpresas")){
+        if(request.getServletPath().equals("/adicionarEmpresa")){
             adicionarEmpresa(request, response);
         }
-        else if(request.getServletPath().equals("/alterarEmpresas")){
+        else if(request.getServletPath().equals("/alterarEmpresa")){
             alterarEmpresa(request, response);
         }
-        else if(request.getServletPath().equals("/deletarEmpresas")){
+        else if(request.getServletPath().equals("/deletarEmpresa")){
             deletarEmpresa(request, response);
         }
     }
@@ -71,7 +72,7 @@ public class Empresas extends HttpServlet {
         String senha = request.getParameter("senhaEmpresa");
         String plano = request.getParameter("planoEmpresa");
 
-        com.backigesta.model.Empresas empresa = new com.backigesta.model.Empresas(id,nome,email,senha,plano,estado,cidade,unidade);
+        com.backigesta.model.Empresa empresa = new com.backigesta.model.Empresa(id,nome,email,senha,plano,estado,cidade,unidade);
         boolean alterado = daoEmpresas.atualizar(empresa);
 
         request.setAttribute("alterado", alterado ? "true" : "false");
@@ -82,14 +83,14 @@ public class Empresas extends HttpServlet {
     protected void adicionarEmpresa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nome = request.getParameter("nomeEmpresa");
         String email = request.getParameter("emailEmpresa");
-        String cnpj = request.getParameter("cnpjEmpresa");
+        String cnpj = Regex.extrairNumero(request.getParameter("cnpjEmpresa"));
         String estado = request.getParameter("regiaoEmpresa");
         String cidade = request.getParameter("cidadeEmpresa");
         String unidade = request.getParameter("unidadeEmpresa");
         String senha = request.getParameter("senhaEmpresa");
         String plano = request.getParameter("planoEmpresa");
 
-        boolean retorno = daoEmpresas.inserir(new com.backigesta.model.Empresas(nome,email,cnpj, senha, plano,estado,cidade, unidade));
+        boolean retorno = daoEmpresas.inserir(new com.backigesta.model.Empresa(nome,email,cnpj, senha, plano,estado,cidade, unidade));
         request.setAttribute("adicionado", retorno ? "true" : "false");
         mostrarEmpresa(request, response);
     }

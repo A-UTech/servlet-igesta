@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
-public abstract class Usuarios {
+public abstract class Usuario {
 //=======================ATRIBUTOS=======================\\
 
     private int id;
@@ -64,10 +64,10 @@ public abstract class Usuarios {
 
 //=======================CONSTRUTORES=======================\\
 
-    public Usuarios() {
+    public Usuario() {
     } // Construtor Vazio
 
-    public Usuarios(int id, String nome, String email, String senha, byte[] foto) {
+    public Usuario(int id, String nome, String email, String senha, byte[] foto) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -75,32 +75,32 @@ public abstract class Usuarios {
         this.foto = foto;
     } // Construtor Completo
 
-    public Usuarios(String nome, String email) {
+    public Usuario(String nome, String email) {
         this.nome = nome;
         this.email = email;
     } // Construtor com nome e email
 
-    public Usuarios(int id, String nome, String email, String senha) {
+    public Usuario(int id, String nome, String email, String senha) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
     } // Construtor com id, nome, email e senha
 
-    public Usuarios(String nome, String email, String senha, byte[] foto) {
+    public Usuario(String nome, String email, String senha, byte[] foto) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.foto = foto;
     } // Construtor com nome, email, senha e foto
 
-    public Usuarios(String nome, String email, String senha) {
+    public Usuario(String nome, String email, String senha) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
     } // Construtor com nome, email e senha
 
-    public Usuarios(int id, String nome) {
+    public Usuario(int id, String nome) {
         this.id = id;
         this.nome = nome;
     } // Construtor com id e nome

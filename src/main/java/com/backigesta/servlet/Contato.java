@@ -1,8 +1,8 @@
 package com.backigesta.servlet;
 
-import com.backigesta.dao.FuncionariosDAO;
+import com.backigesta.dao.FuncionarioDAO;
 import com.backigesta.dao.TelefoneDao;
-import com.backigesta.model.Funcionarios;
+import com.backigesta.model.Funcionario;
 import com.backigesta.model.Telefone;
 import com.backigesta.util.Regex;
 import jakarta.servlet.*;
@@ -16,7 +16,7 @@ import java.util.HashMap;
 @WebServlet(urlPatterns = {"/selectContato","/adicionarContato","/alterarContato","/deletarContato"})
 public class Contato extends HttpServlet {
 
-    FuncionariosDAO funcionariosDAO = new FuncionariosDAO();
+    FuncionarioDAO funcionariosDAO = new FuncionarioDAO();
     TelefoneDao telefoneDao = new TelefoneDao();
 
     @Override
@@ -37,29 +37,29 @@ public class Contato extends HttpServlet {
         String procuraEmail = request.getParameter("searchEmail");
 
         // Criando o objeto ArrayList com a interface List
-        HashMap<Funcionarios, ArrayList<Telefone>> mapa = new HashMap<>();
-        ArrayList<Funcionarios> funcionarios;
+        HashMap<Funcionario, ArrayList<Telefone>> mapa = new HashMap<>();
+        ArrayList<Funcionario> funcionarios;
 
         // Direcionado qual método de procura será usado
         if (procuraNome != null) {
             funcionarios = funcionariosDAO.selecionarPorNomeComTelefone(procuraNome);
-            for (Funcionarios funcionarios1 : funcionarios) {
+            for (Funcionario funcionarios1 : funcionarios) {
                 mapa.put(funcionarios1,telefoneDao.selecionarPorIdFuncionario(funcionarios1.getId()));
             }
         } else if (procuraEmail != null) {
             funcionarios = funcionariosDAO.selecionarPorEmailComTelefone(procuraEmail);
-            for (Funcionarios funcionarios1 : funcionarios) {
+            for (Funcionario funcionarios1 : funcionarios) {
                 mapa.put(funcionarios1,telefoneDao.selecionarPorIdFuncionario(funcionarios1.getId()));
             }
         } else {
             funcionarios = funcionariosDAO.selecionarTodosComTelefone();
-            for (Funcionarios funcionarios1 : funcionarios) {
+            for (Funcionario funcionarios1 : funcionarios) {
                 mapa.put(funcionarios1,telefoneDao.selecionarPorIdFuncionario(funcionarios1.getId()));
             }
         }
 
 
-        ArrayList<Funcionarios> funcionariosNomes = funcionariosDAO.selecionarNomeId();
+        ArrayList<Funcionario> funcionariosNomes = funcionariosDAO.selecionarNomeId();
         // Colocando o atributo lista no request
         request.setAttribute("contatos",mapa);
         request.setAttribute("funcionarios",funcionariosNomes);

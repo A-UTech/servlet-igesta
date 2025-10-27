@@ -1,7 +1,7 @@
 package com.backigesta.servlet;
 
 import com.backigesta.dao.AdminDAO;
-import com.backigesta.dao.EmpresasDAO;
+import com.backigesta.dao.EmpresaDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -74,7 +74,7 @@ public class Login extends HttpServlet {
     }
 
     protected void verificarLoginEmpresa(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        EmpresasDAO empresasDAO = new EmpresasDAO();
+        EmpresaDAO empresasDAO = new EmpresaDAO();
         String email = request.getParameter("email");
         String senha = request.getParameter("password");
         RequestDispatcher rd = null;
@@ -82,7 +82,11 @@ public class Login extends HttpServlet {
             rd = request.getRequestDispatcher("token");
             rd.forward(request,response);
         } else {
-            request.setAttribute("semConta","true");
+            email = (String) request.getAttribute("email");
+            senha = (String) request.getAttribute("senha");
+            if (email == null && senha == null) {
+                request.setAttribute("semConta","true");
+            }
             mandarLoginEmpresa(request,response);
         }
     }

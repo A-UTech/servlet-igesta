@@ -1,8 +1,8 @@
 package com.backigesta.servlet;
 
 import com.backigesta.dao.AdminDAO;
-import com.backigesta.dao.EmpresasDAO;
-import com.backigesta.dao.FuncionariosDAO;
+import com.backigesta.dao.EmpresaDAO;
+import com.backigesta.dao.FuncionarioDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,7 +22,7 @@ public class Foto extends HttpServlet {
 
         byte[] foto = null;
         if(tipo.equals("Funcionarios")){
-            FuncionariosDAO dao = new FuncionariosDAO();
+            FuncionarioDAO dao = new FuncionarioDAO();
             foto = dao.selecionarFotoPorId(id);
         }
         else if(tipo.equals("Admin")){
@@ -30,7 +30,7 @@ public class Foto extends HttpServlet {
             foto = dao.selecionarFotoPorId(id);
         }
         else if(tipo.equals("Empresas")){
-            EmpresasDAO dao = new EmpresasDAO();
+            EmpresaDAO dao = new EmpresaDAO();
             foto = dao.selecionarFotoPorId(id);
         }
 

@@ -1,6 +1,6 @@
-<%@ page import="com.backigesta.model.Usuarios" %>
+<%@ page import="com.backigesta.model.Usuario" %>
 <%@ page import="com.backigesta.model.Admin" %>
-<%@ page import="com.backigesta.model.Empresas" %>
+<%@ page import="com.backigesta.model.Empresa" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -17,9 +17,9 @@
 
         String caminhoVolta = (String) session.getAttribute("caminhoVolta");
         Admin admin = (Admin) session.getAttribute("admin");
-        Empresas empresa = (Empresas) session.getAttribute("empresa");
+        Empresa empresa = (Empresa) session.getAttribute("empresa");
         String tipo = "Empresa";
-        Usuarios user = empresa;
+        Usuario user = empresa;
         if (admin != null) {
             tipo = "Admin";
             user = admin;

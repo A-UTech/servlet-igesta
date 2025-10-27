@@ -28,7 +28,7 @@
     <a href="${pageContext.request.contextPath}/index.jsp" class="logo"><img src="${pageContext.request.contextPath}/assets/logos/igesta-outlined.svg"> <h2>IGesta</h2></a>
 
     <nav>
-        <a href="selectEmpresas"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresa</span></a>
+        <a href="selectEmpresa"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresa</span></a>
         <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"><span>Condenas</span></a>
         <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"><span>Mensalidades</span></a>
         <a href="selectContato"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"><span>Contato dos funcionários</span></a>
@@ -86,15 +86,15 @@
     <dialog id="add" class="popupInputs">
         <h2>Adicionar admin</h2>
         <form action="adicionarAdmin" method="post" autocomplete="off" id="adicionarAdmin">
-            <a onclick="document.getElementById('add').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
+            <a onclick="document.getElementById('add').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
             <input type="text" name="nomeAdmin" placeholder="Nome" class="inputCapitalize" required>
             <input type="email" name="emailAdmin" placeholder="Email" required>
-            <input type="text" name="senhaAdmin" placeholder="Senha" required>
+            <input type="text" name="senhaAdmin" placeholder="Senha" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
             <button type="button" id="buttonAdicionar" onclick="enviarFormulario('buttonAdicionar','adicionarAdmin')">Adicionar</button>
         </form>
     </dialog>
     <dialog id="delete" class="popupButtons">
-        <a onclick="document.getElementById('delete').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
+        <a onclick="document.getElementById('delete').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
         <h2>Excluir admin?</h2>
         <div>
             <button onclick="document.getElementById('delete').close()">Não</button>
@@ -106,12 +106,12 @@
     </dialog>
     <dialog id="alterar" class="popupInputs">
         <h2>Alterar admin</h2>
-        <a onclick="document.getElementById('alterar').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
+        <a onclick="document.getElementById('alterar').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
         <form action="alterarAdmin" method="post" id="alterarAdmin">
             <input type="hidden" id="adminId" name="idAdmin">
             <input type="text" id="nomeAdmin" name="nomeAdmin" placeholder="Nome" class="inputCapitalize">
             <input type="email" id="emailAdmin" name="emailAdmin" placeholder="Email" >
-            <input type="text" id="senhaAdmin" name="senhaAdmin" placeholder="Senha" required>
+            <input type="text" id="senhaAdmin" name="senhaAdmin" placeholder="Senha" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
             <button type="button" id="buttonAlterar" onclick="enviarFormulario('buttonAlterar','alterarAdmin')">Alterar</button>
         </form>
     </dialog>

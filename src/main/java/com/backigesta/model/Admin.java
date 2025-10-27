@@ -1,6 +1,6 @@
 package com.backigesta.model;
 
-public class Admin extends Usuarios{
+public class Admin extends Usuario {
 //=======================MÉTODOS CONSTRUTORES=======================\\
 
     public Admin() {

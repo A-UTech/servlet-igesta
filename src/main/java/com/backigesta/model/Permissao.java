@@ -1,6 +1,6 @@
 package com.backigesta.model;
 
-public class Permissoes {
+public class Permissao {
 //========== ATRIBUTOS ==========\\
 
     private int id;
@@ -10,22 +10,22 @@ public class Permissoes {
 
 //========== CONSTRUTORES ==========\\
 
-    public Permissoes() {} // Construtor Vazio
+    public Permissao() {} // Construtor Vazio
 
-    public Permissoes(int id, boolean visualizacao, boolean enviar_contagens, boolean historico_contagens) {
+    public Permissao(int id, boolean visualizacao, boolean enviar_contagens, boolean historico_contagens) {
         this.id = id;
         this.visualizacao = visualizacao;
         this.enviar_contagens = enviar_contagens;
         this.historico_contagens = historico_contagens;
     } // Construtor Completo
 
-    public Permissoes(boolean visualizacao) {
+    public Permissao(boolean visualizacao) {
         this.visualizacao = visualizacao;
         this.enviar_contagens = false;
         this.historico_contagens = false;
     } // Construtor com visualizacao
 
-    public Permissoes(boolean admin, boolean marcador) {
+    public Permissao(boolean admin, boolean marcador) {
         if (admin) {
             this.visualizacao = true;
             this.enviar_contagens = true;

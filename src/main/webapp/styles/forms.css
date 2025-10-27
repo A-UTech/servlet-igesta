@@ -271,3 +271,7 @@ section p {
 .error {
     color: red;
 }
+
+input:invalid {
+    color: red;
+}

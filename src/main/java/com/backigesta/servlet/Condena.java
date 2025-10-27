@@ -1,6 +1,6 @@
 package com.backigesta.servlet;
 
-import com.backigesta.dao.CondenasDao;
+import com.backigesta.dao.CondenaDao;
 
 import com.backigesta.model.Admin;
 import jakarta.servlet.RequestDispatcher;
@@ -15,9 +15,9 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/selectCondena","/adicionarCondena","/alterarCondena","/deletarCondena"})
-public class Condenas extends HttpServlet {
+public class Condena extends HttpServlet {
 
-    CondenasDao daoCondenas = new CondenasDao();
+    CondenaDao daoCondenas = new CondenaDao();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Capturando o caminho de como ele chegou no método doGet
@@ -36,7 +36,7 @@ public class Condenas extends HttpServlet {
         String procura = request.getParameter("search");
 
         // Criando o objeto ArrayList com a interface List
-        List<com.backigesta.model.Condenas> lista = null;
+        List<com.backigesta.model.Condena> lista = null;
 
         // Direcionado qual método de procura será usado
         if (procura != null) {
@@ -99,7 +99,7 @@ public class Condenas extends HttpServlet {
         String descricaoCondena = request.getParameter("descricaoCondena");
 
         // Usando o método da classe CondenasDao para alterar os dados daquele registro
-        boolean alterado = daoCondenas.atualizar(new com.backigesta.model.Condenas(id,nomeCondena,descricaoCondena,tipoCondena));
+        boolean alterado = daoCondenas.atualizar(new com.backigesta.model.Condena(id,nomeCondena,descricaoCondena,tipoCondena));
 
         // Colocando o atributo alterado no request
         request.setAttribute("alterado",alterado ? "true" : "false");
@@ -118,7 +118,7 @@ public class Condenas extends HttpServlet {
         String descricaoCondena = request.getParameter("descricaoCondena");
 
         // Usando o método da classe CondenasDao para adicioanar um registro
-        boolean adicionado = daoCondenas.inserir(new com.backigesta.model.Condenas(nomeCondena,admin.getNome(),descricaoCondena,tipoCondena));
+        boolean adicionado = daoCondenas.inserir(new com.backigesta.model.Condena(nomeCondena,admin.getNome(),descricaoCondena,tipoCondena));
 
         // Colocando o atributo adicionado no request
         request.setAttribute("adicionado",adicionado ? "true" : "false");
