@@ -1,7 +1,7 @@
 package com.backigesta.model;
 
-public class Condenas {
-    //==========ATRIBUTOS==========\\
+public class Condena {
+//==========ATRIBUTOS==========\\
 
     private int id;
     private String nome;
@@ -9,32 +9,33 @@ public class Condenas {
     private String descricao;
     private String tipoCondena;
 
-    //==========CONSTRUTORES==========\\
+//==========CONSTRUTORES==========\\
 
-    public Condenas() {} // Método construtor sem parâmetros
-    public Condenas(int id, String nome, String nomeAdmin, String descricao, String tipoCondena){
+    public Condena() {} // Construtor vazio
+
+    public Condena(int id, String nome, String nomeAdmin, String descricao, String tipoCondena){
         this.id = id;
         this.nome = nome;
         this.nomeAdmin = nomeAdmin;
         this.descricao = descricao;
         this.tipoCondena = tipoCondena;
-    } // Método construtor com todos os parâmetros
+    } // Construtor completo
 
-    public Condenas(String nome, String nomeAdmin,String descricao, String tipoCondena) {
+    public Condena(String nome, String nomeAdmin, String descricao, String tipoCondena) {
         this.nome = nome;
         this.nomeAdmin = nomeAdmin;
         this.descricao = descricao;
         this.tipoCondena = tipoCondena;
-    } // Método construtor com os parâmetros nome, nomeAdmin, descricao e tipoCondena
+    } // Construtor com nome, nomeAdmin, descricao e tipoCondena
 
-    public Condenas(int id,String nome,String descricao, String tipoCondena) {
+    public Condena(int id, String nome, String descricao, String tipoCondena) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.tipoCondena = tipoCondena;
-    } // Método construtor com os parâmetros id, nome, descricao e tipoCondena
+    } // Construtor com id, nome, descricao e tipoCondena
 
-    //==========MÉTODOS GET==========\\
+//==========MÉTODOS GET==========\\
 
     public int getId() {
         return id;
@@ -55,7 +56,8 @@ public class Condenas {
     public String getNomeAdmin() {
         return nomeAdmin;
     }
-    //==========MÉTODOS SET==========\\
+
+//==========MÉTODOS SET==========\\
 
     public void setTipoCondena(String tipoCondena) {
         this.tipoCondena = tipoCondena;
@@ -72,7 +74,7 @@ public class Condenas {
         this.nomeAdmin = nome_admin;
     }
 
-    //==========TO STRING==========\\
+//==========TO STRING==========\\
 
     public String toString(){
         return "NovaClasse{ id: " + id +

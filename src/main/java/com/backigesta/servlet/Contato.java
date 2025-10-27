@@ -1,8 +1,9 @@
 package com.backigesta.servlet;
 
-import com.backigesta.dao.FuncionariosDAO;
+import com.backigesta.dao.FuncionarioDAO;
+
 import com.backigesta.dao.TelefoneDao;
-import com.backigesta.model.Funcionarios;
+import com.backigesta.model.Funcionario;
 import com.backigesta.model.Telefone;
 import com.backigesta.util.Regex;
 import jakarta.servlet.*;
@@ -12,12 +13,12 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
+//Servlet usada para o CRUD de contatos da Area Restrita
 @WebServlet(urlPatterns = {"/selectContato","/adicionarContato","/alterarContato","/deletarContato"})
-public class ContatoFuncionarios extends HttpServlet {
-
-    FuncionariosDAO funcionariosDAO = new FuncionariosDAO();
+public class Contato extends HttpServlet {
+    // Declarando os DAO's utilizados.
+    FuncionarioDAO funcionariosDAO = new FuncionarioDAO();
     TelefoneDao telefoneDao = new TelefoneDao();
 
     @Override
@@ -38,29 +39,29 @@ public class ContatoFuncionarios extends HttpServlet {
         String procuraEmail = request.getParameter("searchEmail");
 
         // Criando o objeto ArrayList com a interface List
-        HashMap<Funcionarios, ArrayList<Telefone>> mapa = new HashMap<>();
-        ArrayList<Funcionarios> funcionarios;
+        HashMap<Funcionario, ArrayList<Telefone>> mapa = new HashMap<>();
+        ArrayList<Funcionario> funcionarios;
 
         // Direcionado qual método de procura será usado
         if (procuraNome != null) {
             funcionarios = funcionariosDAO.selecionarPorNomeComTelefone(procuraNome);
-            for (Funcionarios funcionarios1 : funcionarios) {
-                mapa.put(funcionarios1,telefoneDao.buscarPorIdFuncionario(funcionarios1.getId()));
+            for (Funcionario funcionarios1 : funcionarios) {
+                mapa.put(funcionarios1,telefoneDao.selecionarPorIdFuncionario(funcionarios1.getId()));
             }
         } else if (procuraEmail != null) {
             funcionarios = funcionariosDAO.selecionarPorEmailComTelefone(procuraEmail);
-            for (Funcionarios funcionarios1 : funcionarios) {
-                mapa.put(funcionarios1,telefoneDao.buscarPorIdFuncionario(funcionarios1.getId()));
+            for (Funcionario funcionarios1 : funcionarios) {
+                mapa.put(funcionarios1,telefoneDao.selecionarPorIdFuncionario(funcionarios1.getId()));
             }
         } else {
             funcionarios = funcionariosDAO.selecionarTodosComTelefone();
-            for (Funcionarios funcionarios1 : funcionarios) {
-                mapa.put(funcionarios1,telefoneDao.buscarPorIdFuncionario(funcionarios1.getId()));
+            for (Funcionario funcionarios1 : funcionarios) {
+                mapa.put(funcionarios1,telefoneDao.selecionarPorIdFuncionario(funcionarios1.getId()));
             }
         }
 
 
-        ArrayList<Funcionarios> funcionariosNomes = funcionariosDAO.buscarNomeId();
+        ArrayList<Funcionario> funcionariosNomes = funcionariosDAO.selecionarNomeId();
         // Colocando o atributo lista no request
         request.setAttribute("contatos",mapa);
         request.setAttribute("funcionarios",funcionariosNomes);
@@ -97,7 +98,7 @@ public class ContatoFuncionarios extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("contatoId"));
 
         // Usando o método da classe CondenasDao para deletar um registro
-        boolean deletado = telefoneDao.deletarTelefone(id);
+        boolean deletado = telefoneDao.deletar(id);
 
         // Colocando o atributo deletado no request
         request.setAttribute("deletado",deletado ? "true" : "false");
@@ -109,10 +110,10 @@ public class ContatoFuncionarios extends HttpServlet {
     protected void alterarContato(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Capturando os parâmetros de condenaId, nomeCondena e tipo que estam saindo de um formulario
         int id = Integer.parseInt(request.getParameter("idTelefone"));
-        String contato = Regex.formatarTelefone(request.getParameter("telefone"));
+        String contato = Regex.extrairNumero(request.getParameter("telefone"));
 
         // Usando o método da classe CondenasDao para alterar os dados daquele registro
-        boolean alterado = telefoneDao.atualizarTelefone(new Telefone(id,contato));
+        boolean alterado = telefoneDao.atualizar(new Telefone(id,contato));
 
         // Colocando o atributo alterado no request
         request.setAttribute("alterado",alterado ? "true" : "false");
@@ -127,7 +128,7 @@ public class ContatoFuncionarios extends HttpServlet {
         String contato = request.getParameter("contato");
 
         // Usando o método da classe CondenasDao para adicioanar um registro
-        boolean adicionado = telefoneDao.inserirTelefone(new Telefone(contato,id));
+        boolean adicionado = telefoneDao.inserir(new Telefone(contato,id));
 
         // Colocando o atributo adicionado no request
         request.setAttribute("adicionado",adicionado ? "true" : "false");

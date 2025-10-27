@@ -72,6 +72,8 @@ aside > nav img {width: 30px}
 aside > a.perfil > img {
     width: 40px;
     height: 40px;
+    flex-shrink: 0;
+    border-radius: 50%;
 }
 
 aside > nav a, aside a.perfil {
@@ -157,18 +159,9 @@ menu > form > button.options:hover {background: var(--corVC);}
     position: relative;
 }
 
-<<<<<<< HEAD
-form#search {transition: 800ms}
-form#search > input {
-=======
 form.search {transition: 800ms}
-<<<<<<< HEAD
-form.search > input {
->>>>>>> d850abced838118a24345f846131b597d8980f3f
-=======
 
 form.search input {
->>>>>>> main
     display: none;
     background: transparent;
     width: 120px;
@@ -202,7 +195,7 @@ div.table {
     display: block;
 }
 
-div.company > ul {grid-template-columns: repeat(7, 1fr)}
+div.company > ul {grid-template-columns: repeat(8, 1fr)}
 div.condemn > ul, div.employeeContact > ul {grid-template-columns: repeat(5, 1fr)}
 div.payment > ul, div.adm > ul {grid-template-columns: repeat(4, 1fr)}
 
@@ -292,7 +285,7 @@ dialog[open] {
 
 dialog.popupInputs {
     width: 700px;
-    height: 500px;
+    height: 600px;
 }
 
 dialog.popupInputs > h2 {
@@ -370,4 +363,8 @@ dialog.popupButtons button:first-child {
 
 dialog.popupButtons button:last-child {
     background-color: var(--corVE);
+}
+
+input:invalid {
+    color: red;
 }

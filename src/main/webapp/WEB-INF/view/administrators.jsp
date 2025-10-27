@@ -28,14 +28,21 @@
     <a href="${pageContext.request.contextPath}/index.jsp" class="logo"><img src="${pageContext.request.contextPath}/assets/logos/igesta-outlined.svg"> <h2>IGesta</h2></a>
 
     <nav>
-        <a href="selectEmpresas"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresa</span></a>
+        <a href="selectEmpresa"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresa</span></a>
         <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"><span>Condenas</span></a>
         <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"><span>Mensalidades</span></a>
         <a href="selectContato"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"><span>Contato dos funcionários</span></a>
         <a href="selectAdmin"><img src="${pageContext.request.contextPath}/assets/icons/aside-adm.svg"><span>Administradores</span></a>
     </nav>
 
-    <a href="" class="perfil"><img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg"> <span>Lucas Lima</span></a>
+    <a href="entrarPerfil" class="perfil">
+        <% if (admin.getFoto() == null) { %>
+            <img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
+        <% } else { %>
+            <img class="perfil" src="getFoto?id=<%=admin.getId()%>&tipo=Admin">
+        <% } %>
+         <span><%=admin.getNome()%></span>
+    </a>
 </aside>
 
     <main>
@@ -48,7 +55,7 @@
                         <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
                     </button>
                 </form>
-                <button type="submit" class="functions"><img src="${pageContext.request.contextPath}/assets/icons/menu-add.svg"></button>
+                <button type='button' onclick="abrirPopup('add')" class="functions"><img src="${pageContext.request.contextPath}/assets/icons/menu-add.svg"></button>
             </menu>
         </header>
 
@@ -67,9 +74,9 @@
                             <li><%=admin1.getEmail()%></li>
                             <li><%=admin1.getSenha()%></li>
                             <li>
-                                <a href=""><img src="${pageContext.request.contextPath}/assets/icons/edit.svg"></a>
+                                <a onclick="alterarAdmin(<%=admin1.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/edit.svg"></a>
                                 <input type="hidden" id="alterarAdmin<%=admin1.getId()%>" value="<%=admin1.getNome()%>;<%=admin1.getEmail()%>;<%=admin1.getSenha()%>">
-                                <a href=""><img src="${pageContext.request.contextPath}/assets/icons/trash.svg"></a>
+                                <a onclick="deletarAdmin(<%=admin1.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/trash.svg"></a>
                             </li>
                         </ul>
                     <% } %>
@@ -78,20 +85,20 @@
     </main>
     <dialog id="add" class="popupInputs">
         <h2>Adicionar admin</h2>
-        <form action="" method="post" autocomplete="off" id="adicionarAdmin">
-            <a onclick="document.getElementById('add').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
-            <input type="text" name="nomeAdmin" placeholder="Nome" class="inputCapitalize">
-            <input type="email" name="emailAdmin" placeholder="Email" class="inputCapitalize">
-            <input type="text" name="senhaAdmin" placeholder="Senha" required>
+        <form action="adicionarAdmin" method="post" autocomplete="off" id="adicionarAdmin">
+            <a onclick="document.getElementById('add').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
+            <input type="text" name="nomeAdmin" placeholder="Nome" class="inputCapitalize" required>
+            <input type="email" name="emailAdmin" placeholder="Email" required>
+            <input type="text" name="senhaAdmin" placeholder="Senha" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
             <button type="button" id="buttonAdicionar" onclick="enviarFormulario('buttonAdicionar','adicionarAdmin')">Adicionar</button>
         </form>
     </dialog>
     <dialog id="delete" class="popupButtons">
-        <a onclick="document.getElementById('delete').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
+        <a onclick="document.getElementById('delete').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
         <h2>Excluir admin?</h2>
         <div>
             <button onclick="document.getElementById('delete').close()">Não</button>
-            <form action="" method="post" id="deletarAdmin">
+            <form action="deletarAdmin" method="post" id="deletarAdmin">
                 <input type="hidden" id="IdAdmin" name="adminId">
                 <button type="button" id="buttonDeletar" onclick="enviarFormulario('buttonDeletar','deletarAdmin')">Sim</button>
             </form>
@@ -99,12 +106,12 @@
     </dialog>
     <dialog id="alterar" class="popupInputs">
         <h2>Alterar admin</h2>
-        <a onclick="document.getElementById('alterar').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
-        <form action="" method="post" id="alterarAdmin">
+        <a onclick="document.getElementById('alterar').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
+        <form action="alterarAdmin" method="post" id="alterarAdmin">
             <input type="hidden" id="adminId" name="idAdmin">
             <input type="text" id="nomeAdmin" name="nomeAdmin" placeholder="Nome" class="inputCapitalize">
-            <input type="email" id="emailAdmin" name="emailAdmin" placeholder="Email" class="inputCapitalize">
-            <input type="text" id="senhaAdmin" name="senhaAdmin" placeholder="Senha" required>
+            <input type="email" id="emailAdmin" name="emailAdmin" placeholder="Email" >
+            <input type="text" id="senhaAdmin" name="senhaAdmin" placeholder="Senha" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
             <button type="button" id="buttonAlterar" onclick="enviarFormulario('buttonAlterar','alterarAdmin')">Alterar</button>
         </form>
     </dialog>
@@ -120,6 +127,7 @@
     </div>
     <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/areaRestritaAdmin.js"></script>
     <script>
         <% if (adicionado != null) { %>
         <%

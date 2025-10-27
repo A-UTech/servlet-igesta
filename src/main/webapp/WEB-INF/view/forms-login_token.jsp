@@ -53,7 +53,7 @@
     <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
     <script>
         <% if (erro != null) { %>
-            abrirPopupInformacoes("wrong.svg","Token incorreto","O token informado está incorreto. Um novo código foi enviado ao seu e-mail.")
+            abrirPopupInformacoes("wrong.svg","Token incorreto","O código informado está incorreto. Por favor, tente novamente.")
         <% } %>
     </script>
 </body>

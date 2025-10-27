@@ -6,17 +6,17 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-
+// Servlet usada para as ações do CRUD de Administradores.
 @WebServlet(urlPatterns = {"/selectAdmin","/adicionarAdmin","/alterarAdmin","/deletarAdmin"})
 public class Admin extends HttpServlet {
+    // Declarando os DAO's utilizados.
     AdminDAO adminDAO = new AdminDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Capturando o caminho de como ele chegou no método doGet
+        // Capturando o caminho utilizado para chegar no método doGet
         String caminho = request.getServletPath();
 
         // Direcionado o cliente a partir do caminho que chegou no servlet
@@ -26,14 +26,15 @@ public class Admin extends HttpServlet {
         }
     }
 
+    // Mostra a tabela de Administradores de acordo com filtros (caso houver)
     protected void mostrarSelects(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Capturando os parâmetro de search
+        // Capturando os parâmetros de pesquisas (filtros)
         String procura = request.getParameter("search");
 
         // Criando o objeto ArrayList com a interface List
         List<com.backigesta.model.Admin> lista = null;
 
-        // Direcionado qual método de procura será usado
+        // Direcionando qual método de procura será usado
         if (procura != null && !procura.equals("")) {
             lista = adminDAO.selecionarPorNome(procura);
         } else {
@@ -54,10 +55,10 @@ public class Admin extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Capturando o caminho de como ele chegou no método doPost
+        // Capturando o caminho utilizado para chegar no método doPost
         String caminho = request.getServletPath();
 
-        // Direcionado o cliente apartir do caminho que chegou no servlet
+        // Direcionado o cliente ao método correto apartir do caminho que chegou no servlet
         if (caminho.equals("/deletarAdmin")) {
             // Jogando ele no método para deletar dados do banco
             deletarAdmin(request,response);
@@ -70,20 +71,22 @@ public class Admin extends HttpServlet {
         }
     }
 
+    // Deleta um registro de Administrador
     protected void deletarAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Capturando os parâmetros de condenaId que estam saindo de um formulario
-        int id = Integer.parseInt(request.getParameter("condenaId"));
+        int id = Integer.parseInt(request.getParameter("adminId"));
 
-//        // Usando o método da classe CondenasDao para deletar um registro
-//        boolean deletado = daoCondenas.deletarCondena(id);
-//
-//        // Colocando o atributo deletado no request
-//        request.setAttribute("deletado",deletado ? "true" : "false");
-//
-//        // Jogando ele no método para mostrar os selects do banco
-//        mostrarSelects(request,response);
+        // Usando o método da classe CondenasDao para deletar um registro
+        boolean deletado = adminDAO.deletar(id);
+
+        // Colocando o atributo deletado no request
+        request.setAttribute("deletado",deletado ? "true" : "false");
+
+        // Jogando ele no método para mostrar os selects do banco
+        mostrarSelects(request,response);
     }
 
+    // Altera um registro de Administrador
     protected void alterarAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Capturando os parâmetros de condenaId, nomeCondena e tipo que estam saindo de um formulario
         int id = Integer.parseInt(request.getParameter("idAdmin"));
@@ -101,22 +104,20 @@ public class Admin extends HttpServlet {
         mostrarSelects(request,response);
     }
 
+    // Adiciona um registro de Administrador
     protected void adicionarAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        com.backigesta.model.Admin admin = (com.backigesta.model.Admin) session.getAttribute("admin");
+        // Capturando os parâmetros de nomeCondena, tipo e descricao que saem de um formulario
+        String nomeAdmin = request.getParameter("nomeAdmin");
+        String emailAdmin = request.getParameter("emailAdmin");
+        String senhaAdmin = request.getParameter("senhaAdmin");
 
-        // Capturando os parâmetros de nomeCondena, tipo e descricao que estam saindo de um formulario
-        String nomeCondena = request.getParameter("nomeCondena");
-        String tipoCondena = request.getParameter("tipo");
-        String descricaoCondena = request.getParameter("descricaoCondena");
+        // Usando o método da classe CondenasDao para adicioanar um registro
+        boolean adicionado = adminDAO.inserir(new com.backigesta.model.Admin(nomeAdmin,emailAdmin,senhaAdmin));
 
-//        // Usando o método da classe CondenasDao para adicioanar um registro
-//        boolean adicionado = daoCondenas.adicionarCondena(new com.backigesta.model.Condenas(nomeCondena,admin.getNome(),descricaoCondena,tipoCondena));
-//
-//        // Colocando o atributo adicionado no request
-//        request.setAttribute("adicionado",adicionado ? "true" : "false");
-//
-//        // Jogando ele no método para mostrar os selects do banco
-//        mostrarSelects(request,response);
+        // Colocando o atributo adicionado no request, para confirmar se a operação deu certo ou não.
+        request.setAttribute("adicionado",adicionado ? "true" : "false");
+
+        // Jogando ele no método para mostrar os selects do banco
+        mostrarSelects(request,response);
     }
 }

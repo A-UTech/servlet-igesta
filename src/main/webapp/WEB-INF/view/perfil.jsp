@@ -1,6 +1,6 @@
-<%@ page import="com.backigesta.model.Usuarios" %>
+<%@ page import="com.backigesta.model.Usuario" %>
 <%@ page import="com.backigesta.model.Admin" %>
-<%@ page import="com.backigesta.model.Empresas" %>
+<%@ page import="com.backigesta.model.Empresa" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -10,39 +10,30 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/perfil.css">
     <title>Perfil</title>
     <%
-<<<<<<< HEAD
-        Usuarios user = (Usuarios) request.getSession().getAttribute("admin");
-        int id = user.getId();
-        String tipo = user.getClass().getSimpleName();
-=======
         if (session.getAttribute("admin") == null && session.getAttribute("empresa") == null) {
             response.sendRedirect("index.jsp");
             return;
         }
 
+        String caminhoVolta = (String) session.getAttribute("caminhoVolta");
         Admin admin = (Admin) session.getAttribute("admin");
-        Empresas empresa = (Empresas) session.getAttribute("empresa");
+        Empresa empresa = (Empresa) session.getAttribute("empresa");
         String tipo = "Empresa";
-        Usuarios user = empresa;
+        Usuario user = empresa;
         if (admin != null) {
             tipo = "Admin";
             user = admin;
         }
->>>>>>> d850abced838118a24345f846131b597d8980f3f
     %>
 </head>
 <body>
     <div class="mens">
-<<<<<<< HEAD
-        <img src="getFoto?id=<%=id%>&tipo=<%=tipo%>">
-=======
         <% if (user.getFoto() == null) { %>
             <img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
         <% } else { %>
             <img src="getFoto?id=<%=user.getId()%>&tipo=<%=tipo%>">
         <% } %>
 
->>>>>>> d850abced838118a24345f846131b597d8980f3f
         <form action="uploadFoto" name="trocarFoto" method="post" enctype="multipart/form-data">
             <input type="file" id="foto" name="foto" accept="image/jpeg, image/png" style="display: none">
             <label for="foto"><img src="${pageContext.request.contextPath}/assets/icons/camera.png"></label>
@@ -62,11 +53,7 @@
     </div>
 
     <section>
-<<<<<<< HEAD
-        <a href="selectCondena">
-=======
-        <a href="javascript:history.back()">
->>>>>>> d850abced838118a24345f846131b597d8980f3f
+        <a href="<%=caminhoVolta%>">
             <img src="${pageContext.request.contextPath}/assets/icons/arrow-right.svg">
             <span>Voltar</span>
         </a>

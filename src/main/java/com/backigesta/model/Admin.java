@@ -1,50 +1,29 @@
 package com.backigesta.model;
 
-//Classe criada por Artur ;)
-// A classe de Admin, servirá para confirmar o acesso dos Desenvolvedores na Área Restrita do website.
-// Dessa forma somos capazes de criar um menu interativo para analisar, controlar ou extrair informações
-// com mais facilidade.
-public class Admin extends Usuarios{
-//=======================ATRIBUTOS=======================\\
-
-
-//=======================MÉTODOS DA CLASSE=======================\\
-
-    //nenhum aqui tbm :P
-
+public class Admin extends Usuario {
 //=======================MÉTODOS CONSTRUTORES=======================\\
 
-    //Vazio
     public Admin() {
-    }
+    } // Construtor vazio
 
-    //Completo
     public Admin(int id, String nome, String email, String senha, byte[] foto) {
         super(id, nome, email, senha, foto);
-    }
+    } // Construtor completo
 
     //Sem Foto
     public Admin(int id, String nome, String email, String senha) {
         super(id, nome, email, senha);
-    }
+    } // Construtor com id, nome, email e senha
 
     //Sem ID
     public Admin(String nome, String email, String senha, byte[] foto) {
         super(nome, email, senha, foto);
-    }
+    } // Construtor com nome, email, senha e foto
 
     //Sem ID nem Foto
-    public Admin(String nome, String sobrenome, String email, String senha) {
+    public Admin(String nome, String email, String senha) {
         super(nome, email, senha);
-    }
-
-//=======================MÉTODOS GET=======================\\
-
-
-
-//=======================MÉTODOS SET=======================\\
-
-
+    } // Construtor com nome, email e senha
 
 //=======================TO STRING=======================\\
 

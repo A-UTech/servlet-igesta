@@ -1,10 +1,6 @@
 package com.backigesta.servlet;
 
-import com.backigesta.dao.CondenasDao;
 import com.backigesta.dao.PlanoDao;
-import com.backigesta.model.Admin;
-import com.backigesta.model.Condenas;
-import com.backigesta.model.Planos;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -12,8 +8,10 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
+//Servlet usada no CRUD de planos da Area Restrita
 @WebServlet(urlPatterns = {"/selectPlano","/adicionarPlano","/alterarPlano","/deletarPlano"})
 public class Plano extends HttpServlet {
+    // Declarando os DAO's utilizados.
     PlanoDao planoDao = new PlanoDao();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,13 +30,13 @@ public class Plano extends HttpServlet {
         String procura = request.getParameter("search");
 
         // Criando o objeto ArrayList com a interface List
-        List<Planos> lista = null;
+        List<com.backigesta.model.Plano> lista = null;
 
         // Direcionado qual método de procura será usado
         if (procura != null) {
-            lista = planoDao.buscarPlanosNome(procura.toLowerCase());
+            lista = planoDao.selecionarPorNome(procura);
         } else {
-            lista = planoDao.buscarPlanos();
+            lista = planoDao.selecionarTodos();
         }
 
         // Colocando o atributo lista no request
@@ -76,8 +74,7 @@ public class Plano extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("planoId"));
 
         // Usando o método da classe CondenasDao para deletar um registro
-        boolean deletado = planoDao.deletarPlano(id);
-        System.out.println(deletado);
+        boolean deletado = planoDao.deletar(id);
 
         // Colocando o atributo deletado no request
         request.setAttribute("deletado",deletado ? "true" : "false");
@@ -94,7 +91,7 @@ public class Plano extends HttpServlet {
         int armazenamento = Integer.parseInt(request.getParameter("armazenamento"));
 
         // Usando o método da classe CondenasDao para alterar os dados daquele registro
-        boolean alterado = planoDao.alterarPlano(new Planos(id,nomePlano,mensalidade,armazenamento));
+        boolean alterado = planoDao.atualizar(new com.backigesta.model.Plano(id,nomePlano,mensalidade,armazenamento));
 
         // Colocando o atributo alterado no request
         request.setAttribute("alterado",alterado ? "true" : "false");
@@ -110,7 +107,7 @@ public class Plano extends HttpServlet {
         int armazenamento = Integer.parseInt(request.getParameter("armazenamento"));
 
         // Usando o método da classe CondenasDao para adicioanar um registro
-        boolean adicionado = planoDao.adicionarPlano(new Planos(nomePlano,mensalidade,armazenamento));
+        boolean adicionado = planoDao.inserir(new com.backigesta.model.Plano(nomePlano,mensalidade,armazenamento));
 
         // Colocando o atributo adicionado no request
         request.setAttribute("adicionado",adicionado ? "true" : "false");

@@ -1,5 +1,5 @@
 <%@ page import="com.backigesta.model.Admin" %>
-<%@ page import="com.backigesta.model.Condenas" %>
+<%@ page import="com.backigesta.model.Condena" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -12,13 +12,13 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/popups.css">
     <title>Condenas</title>
     <%
-//        Admin admin = (Admin) session.getAttribute("admin");
-//        if (admin == null) {
-//            response.sendRedirect("index.jsp");
-//            return;
-//        }
+        Admin admin = (Admin) session.getAttribute("admin");
+        if (admin == null) {
+            response.sendRedirect("index.jsp");
+            return;
+        }
 
-        List<Condenas> condenas = (List<Condenas>) request.getAttribute("condenas");
+        List<Condena> condenas = (List<Condena>) request.getAttribute("condenas");
 
         String adicionado = (String) request.getAttribute("adicionado");
         String alterado = (String) request.getAttribute("alterado");
@@ -30,14 +30,21 @@
     <a href="${pageContext.request.contextPath}/index.jsp" class="logo"><img src="${pageContext.request.contextPath}/assets/logos/igesta-outlined.svg"> <h2>IGesta</h2></a>
 
     <nav>
-        <a href="selectEmpresas"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresa</span></a>
+        <a href="selectEmpresa"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresa</span></a>
         <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"><span>Condenas</span></a>
         <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"><span>Mensalidades</span></a>
         <a href="selectContato"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"><span>Contato dos funcionários</span></a>
         <a href="selectAdmin"><img src="${pageContext.request.contextPath}/assets/icons/aside-adm.svg"><span>Administradores</span></a>
     </nav>
 
-    <a href="" class="perfil"><img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg"> <span>Lucas Lima</span></a>
+    <a href="entrarPerfil" class="perfil">
+        <% if (admin.getFoto() == null) { %>
+            <img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
+        <% } else { %>
+            <img src="getFoto?id=<%=admin.getId()%>&tipo=Admin">
+        <% } %>
+        <span><%=admin.getNome()%></span>
+    </a>
 </aside>
     <main>
         <header>
@@ -75,7 +82,7 @@
                     <li>Criador</li>
                     <li>Ações</li>
                 </ul>
-                <% for (Condenas condena : condenas) { %>
+                <% for (Condena condena : condenas) { %>
                 <ul>
                     <li><%=condena.getNome()%></li>
                     <li><%=condena.getTipoCondena()%></li>
@@ -94,19 +101,19 @@
     <dialog id="add" class="popupInputs">
         <h2>Adicionar condena</h2>
         <form action="adicionarCondena" method="post" autocomplete="off" id="adicionarCondena">
-            <a onclick="document.getElementById('add').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
-            <input type="text" name="nomeCondena" placeholder="Nome" class="inputCapitalize">
-            <select name="tipo">
+            <a onclick="document.getElementById('add').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
+            <input type="text" name="nomeCondena" placeholder="Nome" class="inputCapitalize" required>
+            <select name="tipo" required>
                 <option value="" disabled selected hidden>Tipo Condena</option>
                 <option value="Total">Total</option>
                 <option value="Parcial">Parcial</option>
             </select>
-            <textarea name="descricaoCondena" placeholder="Descrição da condena" required></textarea>
+            <textarea name="descricaoCondena" placeholder="Descrição da condena"></textarea>
             <button type="button" id="buttonAdicionar" onclick="enviarFormulario('buttonAdicionar','adicionarCondena')">Adicionar</button>
         </form>
     </dialog>
     <dialog id="delete" class="popupButtons">
-        <a onclick="document.getElementById('delete').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
+        <a onclick="document.getElementById('delete').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
         <h2>Excluir condena?</h2>
         <div>
             <button onclick="document.getElementById('delete').close()">Não</button>
@@ -118,16 +125,16 @@
     </dialog>
     <dialog id="alterar" class="popupInputs">
         <h2>Alterar condena</h2>
-        <a onclick="document.getElementById('alterar').close()"><img src="${pageontext.request.contextPath}/assets/icons/arrow-left.png"></a>
+        <a onclick="document.getElementById('alterar').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
         <form action="alterarCondena" method="post" id="alterarCondena">
             <input type="hidden" name="condenaId" id="condenaId">
-            <input type="text" id="nomeCondena" name="nomeCondena" class="inputCapitalize">
-            <select name="tipo" id="tipoCondena">
+            <input type="text" id="nomeCondena" name="nomeCondena" class="inputCapitalize" required>
+            <select name="tipo" id="tipoCondena" required>
                 <option value="" disabled hidden>Tipo Condena</option>
                 <option value="Total" id="Total">Total</option>
                 <option value="Parcial" id="Parcial">Parcial</option>
             </select>
-            <textarea name="descricaoCondena" id="descricaoCondena" placeholder="Descrição da condena" required></textarea>
+            <textarea name="descricaoCondena" id="descricaoCondena" placeholder="Descrição da condena"></textarea>
             <button type="button" id="buttonAlterar" onclick="enviarFormulario('buttonAlterar','alterarCondena')">Alterar</button>
         </form>
     </dialog>

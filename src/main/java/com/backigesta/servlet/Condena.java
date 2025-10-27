@@ -1,6 +1,6 @@
 package com.backigesta.servlet;
 
-import com.backigesta.dao.CondenasDao;
+import com.backigesta.dao.CondenaDao;
 
 import com.backigesta.model.Admin;
 import jakarta.servlet.RequestDispatcher;
@@ -14,10 +14,11 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+//Servlet usada para o CRUD de condenas da Area Restrita
 @WebServlet(urlPatterns = {"/selectCondena","/adicionarCondena","/alterarCondena","/deletarCondena"})
-public class Condenas extends HttpServlet {
-
-    CondenasDao daoCondenas = new CondenasDao();
+public class Condena extends HttpServlet {
+    // Declarando os DAO's utilizados.
+    CondenaDao daoCondenas = new CondenaDao();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Capturando o caminho de como ele chegou no método doGet
@@ -36,15 +37,15 @@ public class Condenas extends HttpServlet {
         String procura = request.getParameter("search");
 
         // Criando o objeto ArrayList com a interface List
-        List<com.backigesta.model.Condenas> lista = null;
+        List<com.backigesta.model.Condena> lista = null;
 
         // Direcionado qual método de procura será usado
         if (procura != null) {
-            lista = daoCondenas.buscarCondenasNome(procura.toLowerCase());
+            lista = daoCondenas.selecionarPorNome(procura);
         } else if (filtro == null || filtro.equals("todos")) {
-            lista = daoCondenas.buscarCondenas();
+            lista = daoCondenas.selecionarTodos();
         } else {
-            lista = daoCondenas.buscarCondenasTipo(filtro.toLowerCase());
+            lista = daoCondenas.selecionarPorTipo(filtro);
         }
 
         // Colocando o atributo lista no request
@@ -82,7 +83,7 @@ public class Condenas extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("condenaId"));
 
         // Usando o método da classe CondenasDao para deletar um registro
-        boolean deletado = daoCondenas.deletarCondena(id);
+        boolean deletado = daoCondenas.deletar(id);
 
         // Colocando o atributo deletado no request
         request.setAttribute("deletado",deletado ? "true" : "false");
@@ -99,7 +100,7 @@ public class Condenas extends HttpServlet {
         String descricaoCondena = request.getParameter("descricaoCondena");
 
         // Usando o método da classe CondenasDao para alterar os dados daquele registro
-        boolean alterado = daoCondenas.alterarCondena(new com.backigesta.model.Condenas(id,nomeCondena,descricaoCondena,tipoCondena));
+        boolean alterado = daoCondenas.atualizar(new com.backigesta.model.Condena(id,nomeCondena,descricaoCondena,tipoCondena));
 
         // Colocando o atributo alterado no request
         request.setAttribute("alterado",alterado ? "true" : "false");
@@ -118,7 +119,7 @@ public class Condenas extends HttpServlet {
         String descricaoCondena = request.getParameter("descricaoCondena");
 
         // Usando o método da classe CondenasDao para adicioanar um registro
-        boolean adicionado = daoCondenas.adicionarCondena(new com.backigesta.model.Condenas(nomeCondena,admin.getNome(),descricaoCondena,tipoCondena));
+        boolean adicionado = daoCondenas.inserir(new com.backigesta.model.Condena(nomeCondena,admin.getNome(),descricaoCondena,tipoCondena));
 
         // Colocando o atributo adicionado no request
         request.setAttribute("adicionado",adicionado ? "true" : "false");

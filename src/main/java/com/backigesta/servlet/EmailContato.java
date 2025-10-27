@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 
+//Servlet usada para a pagina de suporte
 @WebServlet(urlPatterns = {"/emailContato"})
 public class EmailContato extends HttpServlet {
     JavaMail javaMail = new JavaMail();

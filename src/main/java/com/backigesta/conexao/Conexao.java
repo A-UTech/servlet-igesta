@@ -8,14 +8,14 @@ import java.sql.SQLException;
 
 public class Conexao {
 
-    //==========ATRIBUTOS==========\\
+//==========ATRIBUTOS==========\\
 
     private Dotenv dotenv = Dotenv.load();
     private String url = dotenv.get("DB_URL");
     private String user = dotenv.get("DB_USER");
     private String senha = dotenv.get("DB_SENHA");
 
-    //==========MÉTODOS DA CLASSE==========\\
+//==========MÉTODOS DA CLASSE==========\\
 
     public Connection conectar() {
         Connection conn = null;
@@ -30,7 +30,6 @@ public class Conexao {
         }
         return conn;
     } // Método para fazer conexão com o banco de dados
-
 
     public void desconectar(Connection conn) {
         try {
