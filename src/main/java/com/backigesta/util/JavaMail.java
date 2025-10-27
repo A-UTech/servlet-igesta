@@ -5,20 +5,24 @@ import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import java.util.Properties;
 
+//Classe com métodos para envio de emails, com a API JavaMail.
 public class JavaMail {
 
+    //Buscando a senha de acesso ao email da AUTECH no .env
     private Dotenv dotenv = Dotenv.configure().directory("/").filename(".env").load();
     private String senha = dotenv.get("SENHA_EMAIL");
 
+    //Método para enviar um pedido de suporte (Pagina de Contato)
     public boolean enviarEmailContato(String nome,String email, String mensagem) {
-        // Configuração das propriedades SMTP
+        // Configuração das propriedades do SMTP
         Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+        // Definindo as propriedades da conexão.
+        props.put("mail.smtp.auth", "true"); //Ativa o recurso de autentificação
+        props.put("mail.smtp.starttls.enable", "true"); //Muda conexão para uma protegida pelo protocolo TLS
+        props.put("mail.smtp.host", "smtp.gmail.com"); //Define o servidor que envia o email
+        props.put("mail.smtp.port", "587"); //Define a porta
 
-        // Criando a Session com autenticação para se conectar com o e-mail
+        // Criando a Session com autentificação para se conectar com o e-mail
         Session session = Session.getInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication("autech.inovacao@gmail.com",senha);
@@ -26,37 +30,43 @@ public class JavaMail {
         });
         session.setDebug(true);
 
-        // Criando a mensagem que vão ser mandadas pelo email
+        // Criando a mensagem que vai ser mandada pelo email
         try {
+            //Declarando objeto Message que prepara o email.
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("autech.inovacao@gmail.com"));
+            message.setFrom(new InternetAddress("autech.inovacao@gmail.com")); // Definindo o remetente.
             message.setRecipients(
                     Message.RecipientType.TO,
-                    InternetAddress.parse("autech.inovacao@gmail.com")
+                    InternetAddress.parse("autech.inovacao@gmail.com") //Definindo destinatário
             );
+            //Definindo o titulo
             message.setSubject("Ajuda solicitada por: "+nome);
+            //Definindo o corpo da menssagem
             String formatacao = "<body style='background-color: #2F3034; padding: 10px; border-radius: 10px; font-family: sans-serif;'><h1 style='color: #1A7B66;'>Email de contato: <span style='text-decoration: nome;'>"+email+"</span></h1><h3 style='color: #A1E1D3;'>"+mensagem+"<h3></body>";
 
+            //Mudando a formatação para HTML
             message.setContent(formatacao, "text/html; charset=UTF-8");
 
             // Enviando mensagem
             Transport.send(message);
             return true;
         } catch (MessagingException e) {
+            //Excessão base para todos os conflitos do JavaMail
             e.printStackTrace();
             return false;
         }
     }
 
+    //Método para enviar o token de verificação (Logins)
     public boolean enviarToken(String email, String token) {
         // Configuração das propriedades SMTP
         Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true"); //Ativa o recurso de autentificação
+        props.put("mail.smtp.starttls.enable", "true"); //Muda conexão para uma protegida pelo protocolo TLS
+        props.put("mail.smtp.host", "smtp.gmail.com"); //Define o servidor que envia o email
+        props.put("mail.smtp.port", "587"); //Define a porta
 
-        // Criando a Session com autenticação para se conectar com o e-mail
+        // Criando a Session com autentificação para se conectar com o e-mail
         Session session = Session.getInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication("autech.inovacao@gmail.com",senha);
@@ -66,13 +76,16 @@ public class JavaMail {
 
         // Criando a mensagem que vão ser mandadas pelo email
         try {
+            //Declarando objeto Message que prepara o email.
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("autech.inovacao@gmail.com"));
+            message.setFrom(new InternetAddress("autech.inovacao@gmail.com")); // Definindo o remetente.
             message.setRecipients(
                     Message.RecipientType.TO,
-                    InternetAddress.parse(email)
+                    InternetAddress.parse(email) //Definindo destinatário
             );
+            //Definindo o titulo
             message.setSubject("Seu código de verificação da conta IGesta");
+            //Definindo o corpo da menssagem
             String formatacao =
                     "<body style='margin:0; padding:0; background-color:#141414; width:100%; min-height:100vh; font-family:Poppins, Arial, sans-serif; color:#FCFCFC; text-align:center;'>" +
                             "    <div style='display:inline-block; text-align:center;'>" +
@@ -92,26 +105,29 @@ public class JavaMail {
                             "    </div>" +
                             "</body>";
 
+            //Mudando a formatação para HTML
             message.setContent(formatacao, "text/html; charset=UTF-8");
 
             // Enviando mensagem
             Transport.send(message);
             return true;
         } catch (MessagingException e) {
+            //Excessão base para todos os conflitos do JavaMail
             e.printStackTrace();
             return false;
         }
     }
 
+    //Método para enviar a proposta da empresa (Pagina de Proposta)
     public boolean enviarEmailProposta(String nome,String email, String cnpj, String mensagem) {
         // Configuração das propriedades SMTP
         Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true"); //Ativa o recurso de autentificação
+        props.put("mail.smtp.starttls.enable", "true"); //Muda conexão para uma protegida pelo protocolo TLS
+        props.put("mail.smtp.host", "smtp.gmail.com"); //Define o servidor que envia o email
+        props.put("mail.smtp.port", "587"); //Define a porta
 
-        // Criando a Session com autenticação para se conectar com o e-mail
+        // Criando a Session com autentificação para se conectar com o e-mail
         Session session = Session.getInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication("autech.inovacao@gmail.com",senha);
@@ -121,21 +137,26 @@ public class JavaMail {
 
         // Criando a mensagem que vão ser mandadas pelo email
         try {
+            //Declarando o objeto Message que prepara o email.
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("autech.inovacao@gmail.com"));
+            message.setFrom(new InternetAddress("autech.inovacao@gmail.com")); //Definindo Remetente
             message.setRecipients(
                     Message.RecipientType.TO,
-                    InternetAddress.parse("autech.inovacao@gmail.com")
+                    InternetAddress.parse("autech.inovacao@gmail.com") //Definindo destinatário
             );
+            //Definindo o titulo
             message.setSubject("Proposta solicitada por: "+nome);
+            //Definindo o corpo da menssagem
             String formatacao = "<body style='background-color: #2F3034; padding: 10px; border-radius: 10px; font-family: sans-serif;'><h1 style='color: #1A7B66;'>Email de contato: <span style='text-decoration: nome;'>"+email+"</span></h1><h3 style='color: #A1E1D3;'>"+mensagem+"<h3><h2 style='color: #1A7B66;'>CNPJ da empresa: "+cnpj+"</h2></body>";
 
+            //Mudando a formatação para HTML
             message.setContent(formatacao, "text/html; charset=UTF-8");
 
             // Enviando mensagem
             Transport.send(message);
             return true;
         } catch (MessagingException e) {
+            //Excessão base para todos os conflitos do JavaMail
             e.printStackTrace();
             return false;
         }

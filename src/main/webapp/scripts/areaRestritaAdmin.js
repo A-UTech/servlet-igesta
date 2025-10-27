@@ -9,7 +9,7 @@ function alterarAdmin(numero) {
     document.getElementById('nomeAdmin').value = nome;
     document.getElementById('adminId').value = numero;
     document.getElementById('emailAdmin').value = email;
-    document.getElementById("senhaAdmin").value = senha;
+    document.getElementById("senhaAlterar").value = senha;
 
     // Abre o dialog alterar
     document.getElementById("alterar").showModal();

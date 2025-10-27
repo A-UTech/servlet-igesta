@@ -32,7 +32,7 @@
     <a href="${pageContext.request.contextPath}/index.jsp" class="logo"><img src="${pageContext.request.contextPath}/assets/logos/igesta-outlined.svg"> <h2>IGesta</h2></a>
 
     <nav>
-        <a href="selectEmpresa"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresa</span></a>
+        <a href="selectEmpresa"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresas</span></a>
         <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"><span>Condenas</span></a>
         <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"><span>Mensalidades</span></a>
         <a href="selectContato"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"><span>Contato dos funcionários</span></a>
@@ -130,40 +130,46 @@
     </main>
         <dialog id="add" class="popupInputs">
             <h2>Adicionar empresa</h2>
-            <form action="adicionarEmpresas" method="post" autocomplete="off" id="adicionarEmpresa">
+            <form action="adicionarEmpresa" method="post" autocomplete="off" id="adicionarEmpresa">
                 <a onclick="document.getElementById('add').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
                 <input type="text" name="nomeEmpresa" class="inputCapitalize" placeholder="Nome" required>
                 <input type="email" name="emailEmpresa" placeholder="Email" required>
-                <input type="password" name="senhaEmpresa" placeholder="Senha" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
-                    <input type="text" name="cnpjEmpresa" placeholder="CNPJ" required pattern="[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}-?[0-9]{2}" title="Digite o CNPJ no formato 12.345.678/0001-90 ou apenas os números.">
+                <div class="input-container">
+                    <input type="password" id="senhaAdd" name="senhaEmpresa" placeholder="Senha" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
+                    <img onclick="mudarOlho('senhaAdd','toggleSenhaAdd')" src="${pageContext.request.contextPath}/assets/icons/closed_eyes.png"
+                         alt="mostrar senha"
+                         class="eye-icon"
+                         id="toggleSenhaAdd">
+                </div>
+                <input type="text" name="cnpjEmpresa" placeholder="CNPJ" required pattern="[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}-?[0-9]{2}" title="Digite o CNPJ no formato 12.345.678/0001-90 ou apenas os números.">
                 <select name="regiaoEmpresa" required>
                     <option value="" selected disabled>Selecionar Estado</option>
-                    <option value="AC">Acre</option>
-                    <option value="AL">Alagoas</option>
-                    <option value="AP">Amapá</option>
-                    <option value="AM">Amazonas</option>
-                    <option value="BA">Bahia</option>
-                    <option value="CE">Ceará</option>
-                    <option value="DF">Distrito Federal</option>
-                    <option value="ES">Espirito Santo</option>
-                    <option value="GO">Goiás</option>
-                    <option value="MA">Maranhão</option>
-                    <option value="MT">Mato Grosso</option>
-                    <option value="MS">Mato Grosso do Sul</option>
-                    <option value="MG">Minas Gerais</option>
-                    <option value="PA">Pará</option>
-                    <option value="PR">Paraná</option>
-                    <option value="PE">Pernambuco</option>
-                    <option value="PI">Piauí</option>
-                    <option value="RJ">Rio de Janeiro</option>
-                    <option value="RN">Rio Grande do Norte</option>
-                    <option value="RS">Rio Grande do Sul</option>
-                    <option value="RO">Rondônia</option>
-                    <option value="RR">Roráima</option>
-                    <option value="SC">Santa Catarina</option>
-                    <option value="SP">São Paulo</option>
-                    <option value="SE">Sergipe</option>
-                    <option value="TO">Tocantins</option>
+                    <option value="AC">AC</option>
+                    <option value="AL">AL</option>
+                    <option value="AP">AP</option>
+                    <option value="AM">AM</option>
+                    <option value="BA">BA</option>
+                    <option value="CE">CE</option>
+                    <option value="DF">DF</option>
+                    <option value="ES">ES</option>
+                    <option value="GO">GO</option>
+                    <option value="MA">MA</option>
+                    <option value="MT">MT</option>
+                    <option value="MS">MS</option>
+                    <option value="MG">MG</option>
+                    <option value="PA">PA</option>
+                    <option value="PR">PR</option>
+                    <option value="PE">PE</option>
+                    <option value="PI">PI</option>
+                    <option value="RJ">RJ</option>
+                    <option value="RN">RN</option>
+                    <option value="RS">RS</option>
+                    <option value="RO">RO</option>
+                    <option value="RR">RR</option>
+                    <option value="SC">SC</option>
+                    <option value="SP">SP</option>
+                    <option value="SE">SE</option>
+                    <option value="TO">TO</option>
                 </select>
                 <input type="text" name="cidadeEmpresa" placeholder="Cidade" required>
                 <input type="text" name="unidadeEmpresa" placeholder="Unidade da Empresa" required>
@@ -181,7 +187,7 @@
             <h2>Excluir Empresa?</h2>
             <div>
                 <button onclick="document.getElementById('delete').close()">Não</button>
-                <form action="deletarEmpresas" method="post" id="deletarEmpresa">
+                <form action="deletarEmpresa" method="post" id="deletarEmpresa">
                     <input type="hidden" id="empresaId" name="idEmpresa">
                     <button type="button" id="buttonDeletar" onclick="enviarFormulario('buttonDeletar','deletarEmpresa')">Sim</button>
                 </form>
@@ -189,39 +195,39 @@
         </dialog>
         <dialog id="alterar" class="popupInputs">
             <h2>Editar Empresa</h2>
-            <form action="alterarEmpresas" method="post" id="alterarEmpresa">
+            <form action="alterarEmpresa" method="post" id="alterarEmpresa">
                 <a onclick="document.getElementById('alterar').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
                 <input type="hidden" name="idEmpresa" id="idEmpresa">
                 <input type="text" name="nomeEmpresa" id="nomeEmpresa" placeholder="Nome" required>
                 <input type="email" name="emailEmpresa" id="emailEmpresa" placeholder="Email" required>
                 <select name="regiaoEmpresa" id="regiaoEmpresa" required>
                     <option value="" selected disabled>Selecionar Estado</option>
-                    <option value="AC">Acre</option>
-                    <option value="AL">Alagoas</option>
-                    <option value="AP">Amapá</option>
-                    <option value="AM">Amazonas</option>
-                    <option value="BA">Bahia</option>
-                    <option value="CE">Ceará</option>
-                    <option value="DF">Distrito Federal</option>
-                    <option value="ES">Espirito Santo</option>
-                    <option value="GO">Goiás</option>
-                    <option value="MA">Maranhão</option>
-                    <option value="MT">Mato Grosso</option>
-                    <option value="MS">Mato Grosso do Sul</option>
-                    <option value="MG">Minas Gerais</option>
-                    <option value="PA">Pará</option>
-                    <option value="PR">Paraná</option>
-                    <option value="PE">Pernambuco</option>
-                    <option value="PI">Piauí</option>
-                    <option value="RJ">Rio de Janeiro</option>
-                    <option value="RN">Rio Grande do Norte</option>
-                    <option value="RS">Rio Grande do Sul</option>
-                    <option value="RO">Rondônia</option>
-                    <option value="RR">Roráima</option>
-                    <option value="SC">Santa Catarina</option>
-                    <option value="SP">São Paulo</option>
-                    <option value="SE">Sergipe</option>
-                    <option value="TO">Tocantins</option>
+                    <option value="AC">AC</option>
+                    <option value="AL">AL</option>
+                    <option value="AP">AP</option>
+                    <option value="AM">AM</option>
+                    <option value="BA">BA</option>
+                    <option value="CE">CE</option>
+                    <option value="DF">DF</option>
+                    <option value="ES">ES</option>
+                    <option value="GO">GO</option>
+                    <option value="MA">MA</option>
+                    <option value="MT">MT</option>
+                    <option value="MS">MS</option>
+                    <option value="MG">MG</option>
+                    <option value="PA">PA</option>
+                    <option value="PR">PR</option>
+                    <option value="PE">PE</option>
+                    <option value="PI">PI</option>
+                    <option value="RJ">RJ</option>
+                    <option value="RN">RN</option>
+                    <option value="RS">RS</option>
+                    <option value="RO">RO</option>
+                    <option value="RR">RR</option>
+                    <option value="SC">SC</option>
+                    <option value="SP">SP</option>
+                    <option value="SE">SE</option>
+                    <option value="TO">TO</option>
                 </select>
                 <input type="text" name="cidadeEmpresa" placeholder="Cidade" id="cidadeEmpresa" required>
                 <input type="text" name="unidadeEmpresa" id="unidadeEmpresa" placeholder="Unidade" required>
@@ -231,7 +237,13 @@
                         <option id="<%=plano%>" value="<%=plano%>"><%=plano%></option>
                     <% } %>
                 </select>
-                <input type="password" name="senhaEmpresa" placeholder="Nova Senha" pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
+                <div class="input-container">
+                    <input type="password" id="senhaAlterar" name="senhaEmpresa" placeholder="Nova senha" pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
+                    <img onclick="mudarOlho('senhaAlterar','toggleSenhaAlterar')" src="${pageContext.request.contextPath}/assets/icons/closed_eyes.png"
+                         alt="mostrar senha"
+                         class="eye-icon"
+                         id="toggleSenhaAlterar">
+                </div>
                 <button type="button" id="buttonAlterar" onclick="enviarFormulario('buttonAlterar','alterarEmpresa')">Alterar</button>
             </form>
         </dialog>
@@ -248,6 +260,7 @@
         <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
         <script src="${pageContext.request.contextPath}/scripts/areaRestritaCompany.js"></script>
         <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
+        <script src="${pageContext.request.contextPath}/scripts/olhinhoInputs.js"></script>
         <script>
             <% if (adicionado != null) { %>
             <%

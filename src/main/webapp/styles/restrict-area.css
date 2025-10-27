@@ -368,3 +368,55 @@ dialog.popupButtons button:last-child {
 input:invalid {
     color: red;
 }
+
+.input-container, .container {
+    position: relative;
+}
+
+form input[type="password"], form input[type="text"], .container input[type="password"], .container input[type="text"] {
+    width: 100%;
+}
+
+form .eye-icon {
+    position: absolute;
+    left: 250px;
+    top: 36px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 25px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.container .eye-icon {
+    position: absolute;
+    left: 120px;
+    top: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 15px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+form .eye-icon:hover, .container .eye-icon:hover {
+    opacity: 1;
+}
+
+.container {
+    width: 150px;
+}
+
+.container .eye-icon {
+    opacity: 0;
+}
+
+.container:hover .eye-icon {
+    opacity: 1;
+}
+
+.container input {
+    background-color: var(--corCinza);
+    padding: 5px;
+    border-radius: 10px;
+}

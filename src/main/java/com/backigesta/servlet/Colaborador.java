@@ -186,7 +186,7 @@ public class Colaborador extends HttpServlet {
     protected void adicionarContatoEmpresa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Capturando os parâmetros de nomeCondena, tipo e descricao que estam saindo de um formulario
         int id = Integer.parseInt(request.getParameter("funcionarioId"));
-        String contato = request.getParameter("contato");
+        String contato = Regex.extrairNumero(request.getParameter("contato"));
 
         // Usando o método da classe CondenasDao para adicioanar um registro
         boolean adicionado = daoTelefones.inserir(new Telefone(contato,id));
