@@ -35,23 +35,17 @@ public class Contato extends HttpServlet {
 
     protected void mostrarSelects(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Capturando os parâmetros de searchNome e searchPhone
-        String procuraNome = request.getParameter("searchName");
-        String procuraEmail = request.getParameter("searchEmail");
+        String procura = request.getParameter("search");
 
         // Criando o objeto ArrayList com a interface List
         HashMap<Funcionario, ArrayList<Telefone>> mapa = new HashMap<>();
         ArrayList<Funcionario> funcionarios;
 
         // Direcionado qual método de procura será usado
-        if (procuraNome != null) {
-            funcionarios = funcionariosDAO.selecionarPorNomeComTelefone(procuraNome);
+        if (procura != null) {
+            funcionarios = funcionariosDAO.selecionarPorNomeOrEmailComTelefone(procura);
             for (Funcionario funcionarios1 : funcionarios) {
-                mapa.put(funcionarios1,telefoneDao.selecionarPorIdFuncionario(funcionarios1.getId()));
-            }
-        } else if (procuraEmail != null) {
-            funcionarios = funcionariosDAO.selecionarPorEmailComTelefone(procuraEmail);
-            for (Funcionario funcionarios1 : funcionarios) {
-                mapa.put(funcionarios1,telefoneDao.selecionarPorIdFuncionario(funcionarios1.getId()));
+                mapa.put(funcionarios1, telefoneDao.selecionarPorIdFuncionario(funcionarios1.getId()));
             }
         } else {
             funcionarios = funcionariosDAO.selecionarTodosComTelefone();

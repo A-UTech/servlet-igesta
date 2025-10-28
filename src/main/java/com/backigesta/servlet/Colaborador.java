@@ -61,6 +61,14 @@ public class Colaborador extends HttpServlet {
             funcionarios = daoFuncionarios.selecionarPorCargo(cargo, idEmpresa);
         }
 
+        if ("lider".equalsIgnoreCase(cargo)) {
+            request.setAttribute("selecionado","lider");
+        } else if ("gestor".equalsIgnoreCase(cargo)) {
+            request.setAttribute("selecionado","gestor");
+        } else {
+            request.setAttribute("selecionado","todos");
+        }
+
         //Definindo um HashMap, que carrega o objeto do funcionario, mais uma ArrayList de seus telefones registrados.
         HashMap<Funcionario, ArrayList<Telefone>> funcMap = new HashMap<>();
         for (Funcionario func : funcionarios) {

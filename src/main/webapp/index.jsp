@@ -42,9 +42,6 @@
             <a href="loginEmpresa">
                 <div>Entrar como empresa</div>
             </a>
-        <a href="selectAdmin">
-            <div>teste</div>
-        </a>
         <% } else { %>
             <% if (session.getAttribute("admin") != null) { %>
                 <a href="htmls/splash.html">

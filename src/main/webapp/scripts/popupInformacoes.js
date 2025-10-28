@@ -6,7 +6,10 @@ function abrirPopupInformacoes(icon,titulo,texto) {
     overlay.classList.add('active');
 
     // Colocando a imagem no elemento de id icon
-    document.getElementById("icon").src += icon;
+    let iconSrc = document.getElementById("icon").src;
+    iconSrc = iconSrc.substring(0, iconSrc.lastIndexOf('/')+1);
+    document.getElementById("icon").src=iconSrc+=icon;
+
 
     // Colocando os textos no elementos de id title e text
     document.getElementById("title").innerText = titulo;

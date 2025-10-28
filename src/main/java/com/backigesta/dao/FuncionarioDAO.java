@@ -212,6 +212,39 @@ public class FuncionarioDAO {
         }
     } // Método que seleciona funcionarios por email com telefones
 
+    public ArrayList<Funcionario> selecionarPorNomeOrEmailComTelefone(String procura) {
+        ArrayList<Funcionario> funcionarios = new ArrayList<>();
+        try{
+            conn = banco.conectar();
+            PreparedStatement ps = conn.prepareStatement("SELECT f.id, f.nome, f.email, f.cpf, f.senha, e.nome, c.nome, f.id_permissao, f.turno, f.foto FROM funcionario f JOIN empresa e ON f.id_empresa = e.id JOIN cargo c ON f.id_cargo = c.id JOIN telefone t ON t.id_funcionario = f.id WHERE lower(f.email) LIKE lower(?) OR lower(f.nome) LIKE lower(?)");
+            ps.setString(1,procura + "%");
+            ps.setString(2,procura + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                funcionarios.add(new Funcionario(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getInt(8),
+                        rs.getTime(9).toLocalTime(),
+                        rs.getBytes(10)
+                ));
+            }
+        }
+        catch(SQLException sqle){
+            System.out.println("!!SQLException ao chamar FuncionarioDAO.selecionarPorNome(String)");
+            sqle.printStackTrace();
+        }
+        finally {
+            banco.desconectar(conn);
+            return funcionarios;
+        }
+    }
+
     public List<Funcionario> selecionarPorNome(String nome, int id_empresa){
         List<Funcionario> funcionarios = new ArrayList<>();
         try{

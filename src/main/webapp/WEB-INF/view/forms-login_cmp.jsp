@@ -19,7 +19,7 @@
         <form action="loginEmpresa" method="post" id="loginEmpresa">
             <input type="email" name="email" placeholder="E-mail" required minlength="10" autocomplete="email" value="<%=email == null ? "" : email%>" autofocus>
             <div class="input-container">
-                <input type="password" value="<%=senha%>" id="senha" name="password" placeholder="Senha" autocomplete="current-password" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
+                <input type="password" value="<%=senha == null ? "" : senha%>" id="senha" name="password" placeholder="Senha" autocomplete="current-password" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
                 <img onclick="mudarOlho('senha','toggleSenha')" src="${pageContext.request.contextPath}/assets/icons/closed_eyes.png"
                      alt="mostrar senha"
                      class="eye-icon"

@@ -97,7 +97,7 @@ public class JavaMail {
                             "            </div>" +
                             "            <div style='margin-top:30px;'>" +
                             "                <h2 style='font-weight:700; font-size:1.3rem; color:#A1E1D3; margin-bottom:15px;'>Código</h2>" +
-                            "                <p style='background-color:#A1E1D3; color:#141414; padding:15px 25px; border-radius:15px; font-weight:bold; letter-spacing:2px; display:inline-block; text-align:center;'>" + token + "</p>" +
+                            "                <p style='background-color:#A1E1D3; color:#141414; padding:20px 30px; border-radius:15px; font-weight:bold; letter-spacing:2px; display:inline-block; text-align:center; font-size: 20px;'>" + token + "</p>" +
                             "            </div>" +
                             "        </section>" +
                             "        <p style='font-size:0.8rem; color:#FCFCFC; margin-top:40px;'>© 2025 IGesta | Todos os direitos reservados</p>" +

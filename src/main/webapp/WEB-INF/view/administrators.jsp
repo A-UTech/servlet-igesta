@@ -11,11 +11,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/popups.css">
     <title>Administradores</title>
     <%
-//        Admin admin = (Admin) session.getAttribute("admin");
-//        if (admin == null) {
-//            response.sendRedirect("index.jsp");
-//            return;
-//        }
+        Admin admin = (Admin) session.getAttribute("admin");
+        if (admin == null) {
+            response.sendRedirect("index.jsp");
+            return;
+        }
 
         List<Admin> admins = (List<Admin>) request.getAttribute("admins");
 
@@ -36,12 +36,12 @@
     </nav>
 
     <a href="entrarPerfil" class="perfil">
-<%--        <% if (admin.getFoto() == null) { %>--%>
+        <% if (admin.getFoto() == null) { %>
             <img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
-<%--        <% } else { %>--%>
-<%--            <img class="perfil" src="getFoto?id=<%=admin.getId()%>&tipo=Admin">--%>
-<%--        <% } %>--%>
-<%--         <span><%=admin.getNome()%></span>--%>
+        <% } else { %>
+            <img class="perfil" src="getFoto?id=<%=admin.getId()%>&tipo=Admin">
+        <% } %>
+         <span><%=admin.getNome()%></span>
     </a>
 </aside>
 

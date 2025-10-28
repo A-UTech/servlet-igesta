@@ -164,7 +164,7 @@ form.search {transition: 800ms}
 form.search input {
     display: none;
     background: transparent;
-    width: 120px;
+    width: 180px;
     text-align: center;
 }
 
@@ -196,7 +196,7 @@ div.table {
 }
 
 div.company > ul {grid-template-columns: repeat(8, 1fr)}
-div.condemn > ul, div.employeeContact > ul {grid-template-columns: repeat(5, 1fr)}
+div.condemn > ul, div.employeeContact > ul {grid-template-columns: repeat(5,1fr)}
 div.payment > ul, div.adm > ul {grid-template-columns: repeat(4, 1fr)}
 
 ul {
@@ -206,6 +206,10 @@ ul {
     height: 50px;
     border-radius: 50px;
 }
+
+li:first-child {
+    width: 60%;
+ }
 
 ul:first-child {
     background: var(--corBranco);
@@ -419,4 +423,11 @@ form .eye-icon:hover, .container .eye-icon:hover {
     background-color: var(--corCinza);
     padding: 5px;
     border-radius: 10px;
+}
+
+button.selected {
+    background: var(--corVC);
+    color: var(--corPreto);
+    width: 100px;
+    font-weight: 500;
 }

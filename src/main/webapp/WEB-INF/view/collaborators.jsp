@@ -30,6 +30,8 @@
         //infoPlano -> separa todas as informações do plano da empresa em um vetor. Sua síntaxe vem assim: numGestores;numLideres;nomePlano;preco;armazenamento
         String[] infoPlano = ((String) request.getAttribute("infoPlano")).split(";");
 
+        String selecionado = (String) request.getAttribute("selecionado");
+
         String adicionado = (String) request.getAttribute("adicionado");
         String alterado = (String) request.getAttribute("alterado");
         String deletado = (String) request.getAttribute("deletado");
@@ -38,7 +40,7 @@
 </head>
 <body>
 <aside>
-    <img src="${pageContext.request.contextPath}/assets/logos/logo-branca.png">
+    <a href="${pageContext.request.contextPath}/index.jsp"><img src="${pageContext.request.contextPath}/assets/logos/logo-branca.png"></a>
     <div>
         <h3><%=infoPlano[2]%></h3>
         <p><%=infoPlano[4]%> GB • R$<%=infoPlano[3]%></p>
@@ -59,15 +61,15 @@
             <%--Botões de filtragem por Cargo--%>
             <form action="selectCollab">
                 <input type="hidden" name="filter">
-                <button type="submit" class="options">Todos</button>
+                <button type="submit" id="buttonTodos" class="options">Todos</button>
             </form>
             <form action="selectCollab">
                 <input type="hidden" name="filter" value="lider">
-                <button type="submit" class="options">Líderes</button>
+                <button type="submit" id="buttonLider" class="options">Líderes</button>
             </form>
             <form action="selectCollab">
                 <input type="hidden" name="filter" value="gestor">
-                <button type="submit" class="options">Gestores</button>
+                <button type="submit" id="buttonGestor" class="options">Gestores</button>
             </form>
             <%--Barra de pesquisa por nome--%>
             <form action="selectCollab" id="search">
@@ -152,8 +154,14 @@
             <option value="Gestor(a);1">Gestor</option>
             <option value="Lider;2">Líder</option>
         </select>
-        <input type="time" name="turno" placeholder="Horario de Turno" required>
-        <input type="password" name="senha" placeholder="Senha" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
+        <input type="text" placeholder="Horario de Turno" pattern="[0-9]{2}:[0-9]{2}" title="Digite no formato HH:MM" name="turno" onfocus="this.type='time'" onblur="if(!this.value) this.type='text'" required>
+        <div class="input-container">
+            <input type="password" id="senhaAdd" name="senha" placeholder="Senha" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
+            <img onclick="mudarOlho('senhaAdd','toggleSenhaAdd')" src="${pageContext.request.contextPath}/assets/icons/closed_eyes.png"
+                 alt="mostrar senha"
+                 class="eye-icon"
+                 id="toggleSenhaAdd">
+        </div>
         <button type="button" id="buttonAdicionarCollab" onclick="enviarFormulario('buttonAdicionarCollab','adicionarCollab')">Adicionar</button>
     </form>
 </dialog>
@@ -187,8 +195,14 @@
         <input type="email" name="email" id="emailColaborador" required>
         <select name="cargo" id="cargoColaborador">
         </select>
-        <input type="time" name="turno" id="turnoColaborador" required>
-        <input type="password" name="senha" id="senhaColaborador" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
+        <input type="text" placeholder="Horario de Turno" id="turnoColaborador" pattern="[0-9]{2}:[0-9]{2}" title="Digite no formato HH:MM" name="turno" onfocus="this.type='time'" onblur="if(!this.value) this.type='text'" required>
+        <div class="input-container">
+            <input type="password" id="senhaAlterar" name="senha" placeholder="Senha" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
+            <img onclick="mudarOlho('senhaAlterar','toggleSenhaAlterar')" src="${pageContext.request.contextPath}/assets/icons/closed_eyes.png"
+                 alt="mostrar senha"
+                 class="eye-icon"
+                 id="toggleSenhaAlterar">
+        </div>
         <input type="hidden" name="id" id="idColaborador">
         <button type="button" id="buttonAlterarColab" onclick="enviarFormulario('buttonAlterarColab','alterarCollab')">Alterar</button>
     </form>
@@ -235,11 +249,9 @@
 <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
 <script>
-    console.log('<%=adicionado%>');
     <% if (adicionado != null) { %>
     <%
         boolean isAdicionado = Boolean.parseBoolean(adicionado);
-
     %>
     abrirPopupInformacoes("<%=isAdicionado ? "check.svg" : "wrong.svg"%>", "<%=isAdicionado ? "Registro adicionado!" : "Erro ao adicionar"%>", "<%=isAdicionado ? "O novo dado foi salvo com sucesso." : "Não foi possível salvar o registro. Tente novamente."%>")
     <% } else if (alterado != null) { %>
@@ -252,6 +264,17 @@
         boolean isDeletado = Boolean.parseBoolean(deletado);
     %>
     abrirPopupInformacoes("<%=isDeletado ? "check.svg" : "wrong.svg"%>", "<%=isDeletado? "Registro removido!" : "Erro ao excluir"%>", "<%=isDeletado ? "O dado foi excluído do sistema." : "Não foi possível remover o registro."%>")
+    <% } %>
+
+    <% if ("todos".equalsIgnoreCase(selecionado)) { %>
+        document.getElementById('buttonTodos').classList.remove("options")
+        document.getElementById('buttonTodos').classList.add('selected');
+    <% } else if ("lider".equalsIgnoreCase(selecionado)) { %>
+        document.getElementById('buttonLider').classList.remove("options")
+        document.getElementById('buttonLider').classList.add('selected');
+    <% } else if ("gestor".equalsIgnoreCase(selecionado)) { %>
+        document.getElementById('buttonGestor').classList.remove("options")
+        document.getElementById('buttonGestor').classList.add('selected');
     <% } %>
 </script>
 </body>

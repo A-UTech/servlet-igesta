@@ -5,7 +5,7 @@ function alterarColaborador(numero){
     document.getElementById("nomeColaborador").value = nome;
     document.getElementById("emailColaborador").value = email;
     document.getElementById("turnoColaborador").value = turno;
-    document.getElementById("senhaColaborador").value = senha;
+    document.getElementById("senhaAlterar").value = senha;
 
     const selectCargo = document.getElementById("cargoColaborador");
     if (cargo === 1) {

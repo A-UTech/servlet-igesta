@@ -34,7 +34,7 @@ public class Foto extends HttpServlet {
             AdminDAO dao = new AdminDAO();
             foto = dao.selecionarFotoPorId(id);
         }
-        else if(tipo.equals("Empresas")){
+        else if(tipo.equals("Empresas") || tipo.equals("Empresa")){
             //Extraindo da tabela de Empresas
             EmpresaDAO dao = new EmpresaDAO();
             foto = dao.selecionarFotoPorId(id);

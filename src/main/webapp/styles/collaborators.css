@@ -56,7 +56,7 @@ aside {
     gap: 30px;
 }
 
-aside > img {
+aside > a > img {
     width: 80px;
 }
 
@@ -238,7 +238,7 @@ dialog {
     align-items: center;
     justify-content: space-around;
     border-radius: 20px;
-    background-color: #141414;
+    background-color: var(--corPreto);
 }
 dialog[open] {
     display: flex;
@@ -246,7 +246,7 @@ dialog[open] {
 
 dialog.popupInputs {
     width: 700px;
-    height: 500px;
+    height: 600px;
 }
 
 dialog.popupInputs > h2 {
@@ -263,7 +263,7 @@ dialog.popupInputs input, dialog.popupInputs select, dialog.popupInputs textarea
     height: 70px;
     resize: none;
     padding: 20px;
-    background: #FCFCFC;
+    background: var(--corBranco);
     border-radius: 15px;
 }
 
@@ -272,15 +272,16 @@ dialog.popupInputs textarea {
 }
 
 dialog.popupInputs button {
-    background: #A1E1D3;
+    background: var(--corVC);
 }
 
-dialog.popupInputs > form {
+dialog.popupInputs > form, .form {
     width: 300px;
     height: 400px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
+    row-gap: 10px;
 }
 
 dialog img {
@@ -313,7 +314,7 @@ dialog.popupButtons button {
     width: 120px;
     height: 40px;
     border-radius: 50px;
-    color: #FCFCFC;
+    color: var(--corBranco);
     font-weight: bold;
 }
 
@@ -322,9 +323,56 @@ dialog.popupButtons button:first-child {
 }
 
 dialog.popupButtons button:last-child {
-    background-color: #1A7B66;
+    background-color: var(--corVE);
 }
-
 input:invalid {
     color: red;
+}
+
+select.selectPhone {
+    background: var(--corCinza);
+    color: var(--corBranco);
+    padding: 2px;
+    border-radius: 5px;
+}
+
+.input-container {
+    position: relative;
+}
+
+form input[type="password"], form input[type="text"], .container input[type="password"], .container input[type="text"] {
+    width: 100%;
+}
+
+form .eye-icon {
+    position: absolute;
+    left: 250px;
+    top: 36px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 25px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.container .eye-icon {
+    position: absolute;
+    left: 120px;
+    top: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 15px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+form .eye-icon:hover {
+    opacity: 1;
+}
+
+button.selected {
+    background: var(--corVC);
+    color: var(--corPreto);
+    width: 100px;
+    font-weight: 500;
 }

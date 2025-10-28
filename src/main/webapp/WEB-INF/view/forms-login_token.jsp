@@ -19,7 +19,7 @@
     <section class="token">
         <div>
             <h1>Código</h1>
-            <p>Um token de 5 dígitos foi enviado para o e-mail <%=email%></p>
+            <p>Um código de 5 dígitos foi enviado para o e-mail <%=email%></p>
         </div>
         <form action="verificarToken" method="post" autocomplete="off" class="token" id="verificarToken">
             <div>

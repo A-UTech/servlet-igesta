@@ -58,15 +58,9 @@
         <header>
             <h1>Contato dos Funcionários</h1>
             <menu>
-                <form action="selectContato" id="searchName" class="search">
-                    <input type="text" name="searchName" placeholder="Pesquisar por nome">
-                    <button type="button" onclick="enviarFormulario('buttonSearchNome','searchName')" id="buttonSearchNome" class="functions">
-                        <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
-                    </button>
-                </form>
-                <form action="selectContato" id="searchEmail" class="search">
-                    <input type="text" name="searchEmail" placeholder="Pesquisar por email">
-                    <button type="button" onclick="enviarFormulario('buttonSearchTelefone','searchEmail')" id="buttonSearchTelefone" class="functions">
+                <form action="selectContato" id="search" class="search">
+                    <input type="text" name="search" placeholder="Pesquisar por nome ou email">
+                    <button type="button" onclick="enviarFormulario('buttonSearch','search')" id="buttonSearch" class="functions">
                         <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
                     </button>
                 </form>
@@ -79,8 +73,8 @@
         <section>
                 <div class="table employeeContact">
                     <ul>
-                        <li>Empresa</li>
                         <li>Nome</li>
+                        <li>Empresa</li>
                         <li>Email</li>
                         <li>Telefone</li>
                         <li>Ações</li>
@@ -88,12 +82,11 @@
 
                     <% for (Funcionario contato : contatos.keySet()) { %>
                         <ul>
-                            <li><%=contato.getNomeEmpresa()%></li>
                             <li><%=contato.getNome()%></li>
+                            <li><%=contato.getNomeEmpresa()%></li>
                             <li><%=contato.getEmail()%></li>
                             <li>
                                 <select class="selectPhone" name="telefone" id="telefoneContato<%=contato.getId()%>">
-                                    <option value="" selected hidden disabled>Telefones</option>
                                     <% for (Telefone telefone : contatos.get(contato)) { %>
                                         <option value="<%=telefone.getId()%>"><%=Regex.formatarTelefone(telefone.getTelefone())%></option>
                                     <% } %>

@@ -48,6 +48,15 @@ public class Condena extends HttpServlet {
             lista = daoCondenas.selecionarPorTipo(filtro);
         }
 
+        // Colocando o atributo no request de qual tipo foi selecionado
+        if ("total".equalsIgnoreCase(filtro)) {
+            request.setAttribute("selecionado","total");
+        } else if ("parcial".equalsIgnoreCase(filtro)) {
+            request.setAttribute("selecionado","parcial");
+        } else {
+            request.setAttribute("selecionado","todos");
+        }
+
         // Colocando o atributo lista no request
         request.setAttribute("condenas",lista);
 

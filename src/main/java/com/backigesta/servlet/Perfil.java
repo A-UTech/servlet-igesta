@@ -38,7 +38,6 @@ public class Perfil extends HttpServlet {
         //Traçando a última pagina acessada antes de entrar no Perfil.
         String pagina = request.getHeader("referer");
         pagina = pagina.substring(pagina.lastIndexOf("/") + 1);
-        System.out.println(pagina);
         if (pagina.toLowerCase().matches(".*condena.*") ) {
             session.setAttribute("caminhoVolta","selectCondena");
         } else if (pagina.toLowerCase().matches(".*admin.*")) {
@@ -49,6 +48,8 @@ public class Perfil extends HttpServlet {
             session.setAttribute("caminhoVolta","selectEmpresa");
         } else if (pagina.toLowerCase().matches(".*plano.*")) {
             session.setAttribute("caminhoVolta","selectPlano");
+        } else if (pagina.toLowerCase().matches(".*collab.*")) {
+            session.setAttribute("caminhoVolta", "selectCollab");
         }
         //Enviando para o perfil.
         entrarPerfil(request, response);
@@ -116,9 +117,13 @@ public class Perfil extends HttpServlet {
 
         //Buscando na session o usuario logado no momento com a classe Abstrata.
         Usuario user = (Usuario) session.getAttribute("admin");
+        if(user == null) {
+            user = (Usuario) session.getAttribute("empresa");
+        }
 
         //Extraindo o nome da Classe do objeto.
-        String tipo = user.getClass().getSimpleName();
+        String tipo = user.getClass().getSimpleName().toLowerCase();
+        System.out.println(tipo);
 
         //Transformando o arquivo de imagem fornecido em um ByteArray
         Part filePart = request.getPart("foto");
@@ -126,15 +131,15 @@ public class Perfil extends HttpServlet {
 
         //Atualizando o usuario no banco.
         switch (tipo) {
-            case "Admin":
+            case "admin":
                 new AdminDAO().atualizarFoto(user.getId(),bytea);
                 break;
-            case "Empresas":
+            case "empresa":
                 new EmpresaDAO().atualizarFoto(user.getId(),bytea);
         }
         //Atualizando o usuario na Session.
         user.setFoto(bytea);
-        session.setAttribute("admin",user);
+        session.setAttribute(tipo,user);
 
         //Voltando para a pagina de perfil.
         entrarPerfil(request,response);

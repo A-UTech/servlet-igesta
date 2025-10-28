@@ -20,6 +20,8 @@
 
         List<Condena> condenas = (List<Condena>) request.getAttribute("condenas");
 
+        String selecionado = (String) request.getAttribute("selecionado");
+
         String adicionado = (String) request.getAttribute("adicionado");
         String alterado = (String) request.getAttribute("alterado");
         String deletado = (String) request.getAttribute("deletado");
@@ -50,7 +52,8 @@
         <header>
             <h1>Condenas</h1>
             <menu>
-                <form action="selectCondena" method="get" id="procuraCondenaTodas">
+                <p>Filtrar por tipo:</p>
+                <form action="selectCondena" method="get" id="procuraCondenaTodas" >
                     <input type="hidden" value="todos" name="filter">
                     <button type="button" onclick="enviarFormulario('buttonTodos','procuraCondenaTodas')" id="buttonTodos" class="options">Todas</button>
                 </form>
@@ -168,7 +171,16 @@
         %>
         abrirPopupInformacoes("<%=isDeletado ? "check.svg" : "wrong.svg"%>","<%=isDeletado? "Registro removido!" : "Erro ao excluir"%>","<%=isDeletado ? "O dado foi excluído do sistema." : "Não foi possível remover o registro."%>")
         <% } %>
+        <% if ("todos".equalsIgnoreCase(selecionado)) { %>
+            document.getElementById('buttonTodos').classList.remove("options")
+            document.getElementById('buttonTodos').classList.add('selected');
+        <% } else if ("total".equalsIgnoreCase(selecionado)) { %>
+            document.getElementById('buttonTotal').classList.remove("options")
+            document.getElementById('buttonTotal').classList.add('selected');
+        <% } else if ("parcial".equalsIgnoreCase(selecionado)) { %>
+            document.getElementById('buttonParcial').classList.remove("options")
+            document.getElementById('buttonParcial').classList.add('selected');
+        <% } %>
     </script>
-
 </body>
 </html>

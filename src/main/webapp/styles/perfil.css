@@ -95,3 +95,26 @@ section > form#changePsswd > button {
     right: 10px;
     bottom: 10px;
 }
+
+.input-container, .container {
+    position: relative;
+}
+
+form input[type="password"], form input[type="text"], .container input[type="password"], .container input[type="text"] {
+    width: 100%;
+}
+
+form .eye-icon {
+    position: absolute;
+    left: 240px;
+    top: 33px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 25px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+form .eye-icon:hover {
+    opacity: 1;
+}
