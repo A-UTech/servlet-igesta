@@ -52,7 +52,7 @@ public class Colaborador extends HttpServlet {
         List<Funcionario> funcionarios;
         if (procura != null) {
             //Caso HOUVE pesquisa por nome:
-            funcionarios = daoFuncionarios.selecionarPorNome(procura, idEmpresa);
+            funcionarios = daoFuncionarios.selecionarPorNomeOrEmail(procura, idEmpresa);
         } else if (cargo == null || cargo.equals("")) {
             //Caso não houve o uso de filtros
             funcionarios = daoFuncionarios.selecionarTodos(idEmpresa);

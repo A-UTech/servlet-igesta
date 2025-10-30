@@ -36,7 +36,7 @@ public class Admin extends HttpServlet {
 
         // Direcionando qual método de procura será usado
         if (procura != null && !procura.equals("")) {
-            lista = adminDAO.selecionarPorNome(procura);
+            lista = adminDAO.selecionarPorNomeOrEmail(procura);
         } else {
             lista = adminDAO.selecionarTodos();
         }

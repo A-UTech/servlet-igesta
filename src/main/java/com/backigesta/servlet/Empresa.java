@@ -44,7 +44,7 @@ public class Empresa extends HttpServlet {
             empresas = daoEmpresas.selecionarTodos();
         } else {
             //Selecionando por pesquisa
-            empresas = daoEmpresas.selecionarPorNome(procura);
+            empresas = daoEmpresas.selecionarPorNomeOrEmail(procura);
         }
 
         //Buscando o nome dos planos disponiveis para mostrar no CRUD

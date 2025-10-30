@@ -126,12 +126,13 @@ public class EmpresaDAO {
         }
     } // Método que seleciona empresas por estado
 
-    public ArrayList<Empresa> selecionarPorNome(String nome){
+    public ArrayList<Empresa> selecionarPorNomeOrEmail(String procura){
         ArrayList<Empresa> empresa = new ArrayList<>();
         try{
             conn = banco.conectar();
-            PreparedStatement ps = conn.prepareStatement("SELECT e.*, p.nome AS plano FROM empresa e JOIN plano p ON p.id=e.id_plano WHERE lower(e.nome) LIKE lower(?) ORDER BY e.nome");
-            ps.setString(1, nome+"%");
+            PreparedStatement ps = conn.prepareStatement("SELECT e.*, p.nome AS plano FROM empresa e JOIN plano p ON p.id=e.id_plano WHERE lower(e.nome) LIKE lower(?) OR lower(e.email) LIKE lower(?) ORDER BY e.nome");
+            ps.setString(1, "%" + procura + "%");
+            ps.setString(2, "%" + procura + "%");
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
@@ -157,7 +158,7 @@ public class EmpresaDAO {
             banco.desconectar(conn);
             return empresa;
         }
-    } // Método que seleciona as empresas por nome
+    } // Método que seleciona as empresas por nome ou por email
 
     public ArrayList<Empresa> selecionarTodos(){
         ArrayList<Empresa> empresa = new ArrayList<>();

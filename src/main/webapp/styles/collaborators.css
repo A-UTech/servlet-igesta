@@ -251,7 +251,6 @@ dialog.popupInputs {
 
 dialog.popupInputs > h2 {
     font-size: 2em;
-    margin-left: 40px;
 }
 
 dialog a {
@@ -325,6 +324,24 @@ dialog.popupButtons button:first-child {
 dialog.popupButtons button:last-child {
     background-color: var(--corVE);
 }
+
+
+#telefoneOptions > div {
+    display: flex;
+    justify-content: space-around;
+    width: 200px;
+}
+
+#telefoneOptions > div > img {
+    position: revert;
+    width: 20px;
+}
+
+dialog.popupInputs h2 {
+    font-weight: bold;
+    text-align: center;
+}
+
 input:invalid {
     color: red;
 }
@@ -351,19 +368,12 @@ form .eye-icon {
     transform: translateY(-50%);
     cursor: pointer;
     width: 25px;
-    opacity: 0.8;
+    opacity: 0;
     transition: opacity 0.2s;
 }
 
-.container .eye-icon {
-    position: absolute;
-    left: 120px;
-    top: 15px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    width: 15px;
-    opacity: 0.8;
-    transition: opacity 0.2s;
+.input-container:hover .eye-icon {
+    opacity: 1;
 }
 
 form .eye-icon:hover {
@@ -375,4 +385,11 @@ button.selected {
     color: var(--corPreto);
     width: 100px;
     font-weight: 500;
+}
+
+li:last-child > a:first-child:hover {filter: brightness(0) saturate(100%) invert(98%) sepia(4%) saturate(4136%) hue-rotate(141deg) brightness(94%) contrast(85%)}
+li:last-child > a:last-child:hover {filter: brightness(0) saturate(100%) invert(51%) sepia(87%) saturate(6827%) hue-rotate(347deg) brightness(92%) contrast(99%)}
+
+a {
+    cursor: pointer;
 }

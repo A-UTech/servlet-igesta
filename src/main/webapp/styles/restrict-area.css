@@ -119,6 +119,22 @@ main {
 
 header {justify-content: space-between}
 
+select#selectState {
+    border-radius: 50px;
+    background: var(--corCinza);
+    height: 40px;
+    width: 150px;
+    color: var(--corBranco);
+    display: flex;
+    justify-content: center;
+    padding-left: 30px;
+}
+
+select#selectState > option, select.selectPhone option {
+    background: var(--corCinza);
+    color: var(--corBranco);
+}
+
 
 /* menu */
 menu {gap: 5px;}
@@ -239,11 +255,18 @@ li {
     white-space: nowrap;
 }
 
+li:last-child > a:first-child:hover {filter: brightness(0) saturate(100%) invert(98%) sepia(4%) saturate(4136%) hue-rotate(141deg) brightness(94%) contrast(85%)}
+li:last-child > a:last-child:hover {filter: brightness(0) saturate(100%) invert(51%) sepia(87%) saturate(6827%) hue-rotate(347deg) brightness(92%) contrast(99%)}
+
 select.selectPhone {
     background: var(--corCinza);
     color: var(--corBranco);
     padding: 2px;
     border-radius: 5px;
+}
+
+a {
+    cursor: pointer;
 }
 
 
@@ -289,7 +312,7 @@ dialog[open] {
 
 dialog.popupInputs {
     width: 700px;
-    height: 600px;
+    height: 650px;
 }
 
 dialog.popupInputs > h2 {
@@ -377,6 +400,10 @@ input:invalid {
     position: relative;
 }
 
+.input-container:hover .eye-icon {
+    opacity: 1;
+}
+
 form input[type="password"], form input[type="text"], .container input[type="password"], .container input[type="text"] {
     width: 100%;
 }
@@ -388,7 +415,7 @@ form .eye-icon {
     transform: translateY(-50%);
     cursor: pointer;
     width: 25px;
-    opacity: 0.8;
+    opacity: 0;
     transition: opacity 0.2s;
 }
 
@@ -430,4 +457,8 @@ button.selected {
     color: var(--corPreto);
     width: 100px;
     font-weight: 500;
+}
+
+form button:hover {
+    cursor: pointer;
 }

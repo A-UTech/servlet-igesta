@@ -280,6 +280,10 @@ input:invalid {
     position: relative;
 }
 
+.input-container:hover > .eye-icon {
+    opacity: 1;
+}
+
 input[type="password"], input[type="text"] {
     width: 100%;
 }
@@ -291,10 +295,10 @@ input[type="password"], input[type="text"] {
     transform: translateY(-50%);
     cursor: pointer;
     width: 25px;
-    opacity: 0.8;
+    opacity: 0;
     transition: opacity 0.2s;
 }
 
-.eye-icon:hover {
-    opacity: 1;
+button:hover {
+    cursor: pointer;
 }

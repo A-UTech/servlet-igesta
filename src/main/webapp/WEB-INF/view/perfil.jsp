@@ -81,7 +81,7 @@
             </div>
             <input type="hidden" name="id" value="<%=user.getId()%>">
             <input type="hidden" name="tipo" value="<%=tipo%>">
-            <button type="button" id="buttonPerfil" onclick="enviarFormulario('buttonPerfil','changePsswd')">Trocar senha</button>
+            <button type="button" id="buttonPerfil" onclick="enviarFormulario('buttonPerfil','changePsswd')">Atualizar</button>
         </form>
     </section>
     <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>

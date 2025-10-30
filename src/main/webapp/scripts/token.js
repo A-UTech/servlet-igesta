@@ -1,23 +1,26 @@
 const inputs = document.querySelectorAll('.token input');
-const form = document.getElementById('tokenForm');
+const form = document.getElementById('verificarToken');
 
-inputs.forEach((input, index) => {
-    input.addEventListener('keyup', (e) => {
-        const key = e.key;
+inputs.forEach((input, i) => {
+    input.addEventListener('keydown', e => {
+        const { key } = e;
 
-        // Avança para o próximo input se digitou um número
-        if (/\d/.test(key)) {
-            if (index < inputs.length - 1) {
-                inputs[index + 1].focus();
-            } else {
-                // Se for o último input, envia o formulário
-                form.submit();
-            }
+        if (/^[0-9]$/.test(key)) {
+            input.value = '';
+            setTimeout(() => i < inputs.length - 1 ? inputs[i + 1].focus() : form.submit(), 10);
         }
-
-        // Permite usar Backspace para voltar
-        if (key === "Backspace" && index > 0 && input.value === "") {
-            inputs[index - 1].focus();
+        else if (key === 'Backspace' && !input.value && i > 0) {
+            inputs[i - 1].focus();
+            inputs[i - 1].select();
+        }
+        else if (key === 'Enter') {
+            e.preventDefault();
+            i === inputs.length - 1 ? form.submit() : inputs[i + 1].focus();
+        }
+        else if (!['Backspace', 'Tab'].includes(key)) {
+            e.preventDefault();
         }
     });
+
+    input.addEventListener('focus', () => input.select());
 });

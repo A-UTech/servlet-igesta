@@ -111,8 +111,12 @@ form .eye-icon {
     transform: translateY(-50%);
     cursor: pointer;
     width: 25px;
-    opacity: 0.8;
+    opacity: 0;
     transition: opacity 0.2s;
+}
+
+.input-container:hover .eye-icon {
+    opacity: 1;
 }
 
 form .eye-icon:hover {

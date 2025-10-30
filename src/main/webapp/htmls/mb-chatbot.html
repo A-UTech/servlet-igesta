@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../assets/logos/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/mb-chatbot.css">
+    <title>IGesta</title>
+</head>
+<body>
+    <header>
+        <section>
+            <img src="../assets/logos/igestinha.png">
+            <h1>IGestinha</h1>
+        </section>
+        <section id="voltar">
+            <a href="../index.jsp">
+                <img src="../assets/icons/arrow-left.png" alt="Voltar">
+                <p>Voltar</p>
+            </a>
+        </section>
+    </header>
+
+    <main>
+        <div id="conversa">
+            <p class="mensagem chatbot">Olá! Eu sou o assistente virtual da A&U Tech. Como posso ajudar você hoje?</p>
+        </div>
+
+        <div id="input-area">
+            <input type="text" name="mensagem" id="iMensagem" placeholder="Digite sua mensagem">
+            <button id="botao-enviar">Enviar</button>
+        </div>
+    </main>
+
+    <script>
+        const urlDaApi = 'https://chatbot-landing-page-2ano.vercel.app/chat'; 
+
+        const sessionId = Math.random().toString(36).substring(2, 15);
+
+        function adicionarMensagemNaConversa(texto, remetente) {
+            const conversa = document.getElementById('conversa'); 
+            const p = document.createElement('p');
+            p.classList.add('mensagem', remetente);
+            p.textContent = texto;
+            conversa.appendChild(p);
+            
+            conversa.scrollTop = conversa.scrollHeight;
+        }
+
+        async function enviarMensagem() {
+            const inputElement = document.getElementById('iMensagem'); 
+            const botaoEnviar = document.getElementById('botao-enviar');
+            const textoUsuario = inputElement.value.trim();
+
+            if (!textoUsuario) return; 
+
+            adicionarMensagemNaConversa(textoUsuario, 'usuario');
+            inputElement.value = '';
+
+            inputElement.disabled = true;
+            botaoEnviar.disabled = true;
+            
+            adicionarMensagemNaConversa("Digitando...", 'chatbot');
+
+            const mensagemCarregando = document.querySelector('#conversa p:last-child');
+
+            try {
+                const corpoRequisicao = {
+                    usuario: textoUsuario, 
+                    session_id: sessionId 
+                };
+
+                const resposta = await fetch(urlDaApi, {
+                    method: 'POST', 
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(corpoRequisicao)
+                });
+
+                if (!resposta.ok) {
+                    throw new Error(`Erro HTTP: ${resposta.status}`);
+                }
+
+                const dados = await resposta.json();
+                
+                const mensagemDoChatbot = dados.resposta; 
+                
+                if (mensagemCarregando) {
+                    mensagemCarregando.remove();
+                }
+                
+                adicionarMensagemNaConversa(mensagemDoChatbot, 'chatbot');
+
+            } catch (error) {
+                console.error('Erro ao comunicar com a API:', error);
+                
+                if (mensagemCarregando) {
+                    mensagemCarregando.remove();
+                }
+                adicionarMensagemNaConversa("Ops, um erro ocorreu. Tente novamente.", 'chatbot');
+            } finally {
+                inputElement.disabled = false;
+                botaoEnviar.disabled = false;
+                inputElement.focus();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const botaoEnviar = document.getElementById('botao-enviar');
+            const inputMensagem = document.getElementById('iMensagem');
+
+            if (botaoEnviar && inputMensagem) {
+                botaoEnviar.addEventListener('click', enviarMensagem);
+
+                inputMensagem.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault(); 
+                        enviarMensagem();
+                    }
+                });
+                
+                inputMensagem.focus();
+            }
+        });
+    </script> 
+</body>
+</html>

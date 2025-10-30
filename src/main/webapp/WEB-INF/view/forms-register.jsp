@@ -1,4 +1,4 @@
-<%@ page import="com.backigesta.servlet.Plano" %>
+<%@ page import="com.backigesta.model.Empresa" %>
 <!DOCTYPE html>
 <html lang="pt-br">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -11,7 +11,8 @@
   <title>IGesta</title>
   <%
     String temConta = (String) request.getAttribute("existeConta");
-    String plano = (String) request.getAttribute("plano");
+    Empresa conta = (Empresa) session.getAttribute("contaEmpresa");
+    String plano = (String) session.getAttribute("plano");
   %>
 </head>
 <body>
@@ -19,11 +20,11 @@
   <h1>Criar conta</h1>
   <form action="criarContaEmpresa" method="post" id="criarContaEmpresa">
     <input type="hidden" name="plano" value="<%=plano%>">
-    <input type="text" name="name" placeholder="Nome" required autofocus pattern="^[A-Z][a-z '-]*$" title="Caso o sistema não permita seu nome original, faça cadastro com outro nome, depois entre em contato conosco">
-    <input type="email" name="email" placeholder="E-mail" required minlength="10" autocomplete="email" pattern="^[a-zA-Z0-9_\.\-]{1,}@[a-zA-Z_\.\-]{2,}\.(com|br|org|me)$" title="Coloque um dominio .com, ou .br, ou .org, ou .me">
-    <input type="text" name="cnpj" placeholder="CNPJ" required minlength="14" maxlength="18" pattern="[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}-?[0-9]{2}" title="Digite o CNPJ no formato 12.345.678/0001-90 ou apenas os números.">
-    <input type="text" name="unitArea" placeholder="Unidade da empresa" required autofocus pattern="^[A-Za-z0-9 '\-]{2,}" title="Coloque o nome da unidade da empresa">
-    <input type="text" list="estados" name="states" placeholder="Estado" required autofocus pattern="^(AC|AP|AM|PA|RO|RR|TO|AL|BA|CE|MA|PB|PE|PI|RN|SE|GO|MT|MS|DF|ES|MG|RJ|SP|PR|RS|SC)$" title="Coloque a sigla do estado do Brasil onde está a empresa. Ex: SP">
+    <input type="text" value="<%=conta != null ? conta.getNome() : ""%>" name="name" placeholder="Nome" required autofocus pattern="^[A-Z][a-z '-]*$" title="Caso o sistema não permita seu nome original, faça cadastro com outro nome, depois entre em contato conosco">
+    <input type="email" value="<%=conta != null ? conta.getEmail() : ""%>" name="email" placeholder="E-mail" required minlength="10" autocomplete="email" pattern="^[a-zA-Z0-9_\.\-]{1,}@[a-zA-Z_\.\-]{2,}\.(com|br|org|me)$" title="Coloque um dominio .com, ou .br, ou .org, ou .me">
+    <input type="text" value="<%=conta != null ? conta.getCnpj() : ""%>" name="cnpj" placeholder="CNPJ" required minlength="14" maxlength="18" pattern="[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}-?[0-9]{2}" title="Digite o CNPJ no formato 12.345.678/0001-90 ou apenas os números.">
+    <input type="text" value="<%=conta != null ? conta.getUnidade() : ""%>" name="unitArea" placeholder="Unidade da empresa" required autofocus pattern="^[A-Za-z0-9 '\-]{2,}" title="Coloque o nome da unidade da empresa">
+    <input type="text" value="<%=conta != null ? conta.getEstado() : ""%>" list="estados" name="states" placeholder="Estado" required autofocus pattern="^(AC|AP|AM|PA|RO|RR|TO|AL|BA|CE|MA|PB|PE|PI|RN|SE|GO|MT|MS|DF|ES|MG|RJ|SP|PR|RS|SC)$" title="Coloque a sigla do estado do Brasil onde está a empresa. Ex: SP">
     <datalist name="estados" id="estados">
       <option value="AC"></option>
       <option value="AP"></option>
@@ -53,7 +54,7 @@
       <option value="RS"></option>
       <option value="SC"></option>
     </datalist>
-    <input type="text" placeholder="Cidade" required name="cidade">
+    <input type="text" value="<%=conta != null ? conta.getCidade() : ""%>" placeholder="Cidade" required name="cidade">
     <button type="button" onclick="enviarFormulario('buttonSubmit','criarContaEmpresa')" id="buttonSubmit">Criar</button>
   </form>
 </section>

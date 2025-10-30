@@ -1,0 +1,268 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+::-webkit-scrollbar {
+    display: none;
+}
+::selection {
+    background: #1A7B66;
+}
+
+:root {
+    --header-height: 80px;
+    --input-area-height: 80px;
+    --color-dark-bg: #2F3035;
+    --color-dark-element: #2F3035;
+    --color-text-light: #FCFCFC;
+    --breakpoint-tablet: 768px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font: 0.95em 'Poppins', sans-serif; 
+    color: var(--color-text-light);
+    text-decoration: none;
+    border: 0;
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--color-dark-bg);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: var(--header-height);
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--color-dark-element);
+    z-index: 100;
+}
+
+header > section {
+    display: flex;
+    align-items: center;
+}
+
+header img {
+    width: 40px;
+}
+
+header h1 {
+    margin-left: 10px;
+    font: bold 2em 'Poppins';
+    color: var(--color-text-light);
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+header > p {
+    font-size: 2em;
+    margin-right: 5px;
+}
+
+#voltar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px; 
+}
+
+#voltar > a {
+    display: flex;
+    align-items: center; 
+    height: 100%; 
+    padding: 0 10px; 
+    font-size: 0.9em;
+    gap: 5px; 
+}
+
+#voltar img {
+    width: 25px; 
+    height: auto;
+}
+
+#voltar p {
+    margin: 0;
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--header-height);
+    padding-bottom: var(--input-area-height);
+    background-color: var(--color-dark-bg);
+    position: relative;
+}
+
+#conversa {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 800px; 
+    margin: 0 auto;
+}
+
+#input-area {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: var(--input-area-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: var(--color-dark-element);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.4);
+    z-index: 90;
+}
+
+#input-area > * {
+    max-width: 800px;
+    margin: 0 5px;
+}
+
+#voltar img {
+    width: 13px;
+    height: 19px; 
+}
+
+#iMensagem {
+    flex-grow: 1;
+    padding: 12px 18px;
+    background: #2F3034;
+    color: var(--color-text-light);
+    border-radius: 30px;
+    text-align: left;
+    width: 100%;
+    border: 1px solid var(--color-text-light);
+    min-width: 0; 
+}
+
+input::placeholder {
+    color: #999999;
+}
+
+#botao-enviar {
+    background-color: #1A7B66;
+    color: #FCFCFC;
+    font-weight: 500;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: background-color 0.2s;
+    width: auto;
+    min-width: 80px; 
+    font-size: 0.9em;
+    flex-shrink: 0; 
+}
+
+#botao-enviar:hover {
+    background-color: #125C4D;
+}
+
+.mensagem {
+    max-width: 80%; 
+    padding: 10px 15px;
+    border-radius: 18px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    font-size: 0.9em;
+}
+
+.usuario {
+    align-self: flex-end;
+    background-color: #1A7B66;
+    color: #FCFCFC;
+    border-bottom-right-radius: 5px;
+}
+
+.chatbot {
+    align-self: flex-start;
+    background-color: #A1E1D3; 
+    color: #141414; 
+    border-bottom-left-radius: 5px;
+}
+
+@media screen and (min-width: 768px) {
+    header {
+        padding: 15px 30px;
+    }
+
+    header img {
+        width: 50px;
+    }
+
+    header h1 {
+        margin-left: 15px;
+        font-size: 3em;
+    }
+
+    header > p {
+        font-size: 3.5em;
+        margin-right: 15px;
+    }
+    
+    #voltar p {
+        display: block;
+        font-size: 16px;
+    }
+    
+    #voltar > a {
+        padding: 0 15px;
+    }
+
+    #input-area {
+        padding: 10px calc((100vw - 800px) / 2);
+    }
+
+    #input-area > * {
+        margin: 0 10px; 
+    }
+
+    #iMensagem {
+        padding: 15px 20px;
+        width: calc(100% - 130px); 
+    }
+
+    #botao-enviar {
+        padding: 15px 25px;
+        min-width: 100px;
+        font-size: 0.95em;
+    }
+
+    .mensagem {
+        max-width: 65%;
+        padding: 12px 18px;
+        font-size: 1em;
+    }
+}
+
+@media screen and (width: 300px) {
+    section#voltar {
+        display: none;
+    }
+}
+
+.conta > p {
+    position: relative;
+
+}

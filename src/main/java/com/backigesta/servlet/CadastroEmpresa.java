@@ -18,6 +18,16 @@ public class CadastroEmpresa extends HttpServlet {
     //Declarando os DAO's utilizados.
     EmpresaDAO empresaDAO = new EmpresaDAO();
 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //Capturando o caminho utilizado para chegar no método doGet
+        String caminho = request.getServletPath();
+
+        // Direcionando o cliente à um método a partir do caminho
+        if (caminho.equals("/entrarCadastroEmpresa")) {
+            entrarCadastroEmpresa(request,response);
+        }
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Capturando o caminho utilizado para chegar no método doPost
         String caminho = request.getServletPath();
@@ -34,8 +44,11 @@ public class CadastroEmpresa extends HttpServlet {
 
     // Método para logar em uma empresa
     protected void entrarCadastroEmpresa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
         String plano = request.getParameter("plano");
-        request.setAttribute("plano",plano);
+        if (plano != null) {
+            session.setAttribute("plano", plano);
+        }
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/forms-register.jsp");
         rd.forward(request,response);
     }
@@ -58,7 +71,8 @@ public class CadastroEmpresa extends HttpServlet {
         request.setAttribute("email",empresa.getEmail());
         request.setAttribute("senha",empresa.getSenha());
         // limpando o objeto empresa da sessão
-        request.getSession(false).removeAttribute("contaEmpresa");
+        session.removeAttribute("contaEmpresa");
+        session.removeAttribute("plano");
         RequestDispatcher rd = request.getRequestDispatcher("loginEmpresa");
         rd.forward(request,response);
     }

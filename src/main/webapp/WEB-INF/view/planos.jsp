@@ -51,7 +51,7 @@
             <h1>Pagamento</h1>
             <menu>
                 <form action="selectPlano" class="search" id="procuraPlanoNome">
-                    <input type="text" name="search" placeholder="Pesquisar">
+                    <input type="text" name="search" placeholder="Pesquisar por nome">
                     <button type="button" onclick="enviarFormulario('buttonSearchNome','procuraPlanoNome')" id="buttonSearchNome" class="functions">
                         <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
                     </button>

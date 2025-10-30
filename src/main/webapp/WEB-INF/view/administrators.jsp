@@ -50,7 +50,7 @@
             <h1>Administradores</h1>
             <menu>
                 <form action="" method="get" class="search" id="procuraAdmin">
-                    <input type="text" name="search" placeholder="Pesquisar por nome">
+                    <input type="text" name="search" placeholder="Pesquisar por nome ou email">
                     <button type="button" id="buttonSearchNome" onclick="enviarFormulario('buttonSearchNome','procuraAdmin')" class="functions">
                         <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
                     </button>

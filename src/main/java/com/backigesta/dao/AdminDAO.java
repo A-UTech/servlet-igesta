@@ -90,12 +90,13 @@ public class AdminDAO {
         }
     } // Método que seleciona todos os admins
 
-    public List<Admin> selecionarPorNome(String nome){
+    public List<Admin> selecionarPorNomeOrEmail(String procura){
         List<Admin> admins = new ArrayList<>();
         try{
             conn = banco.conectar();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM admin WHERE lower(nome) LIKE lower(?) ORDER BY nome");
-            ps.setString(1, nome+"%");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM admin WHERE lower(nome) LIKE lower(?) OR lower(email) LIKE lower(?) ORDER BY nome");
+            ps.setString(1, "%" + procura +"%");
+            ps.setString(2,"%" + procura + "%");
 
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
@@ -116,7 +117,7 @@ public class AdminDAO {
             banco.desconectar(conn);
             return admins;
         }
-    } // Método que seleciona admins por nome
+    } // Método que seleciona admins por nome ou pelo email
 
     public Admin selecionarPorEmail(String email){
         Admin admin = null;

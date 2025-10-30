@@ -64,6 +64,26 @@ header img {
     width: 50px;
 }
 
+button#entrar {
+    background-color: var(--corVC);
+    color: var(--corPreto);
+    padding: 6px;
+    border-radius: 50px;
+    width: 100px;
+}
+
+li.listConta > a {
+    display: flex;
+    align-items: center;
+}
+
+li.listConta img {
+    width: 20px;
+    height: 20px;
+    margin-top: -5px;
+    margin-right: 5px;
+}
+
 main {
     height: 100dvh;
     display: flex;
