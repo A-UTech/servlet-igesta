@@ -18,7 +18,7 @@ public class EmailProposta extends HttpServlet {
     @Override
     //Caso chamado por doGet, apenas envia o usuario para a página de propostas.
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/view/forms-propose.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/formularios/forms-propose.jsp").forward(request, response);
     }
 
     @Override
@@ -39,6 +39,6 @@ public class EmailProposta extends HttpServlet {
         //Retornando se a ação teve sucesso.
         request.setAttribute("status", status ? "true" : "false");
         //Voltando para a pagina de propostas
-        request.getRequestDispatcher("/WEB-INF/view/forms-propose.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/formularios/forms-propose.jsp").forward(request, response);
     }
 }

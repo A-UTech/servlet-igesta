@@ -61,7 +61,7 @@ public class Condena extends HttpServlet {
         request.setAttribute("condenas",lista);
 
         // Direcionado para onde quero mandar os atributos do request
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/condemn.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/areaRestrita/condemn.jsp");
 
         // Enviando para a pagina
         rd.forward(request,response);

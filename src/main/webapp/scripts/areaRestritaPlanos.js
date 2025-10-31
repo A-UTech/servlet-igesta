@@ -1,4 +1,4 @@
-// Esse arquivo Java Script está sendo usando para manipular elementos da página planos.jsp
+// Esse arquivo Java Script está sendo usando para manipular elementos da página payment.jsp
 
 function alterarPlano(numero) {
     // Pega os dados que estam no valor dos inputs hidden criados na página

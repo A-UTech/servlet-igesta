@@ -111,15 +111,15 @@
                 <li><%=func.getNomeCargo()%></li>
                 <li>
                     <%if(funcionarios.get(func).size()>0){%>
+                    <a onclick="alterarTelefones(<%=func.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/phone.svg"></a>
                     <select class="selectPhone" name="telefone" id="telefoneContato<%=func.getId()%>">
                         <%for (Telefone tel : funcionarios.get(func)){%>
                         <option value="<%=tel.getId()%>"><%=Regex.formatarTelefone(tel.getTelefone())%></option>
                         <%}%>
                     </select>
-                    <a onclick="alterarTelefones(<%=func.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/telefone.svg"></a>
                     <%} else {%>
                     <input type="hidden" name="telefone" id="telefoneContato<%=func.getId()%>">
-                    <p>Sem Telefone<a onclick="adicionarTelefone(<%=func.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/telefoneAdd.svg"></a></p>
+                    <p><a onclick="adicionarTelefone(<%=func.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/phone_add.svg"></a> Sem Telefone</p>
                     <%}%>
                 </li>
                 <li>
@@ -137,7 +137,7 @@
     <a onclick="document.getElementById('telefoneOptions').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
     <h2>Telefone</h2>
     <div>
-        <img id="adicionarTelefone"  src="${pageContext.request.contextPath}/assets/icons/menu-add.svg" alt="">
+        <img id="adicionarTelefone" src="${pageContext.request.contextPath}/assets/icons/menu-add.svg" alt="">
         <img id="alterarTelefone" src="${pageContext.request.contextPath}/assets/icons/edit.svg" alt="">
         <img id="deletarTelefone" src="${pageContext.request.contextPath}/assets/icons/trash.svg" alt="">
     </div>

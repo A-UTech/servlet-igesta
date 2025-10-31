@@ -87,7 +87,7 @@ public class Colaborador extends HttpServlet {
         request.setAttribute("funcionarios", funcMap);
 
         //Enviando para JSP
-        request.getRequestDispatcher("/WEB-INF/view/collaborators.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/areaEmpresa/collaborators.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

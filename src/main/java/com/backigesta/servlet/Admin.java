@@ -45,7 +45,7 @@ public class Admin extends HttpServlet {
         request.setAttribute("admins",lista);
 
         // Direcionado para onde quero mandar os atributos do request
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/administrators.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/areaRestrita/administrators.jsp");
 
         // Enviando para a pagina
         rd.forward(request,response);

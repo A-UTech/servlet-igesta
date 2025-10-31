@@ -53,7 +53,7 @@ public class Empresa extends HttpServlet {
         request.setAttribute("planos",planos);
         request.setAttribute("empresas", empresas);
         //Redirecionando para a página do CRUD
-        request.getRequestDispatcher("/WEB-INF/view/company.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/areaRestrita/company.jsp").forward(request, response);
     }
 
     @Override

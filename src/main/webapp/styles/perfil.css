@@ -41,18 +41,21 @@ div.mens {
     background-color: var(--corCinza);
     border-radius: 0 100px 100px 0;
 }
+div.mens > form > div {
+    display: flex;
+    align-items: baseline;
+}
 
 
-div.mens > img:first-child {
-    width: 275px;
+#perfilPhoto {
+    width: 300px;
+    height: 300px;
     border-radius: 100%;
     border: 5px solid var(--corVC);
 }
 
-div.mens > img:last-child {
-    position: absolute;
-    margin-left: 210px;
-    margin-top: 210px;
+#cameraPhoto {
+    margin-left: -80px;
 }
 
 section {flex-direction: column}
@@ -61,8 +64,6 @@ section > form div {margin-bottom: 15px}
 
 div > p {margin-left: 10px}
 
-input {border: 2px solid black}
-
 input {
     box-sizing: border-box;
     width: 280px;
@@ -70,6 +71,7 @@ input {
     padding: 20px;
     border-radius: 15px;
     transition: 500ms;
+    border: 2px solid black
 }
 
 section > a {
@@ -85,23 +87,23 @@ div.mens, section, section > a {
     justify-content: center;
 }
 
-section > form#changePsswd > button {
+form#changePsswd {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+form#changePsswd > button {
     background: var(--corVE);
     color: var(--corBranco);
     width: 130px;
     height: 40px;
     border-radius: 250px;
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
 }
 
 .input-container, .container {
     position: relative;
-}
-
-form input[type="password"], form input[type="text"], .container input[type="password"], .container input[type="text"] {
-    width: 100%;
 }
 
 form .eye-icon {

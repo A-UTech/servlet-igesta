@@ -12,9 +12,6 @@
     <link rel="stylesheet" href="styles/style.css">
     <title>IGesta</title>
     <%
-        Admin admin1 = new AdminDAO().selecionarPorEmail("lucas.lima@germinare.org.br");
-        session.setAttribute("admin",admin1);
-
         Empresa empresa = (Empresa) session.getAttribute("empresa");
         Admin admin = (Admin) session.getAttribute("admin");
     %>
@@ -130,7 +127,7 @@
             <h3>Melhorar a tomada de decisões</h3>
             <section>
                 <img src="assets/images/objectives01.png">
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deleniti eum laudantium a consequuntur id optio nobis molestiae recusandae quidem iste accusantium, dolorem.</p>
+                <p>Melhore as decisões com gráficos, registros fáceis e com nosso chatbot que pode ser utilizado para dúvidas.</p>
             </section>
         </div>
 
@@ -138,7 +135,7 @@
             <h3>Maior acesso aos dados</h3>
             <section>
                 <img src="assets/images/objectives02.png">
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deleniti eum laudantium a consequuntur id optio nobis molestiae recusandae quidem iste accusantium, dolorem.</p>
+                <p>Acesse seus dados a qualquer momento, sem burocracias e poucos cliques.</p>
             </section>
         </div>
 
@@ -146,7 +143,7 @@
             <h3>Análise mais eficiente dos dados</h3>
             <section>
                 <img src="assets/images/objectives03.png">
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deleniti eum laudantium a consequuntur id optio nobis molestiae recusandae quidem iste accusantium, dolorem.</p>
+                <p>Facilite a procura de registros, com ajuda de filtros de busca e nosso chatbot.</p>
             </section>
         </div>
 
@@ -154,7 +151,7 @@
             <h3>Facilidade e agilidade no chão da fábrica</h3>
             <section>
                 <img src="assets/images/objectives04.png">
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deleniti eum laudantium a consequuntur id optio nobis molestiae recusandae quidem iste accusantium, dolorem.</p>
+                <p>Aumenta a velocidade da tomada de decisões.</p>
             </section>
         </div>
     </div>
@@ -223,7 +220,6 @@
                 <ul>
                     <li><a href="#slide01" class="linkAnimation">Início</a></li>
                     <li><a href="#slide05" class="linkAnimation">Mensalidades</a></li>
-                    <li><a href="htmls/updates.html" class="linkAnimation">Atualizações</a></li>
                     <li><a href="emailContato" class="linkAnimation">Contato</a></li>
                     <li><a href="" class="linkAnimation">Área restrita</a></li>
                 </ul>

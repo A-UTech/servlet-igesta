@@ -43,7 +43,7 @@ public class Plano extends HttpServlet {
         request.setAttribute("planos",lista);
 
         // Direcionado para onde quero mandar os atributos do request
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/planos.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/areaRestrita/payment.jsp");
 
         // Enviando para a pagina
         rd.forward(request,response);

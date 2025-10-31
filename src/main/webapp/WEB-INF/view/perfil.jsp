@@ -28,15 +28,16 @@
 </head>
 <body>
     <div class="mens">
-        <% if (user.getFoto() == null) { %>
-            <img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
-        <% } else { %>
-            <img src="getFoto?id=<%=user.getId()%>&tipo=<%=tipo%>">
-        <% } %>
-
         <form action="uploadFoto" name="trocarFoto" method="post" enctype="multipart/form-data">
-            <input type="file" id="foto" name="foto" accept="image/jpeg, image/png" style="display: none">
-            <label for="foto"><img src="${pageContext.request.contextPath}/assets/icons/camera.png"></label>
+            <div>
+                <% if (user.getFoto() == null) { %>
+                <img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
+                <% } else { %>
+                <img id="perfilPhoto" src="getFoto?id=<%=user.getId()%>&tipo=<%=tipo%>">
+                <% } %>
+                <input type="file" id="foto" name="foto" accept="image/jpeg, image/png" style="display: none">
+                <label for="foto"><img id="cameraPhoto" src="${pageContext.request.contextPath}/assets/icons/camera.png"></label>
+            </div>
             <input type="hidden" name="id" value="<%=user.getId()%>">
             <input type="hidden" name="tipo" value="<%=tipo%>">
         </form>

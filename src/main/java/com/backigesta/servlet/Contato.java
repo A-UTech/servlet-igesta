@@ -61,7 +61,7 @@ public class Contato extends HttpServlet {
         request.setAttribute("funcionarios",funcionariosNomes);
 
         // Direcionado para onde quero mandar os atributos do request
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/employee-contact.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/areaRestrita/employee-contact.jsp");
 
         // Enviando para a pagina
         rd.forward(request,response);

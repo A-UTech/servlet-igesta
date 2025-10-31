@@ -25,8 +25,7 @@
 </section>
 <div class="mens">
   <div>
-    <h2>Olá</h2>
-    <p>seja bem vindo!</p>
+    <h2>Vamos negociar</h2>
   </div>
   <div>
     <p style="width: 300px;">Aqui, você poderá nos apresentar uma proposta para o valor da mensalidade e armazenamento</p>

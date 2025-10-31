@@ -49,7 +49,7 @@ public class CadastroEmpresa extends HttpServlet {
         if (plano != null) {
             session.setAttribute("plano", plano);
         }
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/forms-register.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/formularios/forms-register.jsp");
         rd.forward(request,response);
     }
 
