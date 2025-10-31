@@ -73,41 +73,46 @@ public class Perfil extends HttpServlet {
 
     //Método para atualizar informações do perfil
     protected void atualizarPerfil(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
-        //Declarando o objeto da Session.
-        HttpSession session = request.getSession(false);
+        System.out.println("Chegou em atualizar");
+        try {
+            //Declarando o objeto da Session.
+            HttpSession session = request.getSession(false);
 
-        //Capturando os parâmetros a serem alterados
-        String nome = request.getParameter("name");
-        String email = request.getParameter("email");
-        String senha = request.getParameter("password");
+            //Capturando os parâmetros a serem alterados
+            String nome = request.getParameter("name");
+            String email = request.getParameter("email");
+            String senha = request.getParameter("password");
 
-        //Capturando os objetos de Admin e Empresa da session.
-        Admin user = (Admin) session.getAttribute("admin");
-        Empresa empresa = (Empresa) session.getAttribute("empresa");
-        //Caso houver admin.
-        if(user != null) {
-            //Alterando as informações do objeto
-            user.setNome(nome);
-            user.setEmail(email);
-            user.setSenha(senha);
-            //Atualizando no Banco
-            daoAdmin.atualizar(user);
-            //Atualizando na Session
-            session.setAttribute("admin",user);
+            //Capturando os objetos de Admin e Empresa da session.
+            Admin user = (Admin) session.getAttribute("admin");
+            Empresa empresa = (Empresa) session.getAttribute("empresa");
+            //Caso houver admin.
+            if (user != null) {
+                //Alterando as informações do objeto
+                user.setNome(nome);
+                user.setEmail(email);
+                user.setSenha(senha);
+                //Atualizando no Banco
+                daoAdmin.atualizar(user);
+                //Atualizando na Session
+                session.setAttribute("admin", user);
+            } else {
+                //Alterando as informações do objeto
+                empresa.setNome(nome);
+                empresa.setEmail(email);
+                empresa.setSenha(senha);
+                //Atualizando no Banco
+                daoEmpresas.atualizar(empresa);
+                //Atualizando na Session
+                session.setAttribute("empresa", empresa);
+            }
+
+            //Após atualizar, retorna para a pagina de perfil
+            entrarPerfil(request, response);
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
-        else{
-            //Alterando as informações do objeto
-            user.setNome(nome);
-            user.setEmail(email);
-            user.setSenha(senha);
-            //Atualizando no Banco
-            daoEmpresas.atualizar(empresa);
-            //Atualizando na Session
-            session.setAttribute("empresa",user);
-        }
-
-        //Após atualizar, retorna para a pagina de perfil
-        entrarPerfil(request,response);
     }
 
     //Método de enviar uma nova foto

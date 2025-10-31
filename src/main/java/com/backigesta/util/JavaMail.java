@@ -9,7 +9,7 @@ import java.util.Properties;
 public class JavaMail {
 
     //Buscando a senha de acesso ao email da AUTECH no .env
-    private Dotenv dotenv = Dotenv.configure().directory("/").filename(".env").load();
+    private Dotenv dotenv = Dotenv.load();
     private String senha = dotenv.get("SENHA_EMAIL");
 
     //Método para enviar um pedido de suporte (Pagina de Contato)
