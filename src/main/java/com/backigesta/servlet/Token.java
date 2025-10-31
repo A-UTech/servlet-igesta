@@ -20,7 +20,7 @@ public class Token extends HttpServlet {
 
     // Método que dá acesso a pagina de enserir o código
     public void entrarToken(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/formulario/forms-login_token.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/formularios/forms-login_token.jsp");
         rd.forward(request,response);
     }
 

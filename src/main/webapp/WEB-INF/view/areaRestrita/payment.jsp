@@ -121,7 +121,7 @@
         </form>
     </dialog>
     <div class="overlay" id="popupOverlay">
-        <div class="popup">
+        <div class="popup" id="popupMaior">
             <div class="icon">
                 <img id="icon" src="${pageContext.request.contextPath}/assets/icons/" alt="">
             </div>
