@@ -9,9 +9,6 @@ COPY pom.xml .
 COPY .mvn/ .mvn
 COPY mvnw mvnw.cmd ./
 
-# Baixa dependências para cache eficiente
-RUN ./mvnw dependency:go-offline
-
 # Copia o código-fonte
 COPY src ./src
 
