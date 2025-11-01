@@ -1,13 +1,15 @@
-# Etapa 1: Build com Maven
-FROM maven:3.9.9-eclipse-temurin-17 AS build
+# Etapa 1: Build do projeto
+FROM maven:3.9.4-eclipse-temurin-17 AS build
 
-# Define o diretório de trabalho
+# Define diretório de trabalho
 WORKDIR /app
 
-# Copia os arquivos de configuração e dependências
-COPY pom.xml .
-COPY .mvn/ .mvn
+# Copia o Maven Wrapper e dá permissão de execução
 COPY mvnw mvnw.cmd ./
+RUN chmod +x mvnw
+
+# Copia o pom.xml (para cache de dependências)
+COPY pom.xml ./
 
 # Copia o código-fonte
 COPY src ./src
@@ -15,17 +17,17 @@ COPY src ./src
 # Compila o projeto e gera o WAR
 RUN ./mvnw clean package -DskipTests
 
-# Etapa 2: Execução com Tomcat
-FROM tomcat:10.1-jdk17-corretto
+# Etapa 2: Imagem final com Tomcat
+FROM tomcat:9.0.79-jdk17
 
-# Remove aplicações padrão do Tomcat
+# Remove a aplicação default do Tomcat
 RUN rm -rf /usr/local/tomcat/webapps/*
 
-# Copia o WAR gerado para o diretório do Tomcat
+# Copia o WAR gerado na etapa de build
 COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
 
-# Exponha a porta padrão do Tomcat
+# Expõe porta do Tomcat
 EXPOSE 8080
 
-# Comando para iniciar o Tomcat
+# Comando para rodar o Tomcat
 CMD ["catalina.sh", "run"]
