@@ -18,7 +18,7 @@
   <form action="enviarProsposta" method="post" id="enviarProposta">
     <input type="text" name="name" placeholder="Nome" required autocomplete="name" autofocus>
     <input type="email" name="email" placeholder="E-Mail" required autocomplete="email" minlength="10" >
-    <input type="text" name="cnpj" placeholder="CNPJ" required minlength="14" maxlength="14" pattern="^[0-9]{14}$" title="Digite apenas os números">
+    <input type="text" name="cnpj" placeholder="CNPJ" required pattern="[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}-?[0-9]{2}" title="Digite o CNPJ no formato 12.345.678/0001-90 ou apenas os números.">
     <textarea name="message" class="textarea" placeholder="Mensagem" required></textarea>
     <button type="button" id="buttonSubmit" onclick="enviarFormulario('buttonSubmit','enviarProposta')">Enviar</button>
   </form>
