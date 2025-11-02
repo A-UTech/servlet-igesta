@@ -147,7 +147,7 @@ public class JavaMail {
             //Definindo o titulo
             message.setSubject("Proposta solicitada por: "+nome);
             //Definindo o corpo da menssagem
-            String formatacao = "<body style='background-color: #2F3034; padding: 10px; border-radius: 10px; font-family: sans-serif;'><h1 style='color: #1A7B66;'>Email de contato: <span style='text-decoration: nome;'>"+email+"</span></h1><h3 style='color: #A1E1D3;'>"+mensagem+"<h3><h2 style='color: #1A7B66;'>CNPJ da empresa: "+cnpj+"</h2></body>";
+            String formatacao = "<body style='background-color: #2F3034; padding: 10px; border-radius: 10px; font-family: sans-serif;'><h1 style='color: #1A7B66;'>Email de contato: <span style='text-decoration: nome;'>"+email+"</span></h1><h3 style='color: #A1E1D3;'>"+mensagem+"<h3><h2 style='color: #1A7B66;'>CNPJ da empresa: "+Regex.formatarCnpj(cnpj)+"</h2></body>";
 
             //Mudando a formatação para HTML
             message.setContent(formatacao, "text/html; charset=UTF-8");
