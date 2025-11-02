@@ -20,7 +20,7 @@ FROM tomcat:10.1-jdk17
 RUN rm -rf /usr/local/tomcat/webapps/*
 
 # Copiar WAR gerado como ROOT.war
-COPY --from=build /app/target/Back-IGesta-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
+COPY --from=build /app/target/Back-IGesta-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/Back-IGesta.war
 
 # Expor a porta que o Render fornecerá
 ENV PORT 8080
