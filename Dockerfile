@@ -23,7 +23,7 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 COPY --from=build /app/target/Back-IGesta-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 
 # Expor a porta que o Render fornecerá
-ENV PORT 10000
+ENV PORT 8080
 EXPOSE $PORT
 
 # Configurar Tomcat para usar a porta dinâmica do Render
