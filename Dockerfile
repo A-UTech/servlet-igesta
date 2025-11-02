@@ -8,7 +8,11 @@ RUN mvn clean package -DskipTests
 # Etapa de execução
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
-COPY --from=build /app/target/Back-IGesta.jar ./Back-IGesta.jar
-ENV PORT=8080
+COPY --from=build /app/target/Back-IGesta-1.0-SNAPSHOT.jar ./Back-IGesta.jar
+
+# Usar a porta que o Render fornece
+ENV PORT=10000
 EXPOSE $PORT
-CMD ["java", "-jar", "Back-IGesta.jar"]
+
+# Start command usando a porta dinâmica
+CMD ["sh", "-c", "java -Dserver.port=$PORT -jar Back-IGesta.jar"]
