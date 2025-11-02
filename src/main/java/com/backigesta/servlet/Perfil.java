@@ -102,7 +102,7 @@ public class Perfil extends HttpServlet {
                 empresa.setEmail(email);
                 empresa.setSenha(senha);
                 //Atualizando no Banco
-                daoEmpresas.atualizar(empresa);
+                daoEmpresas.atualizar(empresa,true);
                 //Atualizando na Session
                 session.setAttribute("empresa", empresa);
             }

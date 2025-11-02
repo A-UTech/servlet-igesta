@@ -268,7 +268,7 @@ public class EmpresaDAO {
     } // Método que verifica se aquela conta de empresa existe
 
 //=======================MÉTODOS UPDATE=======================\\
-    public boolean atualizar(Empresa empresa){
+    public boolean atualizar(Empresa empresa, boolean senha){
         boolean retorno = false;
         try{
             conn = banco.conectar();
@@ -282,19 +282,22 @@ public class EmpresaDAO {
             rs.close();
             ps.close();
 
-            ps = conn.prepareStatement("UPDATE empresa SET nome = ?, email = ?, senha = ?, id_plano = ?, estado = ?,cidade = ?, unidade = ? WHERE id = ?");
+            if (!empresa.getSenha().equals("") && empresa.getSenha() != null) {
+                ps = conn.prepareStatement("UPDATE empresa SET nome = ?, email = ?, id_plano = ?, estado = ?,cidade = ?, unidade = ?, senha = ? WHERE id = ?");
+            } else {
+                ps = conn.prepareStatement("UPDATE empresa SET nome = ?, email = ?, id_plano = ?, estado = ?,cidade = ?, unidade = ? WHERE id = ?");
+            }
+
             ps.setString(1, empresa.getNome());
             ps.setString(2, empresa.getEmail());
-            if (empresa.getSenha().equals("")) {
-                ps.setNull(3, java.sql.Types.VARCHAR);
-            } else {
-                ps.setString(3, empresa.getSenha());
+            ps.setInt(3, planoId);
+            ps.setString(4, empresa.getEstado());
+            ps.setString(5,empresa.getCidade());
+            ps.setString(6, empresa.getUnidade());
+            if (!empresa.getSenha().equals("") && empresa.getSenha() != null) {
+                ps.setString(7, empresa.getSenha());
             }
-            ps.setInt(4, planoId);
-            ps.setString(5, empresa.getEstado());
-            ps.setString(6,empresa.getCidade());
-            ps.setString(7, empresa.getUnidade());
-            ps.setInt(8, empresa.getId());
+            ps.setInt(!empresa.getSenha().equals("") && empresa.getSenha() != null ? 8 : 7, empresa.getId());
 
             retorno = ps.executeUpdate() >= 1;
         }

@@ -100,7 +100,7 @@ public class Empresa extends HttpServlet {
         // Criando objeto empresa com as informações passadas.
         com.backigesta.model.Empresa empresa = new com.backigesta.model.Empresa(id,nome,email,senha,plano,estado,cidade,unidade);
         //Atualizando o registro já existente.
-        boolean alterado = daoEmpresas.atualizar(empresa);
+        boolean alterado = daoEmpresas.atualizar(empresa,!senha.equals(""));
         //Retornando se teve sucesso ou não.
         request.setAttribute("alterado", alterado ? "true" : "false");
         //Voltando para a pagina de CRUD mostrando as tabelas.
