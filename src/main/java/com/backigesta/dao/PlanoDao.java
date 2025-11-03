@@ -128,7 +128,7 @@ public class PlanoDao {
             rs.close();
 
 
-            ps = conn.prepareStatement("SELECT qc.id FROM plano p JOIN empresa e ON e.id_plano = p.id JOIN funcionario f ON f.id_empresa = e.id JOIN medicao m ON f.id = m.cod_gestor JOIN quantidadecondena qc ON m.id = qc.cod_medicao WHERE p.id = ?");
+            ps = conn.prepareStatement("SELECT qc.id FROM plano p JOIN empresa e ON e.id_plano = p.id JOIN funcionario f ON f.id_empresa = e.id JOIN medicao m ON f.id = m.id_gestor JOIN quantidadecondena qc ON m.id = qc.cod_medicao WHERE p.id = ?");
             ps.setInt(1,id);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -140,7 +140,7 @@ public class PlanoDao {
             rs.close();
 
 
-            ps = conn.prepareStatement("SELECT m.id FROM plano p JOIN empresa e ON e.id_plano = p.id JOIN funcionario f ON f.id_empresa = e.id JOIN medicao m ON f.id = m.cod_gestor WHERE p.id = ?");
+            ps = conn.prepareStatement("SELECT m.id FROM plano p JOIN empresa e ON e.id_plano = p.id JOIN funcionario f ON f.id_empresa = e.id JOIN medicao m ON f.id = m.id_gestor WHERE p.id = ?");
             ps.setInt(1,id);
             rs = ps.executeQuery();
             while (rs.next()) {

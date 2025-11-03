@@ -1,6 +1,6 @@
+// Java Script usado para manipular elementos da página employee-contact.jsp
 
-// Esse arquivo Java Script está sendo usando para manipular elementos da página employee-contact.jsp
-
+//Método para preparar o popup de alterar Contatos
 function alterarContato(numero) {
     // Pega os dados que estam no valor dos inputs hidden criados na página
     let tel = document.getElementById('telefoneContato'+numero);
@@ -15,6 +15,7 @@ function alterarContato(numero) {
     }
 }
 
+//Método que prepara o popup de Deletar um Contato
 function deletarContato(numero) {
     let tel = document.getElementById('telefoneContato'+numero);
 
@@ -26,13 +27,13 @@ function deletarContato(numero) {
     }
 }
 
+//Função base de abrir popup com seu id
 function abrirPopup(idElemento) {
-    // Ele abre o dialog com o parâmetro do método
     document.getElementById(idElemento).showModal();
 }
 
+//Função base de fechar popup com seu id
 function fecharPopup(idElemento) {
-    // Ele deleta o dialog com o parâmetro do método
     document.getElementById(idElemento).close();
 }
 

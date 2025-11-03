@@ -1,6 +1,6 @@
+// Java Script usado para manipular elementos da página condenasFeia.jsp
 
-// Esse arquivo Java Script está sendo usando para manipular elementos da página condenasFeia.jsp
-
+//Método para preparar o popup de Alterar Condenas
 function alterarCondena(numero) {
     // Pega os dados que estam no valor dos inputs hidden criados na página
     let [nome,tipo,descricao] = document.getElementById("condenaAlterar"+numero).value.split(";");
@@ -15,6 +15,7 @@ function alterarCondena(numero) {
     document.getElementById("alterar").showModal();
 }
 
+//Método que prepara o popup de Deletar uma Condena
 function deletarCondena(numero) {
     // Abre o dialog delete
     document.getElementById('delete').showModal();
@@ -23,13 +24,13 @@ function deletarCondena(numero) {
     document.getElementById('IdCondena').value = numero;
 }
 
+//Função base de abrir popup com seu id
 function abrirPopup(idElemento) {
-    // Ele abre o dialog com o parâmetro do método
     document.getElementById(idElemento).showModal();
 }
 
+//Função base de fechar popup com seu id
 function fecharPopup(idElemento) {
-    // Ele deleta o dialog com o parâmetro do método
     document.getElementById(idElemento).close();
 }
 

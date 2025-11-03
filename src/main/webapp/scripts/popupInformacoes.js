@@ -1,3 +1,6 @@
+//JavaScript usado para mostrar popup de informação. (Os que aparecem quando uma ação falhou, por exemplo)
+
+//Método para abrir os popups de informação
 function abrirPopupInformacoes(icon,titulo,texto,voltar = false) {
     // Pegando o elemento pelo id overlay
     console.log(voltar)
@@ -16,15 +19,19 @@ function abrirPopupInformacoes(icon,titulo,texto,voltar = false) {
     document.getElementById("title").innerText = titulo;
     document.getElementById("text").innerText = texto;
 
+    //Caso verdadeiro, envia de volta para o index.
     if (voltar) {
         document.getElementById("buttonInicio").onclick = fecharPopupInformacoes(true);
     }
 }
 
+//Método para fechar os popups de informação
 function fecharPopupInformacoes(inicio = false) {
+    //Caso verdadeiro, envia para o index.
     if (inicio) {
         window.location.href = "index.jsp";
     } else {
+        //(padrão) Caso falso, apenas fecha o popup.
         // Pegando o elemento pelo id overlay
         let overlay = document.getElementById('popupOverlay');
 
