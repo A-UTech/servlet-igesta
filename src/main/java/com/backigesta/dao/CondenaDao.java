@@ -35,7 +35,7 @@ public class CondenaDao {
             }
             ps.setString(4,condena.getTipoCondena());
 
-            retorno = ps.executeUpdate() == 0;
+            retorno = ps.executeUpdate() == 1;
         } catch (SQLException sql) {
             System.out.println("!!SQLException ao chamar CondenaDAO.inserir(condena)!!");
             sql.printStackTrace();
@@ -119,7 +119,7 @@ public class CondenaDao {
             }
             ps.setInt(4,condena.getId());
 
-            retorno = ps.executeUpdate() == 0;
+            retorno = ps.executeUpdate() == 1;
         } catch (SQLException sqle) {
             System.out.println("!!SQLException ao chamar CondenaDAO.atualizar(condena)!!");
             sqle.printStackTrace();

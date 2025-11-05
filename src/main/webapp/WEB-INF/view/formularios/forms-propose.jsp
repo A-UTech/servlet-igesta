@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/logos/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/forms.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/popups.css">
   <title>IGesta</title>
   <%
     String status = (String) request.getAttribute("status");
@@ -17,22 +18,31 @@
   <form action="enviarProsposta" method="post" id="enviarProposta">
     <input type="text" name="name" placeholder="Nome" required autocomplete="name" autofocus>
     <input type="email" name="email" placeholder="E-Mail" required autocomplete="email" minlength="10" >
-    <input type="text" name="cnpj" placeholder="CNPJ" required minlength="14" maxlength="14" pattern="^[0-9]{14}$" title="Digite apenas os números">
-    <textarea name="message" placeholder="Mensagem" required></textarea>
-    <button type="button" id="buttonProposta" onclick="enviarFormulario('buttonProposta','enviarProposta')">Entrar</button>
+    <input type="text" name="cnpj" placeholder="CNPJ" required pattern="[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}-?[0-9]{2}" title="Digite o CNPJ no formato 12.345.678/0001-90 ou apenas os números.">
+    <textarea name="message" class="textarea" placeholder="Mensagem" required></textarea>
+    <button type="button" id="buttonSubmit" onclick="enviarFormulario('buttonSubmit','enviarProposta')">Enviar</button>
   </form>
 </section>
 <div class="mens">
   <div>
-    <h2>Olá</h2>
-    <p>seja bem vindo!</p>
+    <h2>Vamos negociar</h2>
   </div>
   <div>
     <p style="width: 300px;">Aqui, você poderá nos apresentar uma proposta para o valor da mensalidade e armazenamento</p>
   </div>
 </div>
+<div class="overlay" id="popupOverlay">
+  <div class="popup">
+    <div class="icon">
+      <img id="icon" src="${pageContext.request.contextPath}/assets/icons/" alt="">
+    </div>
+    <h2 id="title"></h2>
+    <p id="text"></p>
+    <button id="buttonInicio" onclick="fecharPopupInformacoes()">Ok</button>
+  </div>
+</div>
 <div class="back">
-  <a href="${pageContext.request.contextPath}/index.html">
+  <a href="${pageContext.request.contextPath}/index.jsp">
     <img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png">
     <p>Voltar</p>
   </a>
@@ -44,7 +54,7 @@
     if (status != null) {
         boolean isStatus = Boolean.parseBoolean(status);
     %>
-    abrirPopupInformacoes("<%=isStatus ? "check.svg" : "wrong.svg"%>","<%=isStatus ? "Proposta enviada!" : "Erro no envio"%>","<%=isStatus ? "Sua proposta foi enviado com sucesso. Em breve entraremos em contato." : "Não foi possível enviar sua mensagem. Tente novamente mais tarde."%>")
+      abrirPopupInformacoes("<%=isStatus ? "check.svg" : "wrong.svg"%>","<%=isStatus ? "Proposta enviada!" : "Erro no envio"%>","<%=isStatus ? "Sua proposta foi enviado com sucesso. Em breve entraremos em contato." : "Não foi possível enviar sua mensagem. Tente novamente mais tarde."%>",<%=isStatus%>)
     <%}%>
   </script>
 </body>

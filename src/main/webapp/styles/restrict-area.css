@@ -119,6 +119,22 @@ main {
 
 header {justify-content: space-between}
 
+select#selectState {
+    border-radius: 50px;
+    background: var(--corCinza);
+    height: 40px;
+    width: 150px;
+    color: var(--corBranco);
+    display: flex;
+    justify-content: center;
+    padding-left: 30px;
+}
+
+select#selectState > option, select.selectPhone option {
+    background: var(--corCinza);
+    color: var(--corBranco);
+}
+
 
 /* menu */
 menu {gap: 5px;}
@@ -164,7 +180,7 @@ form.search {transition: 800ms}
 form.search input {
     display: none;
     background: transparent;
-    width: 120px;
+    width: 180px;
     text-align: center;
 }
 
@@ -196,7 +212,7 @@ div.table {
 }
 
 div.company > ul {grid-template-columns: repeat(8, 1fr)}
-div.condemn > ul, div.employeeContact > ul {grid-template-columns: repeat(5, 1fr)}
+div.condemn > ul, div.employeeContact > ul {grid-template-columns: repeat(5,1fr)}
 div.payment > ul, div.adm > ul {grid-template-columns: repeat(4, 1fr)}
 
 ul {
@@ -206,6 +222,10 @@ ul {
     height: 50px;
     border-radius: 50px;
 }
+
+li:first-child {
+    width: 60%;
+ }
 
 ul:first-child {
     background: var(--corBranco);
@@ -235,11 +255,18 @@ li {
     white-space: nowrap;
 }
 
+li:last-child > a:first-child:hover {filter: brightness(0) saturate(100%) invert(98%) sepia(4%) saturate(4136%) hue-rotate(141deg) brightness(94%) contrast(85%)}
+li:last-child > a:last-child:hover {filter: brightness(0) saturate(100%) invert(51%) sepia(87%) saturate(6827%) hue-rotate(347deg) brightness(92%) contrast(99%)}
+
 select.selectPhone {
     background: var(--corCinza);
     color: var(--corBranco);
     padding: 2px;
     border-radius: 5px;
+}
+
+a {
+    cursor: pointer;
 }
 
 
@@ -285,7 +312,7 @@ dialog[open] {
 
 dialog.popupInputs {
     width: 700px;
-    height: 600px;
+    height: 650px;
 }
 
 dialog.popupInputs > h2 {
@@ -367,4 +394,71 @@ dialog.popupButtons button:last-child {
 
 input:invalid {
     color: red;
+}
+
+.input-container, .container {
+    position: relative;
+}
+
+.input-container:hover .eye-icon {
+    opacity: 1;
+}
+
+form input[type="password"], form input[type="text"], .container input[type="password"], .container input[type="text"] {
+    width: 100%;
+}
+
+form .eye-icon {
+    position: absolute;
+    left: 250px;
+    top: 36px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 25px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.container .eye-icon {
+    position: absolute;
+    left: 120px;
+    top: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 15px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+form .eye-icon:hover, .container .eye-icon:hover {
+    opacity: 1;
+}
+
+.container {
+    width: 150px;
+}
+
+.container .eye-icon {
+    opacity: 0;
+}
+
+.container:hover .eye-icon {
+    opacity: 1;
+}
+
+.container input {
+    background-color: var(--corCinza);
+    padding: 5px;
+    border-radius: 10px;
+}
+
+button.selected {
+    background: var(--corVC);
+    color: var(--corPreto);
+    width: 100px;
+    font-weight: 500;
+}
+
+form button:hover {
+    cursor: pointer;
 }

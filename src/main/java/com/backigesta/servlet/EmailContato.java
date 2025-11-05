@@ -17,7 +17,7 @@ public class EmailContato extends HttpServlet {
         String caminho = request.getServletPath();
         if (caminho.equals("/emailContato")) {
             // Enviando cliente para a pagina forms-contact.jsp
-            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/forms-contact.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/formularios/forms-contact.jsp");
             rd.forward(request,response);
         }
     }
@@ -45,7 +45,7 @@ public class EmailContato extends HttpServlet {
         request.setAttribute("status",status ? "true" : "false");
 
         // Enviando cliente para a pagina forms-contact.jsp
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/forms-contact.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/formularios/forms-contact.jsp");
         rd.forward(request,response);
     }
 }

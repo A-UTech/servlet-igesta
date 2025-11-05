@@ -1,4 +1,5 @@
 <%@ page import="com.backigesta.model.Admin" %>
+<%@ page import="com.backigesta.model.Plano" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -9,7 +10,7 @@
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/logos/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/restrict-area.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/popups.css">
-    <title>Administradores</title>
+    <title>Pagamento</title>
     <%
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
@@ -17,7 +18,7 @@
             return;
         }
 
-        List<Admin> admins = (List<Admin>) request.getAttribute("admins");
+        List<Plano> planos = (List<Plano>) request.getAttribute("planos");
 
         String adicionado = (String) request.getAttribute("adicionado");
         String alterado = (String) request.getAttribute("alterado");
@@ -28,7 +29,7 @@
     <a href="${pageContext.request.contextPath}/index.jsp" class="logo"><img src="${pageContext.request.contextPath}/assets/logos/igesta-outlined.svg"> <h2>IGesta</h2></a>
 
     <nav>
-        <a href="selectEmpresa"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresa</span></a>
+        <a href="selectEmpresa"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresas</span></a>
         <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"><span>Condenas</span></a>
         <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"><span>Mensalidades</span></a>
         <a href="selectContato"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"><span>Contato dos funcionários</span></a>
@@ -39,84 +40,88 @@
         <% if (admin.getFoto() == null) { %>
             <img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
         <% } else { %>
-            <img class="perfil" src="getFoto?id=<%=admin.getId()%>&tipo=Admin">
+            <img src="getFoto?id=<%=admin.getId()%>&tipo=Admin">
         <% } %>
-         <span><%=admin.getNome()%></span>
+        <span><%=admin.getNome()%></span>
     </a>
 </aside>
 
     <main>
         <header>
-            <h1>Administradores</h1>
+            <h1>Pagamento</h1>
             <menu>
-                <form action="" method="get" class="search" id="procuraAdmin">
+                <form action="selectPlano" class="search" id="procuraPlanoNome">
                     <input type="text" name="search" placeholder="Pesquisar por nome">
-                    <button type="button" id="buttonSearchNome" onclick="enviarFormulario('buttonSearchNome','procuraAdmin')" class="functions">
+                    <button type="button" onclick="enviarFormulario('buttonSearchNome','procuraPlanoNome')" id="buttonSearchNome" class="functions">
                         <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
                     </button>
                 </form>
-                <button type='button' onclick="abrirPopup('add')" class="functions"><img src="${pageContext.request.contextPath}/assets/icons/menu-add.svg"></button>
+                <button onclick="abrirPopup('add')" class="functions">
+                    <img src="${pageContext.request.contextPath}/assets/icons/menu-add.svg">
+                </button>
             </menu>
         </header>
 
         <section>
-                <div class="table adm">
+                <div class="table payment">
                     <ul>
                         <li>Nome</li>
-                        <li>Email</li>
-                        <li>Senha</li>
+                        <li>Mensalidade</li>
+                        <li>Armazenamento</li>
                         <li>Ações</li>
                     </ul>
 
-                    <% for (Admin admin1 : admins) { %>
+                    <% for (Plano plano : planos) { %>
                         <ul>
-                            <li><%=admin1.getNome()%></li>
-                            <li><%=admin1.getEmail()%></li>
-                            <li><%=admin1.getSenha()%></li>
+                            <li><%=plano.getNome()%></li>
+                            <li>R$<%=plano.getMensalidade()%></li>
+                            <li><%=plano.getArmazenamento()%>GB</li>
                             <li>
-                                <a onclick="alterarAdmin(<%=admin1.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/edit.svg"></a>
-                                <input type="hidden" id="alterarAdmin<%=admin1.getId()%>" value="<%=admin1.getNome()%>;<%=admin1.getEmail()%>;<%=admin1.getSenha()%>">
-                                <a onclick="deletarAdmin(<%=admin1.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/trash.svg"></a>
+                                <a onclick="alterarPlano(<%=plano.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/edit.svg"></a>
+                                <input type="hidden" id="planoAlterar<%=plano.getId()%>" value="<%=plano.getNome()%>;<%=plano.getMensalidade()%>;<%=plano.getArmazenamento()%>">
+                                <a onclick="deletarPlano(<%=plano.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/trash.svg"></a>
                             </li>
                         </ul>
                     <% } %>
+
                 </div>
         </section>
+        
     </main>
     <dialog id="add" class="popupInputs">
-        <h2>Adicionar admin</h2>
-        <form action="adicionarAdmin" method="post" autocomplete="off" id="adicionarAdmin">
-            <a onclick="document.getElementById('add').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
-            <input type="text" name="nomeAdmin" placeholder="Nome" class="inputCapitalize" required>
-            <input type="email" name="emailAdmin" placeholder="Email" required>
-            <input type="text" name="senhaAdmin" placeholder="Senha" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
-            <button type="button" id="buttonAdicionar" onclick="enviarFormulario('buttonAdicionar','adicionarAdmin')">Adicionar</button>
+        <h2>Adicionar Plano</h2>
+        <form action="adicionarPlano" method="post" autocomplete="off" id="adicionarPlano">
+            <a onclick="fecharPopup('add')"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
+            <input type="text" name="nomePlano" placeholder="Nome" class="inputCapitalize" required>
+            <input type="number" step="any" name="mensalidade" placeholder="Mensalidade" class="inputCapitalize" required>
+            <input type="number" name="armazenamento" placeholder="Armazenamento" class="inputCapitalize" required>
+            <button type="button" id="buttonAdicionar" onclick="enviarFormulario('buttonAdicionar','adicionarPlano')" >Adicionar</button>
         </form>
     </dialog>
     <dialog id="delete" class="popupButtons">
-        <a onclick="document.getElementById('delete').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
-        <h2>Excluir admin?</h2>
+        <a onclick="fecharPopup('delete')"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
+        <h2>Excluir Plano?</h2>
         <div>
             <button onclick="document.getElementById('delete').close()">Não</button>
-            <form action="deletarAdmin" method="post" id="deletarAdmin">
-                <input type="hidden" id="IdAdmin" name="adminId">
-                <button type="button" id="buttonDeletar" onclick="enviarFormulario('buttonDeletar','deletarAdmin')">Sim</button>
+            <form action="deletarPlano" method="post" id="deletarPlano">
+                <input type="hidden" id="idPlano" name="planoId">
+                <button type='button' id="buttonDeletar" onclick="enviarFormulario('buttonDeletar','deletarPlano')" >Sim</button>
             </form>
         </div>
     </dialog>
     <dialog id="alterar" class="popupInputs">
-        <h2>Alterar admin</h2>
-        <a onclick="document.getElementById('alterar').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
-        <form action="alterarAdmin" method="post" id="alterarAdmin">
-            <input type="hidden" id="adminId" name="idAdmin">
-            <input type="text" id="nomeAdmin" name="nomeAdmin" placeholder="Nome" class="inputCapitalize">
-            <input type="email" id="emailAdmin" name="emailAdmin" placeholder="Email" >
-            <input type="text" id="senhaAdmin" name="senhaAdmin" placeholder="Senha" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
-            <button type="button" id="buttonAlterar" onclick="enviarFormulario('buttonAlterar','alterarAdmin')">Alterar</button>
+        <h2>Alterar Plano</h2>
+        <a onclick="fecharPopup('alterar')"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
+        <form action="alterarPlano" method="post" id="alterarPlano">
+            <input type="hidden" name="planoId" id="planoId">
+            <input type="text" id="nomePlano" name="nomePlano" class="inputCapitalize" required>
+            <input type="number" step="any" id="mensalidade" name="mensalidade" class="inputCapitalize" required>
+            <input type="number" id="armazenamento" name="armazenamento" class="inputCapitalize" required>
+            <button type="button" id="buttonAlterar" onclick="enviarFormulario('buttonAlterar','alterarPlano')">Alterar</button>
         </form>
     </dialog>
     <div class="overlay" id="popupOverlay">
-        <div class="popup">
+        <div class="popup" id="popupMaior">
             <div class="icon">
                 <img id="icon" src="${pageContext.request.contextPath}/assets/icons/" alt="">
             </div>
@@ -125,9 +130,9 @@
             <button onclick="fecharPopupInformacoes()">Ok</button>
         </div>
     </div>
+    <script src="${pageContext.request.contextPath}/scripts/areaRestritaPlanos.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
-    <script src="${pageContext.request.contextPath}/scripts/areaRestritaAdmin.js"></script>
     <script>
         <% if (adicionado != null) { %>
         <%

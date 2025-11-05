@@ -126,12 +126,13 @@ public class EmpresaDAO {
         }
     } // Método que seleciona empresas por estado
 
-    public ArrayList<Empresa> selecionarPorNome(String nome){
+    public ArrayList<Empresa> selecionarPorNomeOrEmail(String procura){
         ArrayList<Empresa> empresa = new ArrayList<>();
         try{
             conn = banco.conectar();
-            PreparedStatement ps = conn.prepareStatement("SELECT e.*, p.nome AS plano FROM empresa e JOIN plano p ON p.id=e.id_plano WHERE lower(e.nome) LIKE lower(?) ORDER BY e.nome");
-            ps.setString(1, nome+"%");
+            PreparedStatement ps = conn.prepareStatement("SELECT e.*, p.nome AS plano FROM empresa e JOIN plano p ON p.id=e.id_plano WHERE lower(e.nome) LIKE lower(?) OR lower(e.email) LIKE lower(?) ORDER BY e.nome");
+            ps.setString(1, "%" + procura + "%");
+            ps.setString(2, "%" + procura + "%");
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
@@ -157,7 +158,7 @@ public class EmpresaDAO {
             banco.desconectar(conn);
             return empresa;
         }
-    } // Método que seleciona as empresas por nome
+    } // Método que seleciona as empresas por nome ou por email
 
     public ArrayList<Empresa> selecionarTodos(){
         ArrayList<Empresa> empresa = new ArrayList<>();
@@ -267,7 +268,7 @@ public class EmpresaDAO {
     } // Método que verifica se aquela conta de empresa existe
 
 //=======================MÉTODOS UPDATE=======================\\
-    public boolean atualizar(Empresa empresa){
+    public boolean atualizar(Empresa empresa, boolean senha){
         boolean retorno = false;
         try{
             conn = banco.conectar();
@@ -281,19 +282,22 @@ public class EmpresaDAO {
             rs.close();
             ps.close();
 
-            ps = conn.prepareStatement("UPDATE empresa SET nome = ?, email = ?, senha = ?, id_plano = ?, estado = ?,cidade = ?, unidade = ? WHERE id = ?");
+            if (!empresa.getSenha().equals("") && empresa.getSenha() != null) {
+                ps = conn.prepareStatement("UPDATE empresa SET nome = ?, email = ?, id_plano = ?, estado = ?,cidade = ?, unidade = ?, senha = ? WHERE id = ?");
+            } else {
+                ps = conn.prepareStatement("UPDATE empresa SET nome = ?, email = ?, id_plano = ?, estado = ?,cidade = ?, unidade = ? WHERE id = ?");
+            }
+
             ps.setString(1, empresa.getNome());
             ps.setString(2, empresa.getEmail());
-            if (empresa.getSenha().equals("")) {
-                ps.setNull(3, java.sql.Types.VARCHAR);
-            } else {
-                ps.setString(3, empresa.getSenha());
+            ps.setInt(3, planoId);
+            ps.setString(4, empresa.getEstado());
+            ps.setString(5,empresa.getCidade());
+            ps.setString(6, empresa.getUnidade());
+            if (!empresa.getSenha().equals("") && empresa.getSenha() != null) {
+                ps.setString(7, empresa.getSenha());
             }
-            ps.setInt(4, planoId);
-            ps.setString(5, empresa.getEstado());
-            ps.setString(6,empresa.getCidade());
-            ps.setString(7, empresa.getUnidade());
-            ps.setInt(8, empresa.getId());
+            ps.setInt(!empresa.getSenha().equals("") && empresa.getSenha() != null ? 8 : 7, empresa.getId());
 
             retorno = ps.executeUpdate() >= 1;
         }
@@ -346,7 +350,7 @@ public class EmpresaDAO {
             ps.close();
             
             
-            ps = conn.prepareStatement("SELECT qc.id FROM empresa e JOIN funcionario f ON f.id_empresa = e.id JOIN medicao m ON f.id = m.cod_gestor JOIN quantidadecondena qc ON m.id = qc.cod_medicao WHERE e.id = ?");
+            ps = conn.prepareStatement("SELECT qc.id FROM empresa e JOIN funcionario f ON f.id_empresa = e.id JOIN medicao m ON f.id = m.id_gestor JOIN quantidadecondena qc ON m.id = qc.cod_medicao WHERE e.id = ?");
             ps.setInt(1,id);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -358,7 +362,7 @@ public class EmpresaDAO {
             rs.close();
             
             
-            ps = conn.prepareStatement("SELECT m.id FROM empresa e JOIN funcionario f ON f.id_empresa = e.id JOIN medicao m ON f.id = m.cod_gestor WHERE e.id = ?");
+            ps = conn.prepareStatement("SELECT m.id FROM empresa e JOIN funcionario f ON f.id_empresa = e.id JOIN medicao m ON f.id = m.id_gestor WHERE e.id = ?");
             ps.setInt(1,id);
             rs = ps.executeQuery();
             while (rs.next()) {

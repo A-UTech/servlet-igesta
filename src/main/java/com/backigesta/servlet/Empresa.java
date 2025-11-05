@@ -44,7 +44,7 @@ public class Empresa extends HttpServlet {
             empresas = daoEmpresas.selecionarTodos();
         } else {
             //Selecionando por pesquisa
-            empresas = daoEmpresas.selecionarPorNome(procura);
+            empresas = daoEmpresas.selecionarPorNomeOrEmail(procura);
         }
 
         //Buscando o nome dos planos disponiveis para mostrar no CRUD
@@ -53,7 +53,7 @@ public class Empresa extends HttpServlet {
         request.setAttribute("planos",planos);
         request.setAttribute("empresas", empresas);
         //Redirecionando para a página do CRUD
-        request.getRequestDispatcher("/WEB-INF/view/company.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/areaRestrita/company.jsp").forward(request, response);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class Empresa extends HttpServlet {
         // Criando objeto empresa com as informações passadas.
         com.backigesta.model.Empresa empresa = new com.backigesta.model.Empresa(id,nome,email,senha,plano,estado,cidade,unidade);
         //Atualizando o registro já existente.
-        boolean alterado = daoEmpresas.atualizar(empresa);
+        boolean alterado = daoEmpresas.atualizar(empresa,!senha.equals(""));
         //Retornando se teve sucesso ou não.
         request.setAttribute("alterado", alterado ? "true" : "false");
         //Voltando para a pagina de CRUD mostrando as tabelas.

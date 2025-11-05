@@ -44,13 +44,13 @@ public class Login extends HttpServlet {
     }
     //Envia para a página de login dos Admins
     protected void mandarLoginAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/forms-login_adm.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/formularios/forms-login_adm.jsp");
         rd.forward(request,response);
     }
 
     //Envia para a pagina de login das Empresas
     protected void mandarLoginEmpresa(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/forms-login_cmp.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/formularios/forms-login_cmp.jsp");
         rd.forward(request,response);
     }
 

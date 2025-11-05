@@ -18,20 +18,17 @@
     margin: 0;
     padding: 0;
 
-    font: 0.95em var(--fontText);
+    font: 1em var(--fontText);
     color: var(--corBranco);
     text-decoration: none;
     border: 0;
     scroll-behavior: smooth;
 }
 
-body {
-    background: var(--corPreto);
-}
+body {background: var(--corPreto)}
 
-h1, h2 {
-    font: 3em var(--fontTitle);
-}
+h1 {font: 5rem var(--fontTitle)}
+h2 {font: 2.5rem var(--fontTitle)}
 
 input {
     background: var(--corVC);
@@ -42,36 +39,53 @@ input {
     cursor: pointer;
 }
 
+p > a, li > a {position: relative}
 
-p > a, li > a {
-    position: relative;
-}
-  
 a.linkAnimation::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 1px;
-      border-radius: 4px;
-      background: #ffffff;
-      bottom: 0;
-      left: 0;
-      transform-origin: right;
-      transform: scaleX(0);
-      transition: transform .3s ease-in-out;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    border-radius: 4px;
+    background: #ffffff;
+    bottom: 0;
+    left: 0;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .3s ease-in-out;
 }
-  
+
 p > a:hover::before, li > a:hover::before {
     transform-origin: left;
     transform: scaleX(1);
 }
 
 
-/* --- main config -------------- */
+/* main config */
+
+iframe {
+    display: none;
+}
+
+body > label, body > a#linkChat {
+    background: var(--corVE);
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    padding: 15px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+}
+
+body > label img, body > a#linkChat img {width: 40px}
 
 header {
     position: fixed;
-    width: 100vw;
+    width: 100%;
     padding: 18px 20px;
     display: flex;
     align-items: center;
@@ -86,12 +100,13 @@ header img {
 
 header > section {
     display: flex;
+    align-items: center;
     animation: titulo 1.5s;
     transition: 1s;
+    gap: 20px;
 }
 
 header h1 {
-    margin-left: 15px;
     font: bold 3em var(--fontText);
 }
 
@@ -99,17 +114,17 @@ header > ul {
     display: none;
 }
 
-header div {
+header p {
     font-size: 3.5em;
     position: absolute;
-    top: 15px;
-    right: 70px;
+    top: 10px;
+    right: 50px;
     transition: 0.6s;
     width: 70px;
     text-align: center;
 }
 
-header div:hover {
+header p:hover {
     position: absolute;
     background-color: var(--corCinza);
     border-radius: 100px;
@@ -124,25 +139,26 @@ button {
     width: 100px;
 }
 
+
+
 main {
-    height: 100vh;
+    height: 100dvh;
     overflow-y: auto;
     scroll-snap-type: y mandatory;
 }
 
 div.slides, footer {
-    height: 100vh;
+    height: 100dvh;
     width: 100vw;
     scroll-snap-align: start;
     position: relative;
 }
 
-div#slide02, div#slide03, div.container, div#slide04, div#slide05, div#slide06, div#slide08, .card {
+div#slide02, div#slide03, div.container, div#slide04, div#slide05, div#slide06, .card {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
 
 
 div#slide01 {
@@ -159,137 +175,75 @@ div#slide01 img{
 
 div#slide01 > section {
     position: absolute;
-    bottom: 50px;
-    right: 60px;
+    bottom: 15px;
+    right: 15px;
     transition: 0.5s;
     animation: tituloSec 1.5s;
 }
 
 div#slide01 h1 {
-    font-size: 7.5em;
+    font-size: 7em;
     margin-bottom: -20px;
     letter-spacing: 3px;
 }
 
 div#slide01 p {
-    font-size: 1.2em;
     letter-spacing: 2px;
 }
 
 
-
 div#slide02 {
-    width: 90vw;
+    width: 95vw;
     margin: 0 auto;
     flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-div#slide02 > section#phrases {
-    font-size: 2em;
-    margin-top: 70px;
-}
-
-div#slide02 h2 {
-    margin-bottom: -15px;
 }
 
 div#slide02 > p {
     width: 300px;
-    margin-top: -60px;
+    transition: 0.5s;
+    margin-left: 0px;
+}
+div#slide02 > p > span {
+    color: var(--corVC);
+    animation: verdeBranco 4s infinite;
 }
 
+div#slide02 > section {
+    padding-top: 60px;
+}
 
+div#slide02 h2 {
+    font-size: 4em;
+}
+
+div#slide03 {
+    gap: 20px;
+    flex-direction: column;
+}
+
+div#slide03 > .container {
+    gap: 10px;
+}
 
 div#slide03 .card {
     align-items: center;
-    height: 190px;
-    width: 160px;
+    height: 180px;
+    width: 155px;
     padding: 5px;
 }
 
-div#slide03 .card > h3,
-div#slide03 .card > p{
-    width: 150px;
-}
-
-
-
-div#slide04 {
-    background: var(--corCinza);
-    flex-direction: column;
-    justify-content: space-evenly;
-}
-
-div#slide04 > h2 {
-    margin-top: 40px;
-}
-
-div#slide04 > img {
-    width: 100%;
-    max-width: 600px;
-}
-
-
-
-div#slide05{
-    text-align: center;
-    flex-direction: column;
-    gap: 50px;
-}
-
-
-
-div#slide06 {
-    flex-direction: column-reverse;
-    flex-wrap: wrap;
-}
-
-div#slide06 > section{
-    width: 90vw;
-}
-
-div#slide06 > img{
-    margin-top: 45px;
-    width: 90vw;
-    max-width: 500px;
-}
-
-
-
-div#slide07 {
-    display: flex;
-    align-items: center;
-    overflow-y: scroll;
-}
-
-div#slide07 > img {
-    height: 60vh;
-}
-
-
-
-div#slide08 {
-    font-size: 1.5em;
-    text-align: center;
-}
-
-div#slide08 p {
-    width: 300px;
-}
-
+div#slide03 .card > h3, div#slide03 .card > p {width: 145px}
 
 
 div.container {
+    display: flex;
     align-content: flex-start;
     flex-wrap: wrap;
 }
 
-.card h3 {
-    font-weight: bold;
-}
+.card h3 {font-weight: bold}
 
-.card {   
+.card {
     height: 160px;
     width: 140px;
     text-align: center;
@@ -308,64 +262,185 @@ div.container {
     transition: 0.4s ease-out;
 }
 
-.card.selected {
-    background-color: var(--corVE);
-    color: var(--corPreto);
-    transform: translateY(-10px);
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+
+div#slide04 {
+    text-align: center;
+    flex-direction: column;
+    row-gap: 20px;
+    justify-content: start;
 }
 
+div#slide04 h2 {margin-top: 80px}
+div#slide04 h3 {font-weight: bold}
+
+div#slide04 > menu {
+    display: flex;
+    flex-direction: column;
+}
+
+div#slide04 > menu section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    container-type: normal;
+}
+
+div#slide04 > menu section > a {
+    box-sizing: border-box;
+    width: 45dvw;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--corCinza);
+    padding: 10px 20px;
+    border-radius: 50px;
+}
+
+div#slide04 > menu section img {
+    width: 25px;
+    height: 25px;
+}
+
+div.objectives {
+    box-sizing: border-box;
+    padding: 10px;
+    display: none;
+    border-radius: 10px;
+}
+
+div.objectives img {
+    width: 70cqw;
+}
+
+div.objectives > section > p {
+    width: 90%;
+    text-align: left;
+    margin: auto;
+}
+
+div#obj01:target {display: block}
+div#obj02:target {display: block}
+div#obj03:target {display: block}
+div#obj04:target {display: block}
+
+
+div#slide05{
+    text-align: center;
+    flex-direction: column;
+    gap: 50px;
+}
+
+div#slide05 > a {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    border-radius: 50px;
+    border: 1px solid var(--corBranco);
+    padding: 10px 20px;
+}
+
+div#slide05 .card {
+    padding: 3dvw;
+}
+
+
+div#slide06 {
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+}
+
+div#slide06 h2 {padding-top: 60px}
+
+div#slide06 > section {width: 90vw}
+
+div#slide06 > img{
+    margin-top: 45px;
+    width: 90vw;
+    max-width: 500px;
+}
+
+div#slide07 {
+    padding-top: 100px;
+    height: 175vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+div#slide07 img {
+    width: 80dvw;
+}
+
+div#slide07 h2 {
+    text-align: center;
+}
+
+body > label > a img, body > a > img, div#slide07 > img, div#slide01 img {
+    user-select: none;
+    pointer-events: none;
+}
+
+
+div#slide08 > p {
+    position: absolute;
+    top: 200px;
+    width: 100%;
+    text-align: center;
+}
+div#slide08 > p > span {
+    color: var(--corVC);
+    animation: verdeBranco 4s infinite;
+}
 
 
 footer {
     display: grid;
-    grid-template-rows: repeat(4,1fr);
+    grid-template-rows: repeat(1fr, 4);
     place-items: center;
-    background-color: var(--corCinza);
 }
 
 footer h1{
-    color: var(--corCinza);
+    opacity: 0;
     margin-top: 100px;
 }
 
-footer h1, footer p {
-    text-align: center;
-}
+footer h1, footer p {text-align: center}
 
 footer ul {
     list-style: none;
     columns: 2;
+    gap: 50px;
 }
 
-footer ul a {
-    color: #bbbbbb;
-}
+footer ul a {color: #bbbbbb}
+footer ul li, footer h3 {margin-bottom: 10px}
+footer h3 {font-weight: bold}
+footer img {width: 50px}
 
-footer ul li, footer h3 {
-    margin-bottom: 10px;
-}
-
-footer h3 {
-    font-weight: bold;
-}
-
-footer img {
-    width: 50px;
-}
-
-
-
-
-
-/* configurações pc */
 
 @media screen and (min-width: 768px) {
-    body {
-        font-size: 1.3em;
+    body {font-size: 1.1rem;}
+    h1, h2 {font-size: 3.5rem}
+
+    iframe {
+        position: absolute;
+        bottom: 100px;
+        left: 20px;
+        z-index: 20;
+        width: 300px;
+        height: 500px;
+        border-radius: 15px;
+        display: none;
     }
 
-    header div {
+    :has(#chatToggle:checked) iframe {display: block}
+
+    body > a#linkChat {display: none}
+
+    header p {
         display: none;
         transition: 1s;
     }
@@ -385,10 +460,13 @@ footer img {
         transition: 1s;
     }
 
+
     div#slide01 section {
         animation: titulo 1.5s;
         transform: translateX(20px);
         transition: 0.5s;
+        bottom: 50px;
+        right: 50px;
     }
 
     div#slide01 img {
@@ -396,13 +474,40 @@ footer img {
         left: 25vw;
     }
 
+    div#slide02 {justify-content: space-evenly}
+
+    div#slide02 h2 {font-size: 5em}
+
     div#slide02 > p {
-        margin-top: 90px;
+        transition: 0.5s;
+        width: 400px;
     }
+
 
     div#slide03 section.card {
         width: 230px;
-        height: 250px;
+        height: 230px;
+    }
+    div#slide03 .card > h3, div#slide03 .card > p {width: 180px}
+
+    div#slide04 > menu section {display: flex}
+    div#slide04 > menu section a {width: 20dvw}
+
+    div.objectives {
+        border: 1px solid var(--corBranco);
+        height: fit-content;
+    }
+
+    div.objectives h3 {margin-bottom: 10px}
+
+    div.objectives img {
+        width: 30cqw;
+    }
+    div.objectives > section > p {
+        width: 30cqw;
+        text-align: left;
+        margin: auto;
+        padding: 1dvw;
     }
 
     div#slide05 {
@@ -410,20 +515,22 @@ footer img {
         justify-content: space-evenly;
     }
 
-    div#slide05 .card{
-        height: 200px;
-        width: 180px;
+    div#slide05 div.title > p {
+        margin-top: -15px;
+        margin-bottom: 30px;
     }
 
-    div#slide05 .card:hover ~ .card {
-        position: relative;
-        left: 50px;
+    div#slide05 .card{
+        height: 230px;
+        width: 200px;
+        padding: 0;
+    }
+
+    div#slide05 > .container > .card:hover {
+        margin-right: 20px;
         transition: 0.4s ease-out;
     }
 
-    div#slide06.card:not(:first-child) {
-        margin-left: -50px;
-    }
 
     div#slide06 {
         justify-content: space-evenly;
@@ -431,32 +538,43 @@ footer img {
         flex-direction: row;
     }
 
-    div#slide06 > section {
-        width: 350px;
+    div#slide06 > section {width: 400px}
+
+
+
+    div#slide07 img {
+        width: 75dvw;
     }
 
-    div#slide08 > p{
-        font-size: 1.5em;
-        width: 100%;
+
+    div#slide08 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        row-gap: 20px;
+    }
+
+    div#slide08 > p {
+        font-size: 2em;
+        font-weight: bold;
+    }
+    div#slide08 > p > span {
+        font-weight: bold;
     }
 
 
     footer {
+        position: absolute;
+        height: fit-content;
+        bottom: 200px;
         grid-template-rows: 1fr;
         grid-template-columns: 1fr 1fr 1fr;
     }
 
-    footer > section {
-        width: fit-content;
-    }
-
-    footer ul{
-        columns: 1;
-    }
-
-    footer h1 {
-        color: var(--corBranco);
-    }
+    footer > section {width: fit-content}
+    footer ul {columns: 1}
+    footer h1 {opacity: 1;}
 }
 
 @keyframes titulo {
@@ -480,6 +598,17 @@ footer img {
     }
 }
 
+@keyframes verdeBranco {
+    0% {
+        color: var(--corVC);
+    }
+    50% {
+        color: var(--corBranco);
+    }
+    100% {
+        color: var(--corVC);
+    }
+}
 
 .overlay {
     position: fixed;
@@ -492,7 +621,7 @@ footer img {
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
     z-index: 10;
-    width: 180px;
+    width: 210px;
     font-size: 14px;
 }
 
@@ -524,8 +653,14 @@ button:hover {
     cursor: pointer;
 }
 
-
 #buttonPlano:hover {
     background-color: var(--corVE);
+    transition: 0.5s background-color;
 }
 
+.card.selected {
+    background-color: var(--corVE);
+    color: var(--corPreto);
+    transform: translateY(-10px);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}

@@ -38,7 +38,6 @@ public class Perfil extends HttpServlet {
         //Traçando a última pagina acessada antes de entrar no Perfil.
         String pagina = request.getHeader("referer");
         pagina = pagina.substring(pagina.lastIndexOf("/") + 1);
-        System.out.println(pagina);
         if (pagina.toLowerCase().matches(".*condena.*") ) {
             session.setAttribute("caminhoVolta","selectCondena");
         } else if (pagina.toLowerCase().matches(".*admin.*")) {
@@ -49,6 +48,8 @@ public class Perfil extends HttpServlet {
             session.setAttribute("caminhoVolta","selectEmpresa");
         } else if (pagina.toLowerCase().matches(".*plano.*")) {
             session.setAttribute("caminhoVolta","selectPlano");
+        } else if (pagina.toLowerCase().matches(".*collab.*")) {
+            session.setAttribute("caminhoVolta", "selectCollab");
         }
         //Enviando para o perfil.
         entrarPerfil(request, response);
@@ -72,41 +73,46 @@ public class Perfil extends HttpServlet {
 
     //Método para atualizar informações do perfil
     protected void atualizarPerfil(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
-        //Declarando o objeto da Session.
-        HttpSession session = request.getSession(false);
+        System.out.println("Chegou em atualizar");
+        try {
+            //Declarando o objeto da Session.
+            HttpSession session = request.getSession(false);
 
-        //Capturando os parâmetros a serem alterados
-        String nome = request.getParameter("name");
-        String email = request.getParameter("email");
-        String senha = request.getParameter("password");
+            //Capturando os parâmetros a serem alterados
+            String nome = request.getParameter("name");
+            String email = request.getParameter("email");
+            String senha = request.getParameter("password");
 
-        //Capturando os objetos de Admin e Empresa da session.
-        Admin user = (Admin) session.getAttribute("admin");
-        Empresa empresa = (Empresa) session.getAttribute("empresa");
-        //Caso houver admin.
-        if(user != null) {
-            //Alterando as informações do objeto
-            user.setNome(nome);
-            user.setEmail(email);
-            user.setSenha(senha);
-            //Atualizando no Banco
-            daoAdmin.atualizar(user);
-            //Atualizando na Session
-            session.setAttribute("admin",user);
+            //Capturando os objetos de Admin e Empresa da session.
+            Admin user = (Admin) session.getAttribute("admin");
+            Empresa empresa = (Empresa) session.getAttribute("empresa");
+            //Caso houver admin.
+            if (user != null) {
+                //Alterando as informações do objeto
+                user.setNome(nome);
+                user.setEmail(email);
+                user.setSenha(senha);
+                //Atualizando no Banco
+                daoAdmin.atualizar(user);
+                //Atualizando na Session
+                session.setAttribute("admin", user);
+            } else {
+                //Alterando as informações do objeto
+                empresa.setNome(nome);
+                empresa.setEmail(email);
+                empresa.setSenha(senha);
+                //Atualizando no Banco
+                daoEmpresas.atualizar(empresa,true);
+                //Atualizando na Session
+                session.setAttribute("empresa", empresa);
+            }
+
+            //Após atualizar, retorna para a pagina de perfil
+            entrarPerfil(request, response);
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
-        else{
-            //Alterando as informações do objeto
-            user.setNome(nome);
-            user.setEmail(email);
-            user.setSenha(senha);
-            //Atualizando no Banco
-            daoEmpresas.atualizar(empresa);
-            //Atualizando na Session
-            session.setAttribute("empresa",user);
-        }
-
-        //Após atualizar, retorna para a pagina de perfil
-        entrarPerfil(request,response);
     }
 
     //Método de enviar uma nova foto
@@ -116,9 +122,13 @@ public class Perfil extends HttpServlet {
 
         //Buscando na session o usuario logado no momento com a classe Abstrata.
         Usuario user = (Usuario) session.getAttribute("admin");
+        if(user == null) {
+            user = (Usuario) session.getAttribute("empresa");
+        }
 
         //Extraindo o nome da Classe do objeto.
-        String tipo = user.getClass().getSimpleName();
+        String tipo = user.getClass().getSimpleName().toLowerCase();
+        System.out.println(tipo);
 
         //Transformando o arquivo de imagem fornecido em um ByteArray
         Part filePart = request.getPart("foto");
@@ -126,15 +136,15 @@ public class Perfil extends HttpServlet {
 
         //Atualizando o usuario no banco.
         switch (tipo) {
-            case "Admin":
+            case "admin":
                 new AdminDAO().atualizarFoto(user.getId(),bytea);
                 break;
-            case "Empresas":
+            case "empresa":
                 new EmpresaDAO().atualizarFoto(user.getId(),bytea);
         }
         //Atualizando o usuario na Session.
         user.setFoto(bytea);
-        session.setAttribute("admin",user);
+        session.setAttribute(tipo,user);
 
         //Voltando para a pagina de perfil.
         entrarPerfil(request,response);

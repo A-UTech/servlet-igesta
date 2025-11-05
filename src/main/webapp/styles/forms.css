@@ -275,3 +275,30 @@ section p {
 input:invalid {
     color: red;
 }
+
+.input-container {
+    position: relative;
+}
+
+.input-container:hover > .eye-icon {
+    opacity: 1;
+}
+
+input[type="password"], input[type="text"] {
+    width: 100%;
+}
+
+.eye-icon {
+    position: absolute;
+    left: 230px;
+    top: 30px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 25px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+button:hover {
+    cursor: pointer;
+}

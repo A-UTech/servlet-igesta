@@ -40,9 +40,9 @@ body {
     row-gap: 50px;
 }
 
-div.errorContainer > p {
-    margin-top: -5px;
+div.errorContainer p {
     width: 40vw;
+    text-align: center;
 }
 
 img {

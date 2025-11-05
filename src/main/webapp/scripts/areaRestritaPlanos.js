@@ -1,5 +1,6 @@
-// Esse arquivo Java Script está sendo usando para manipular elementos da página planos.jsp
+// Java Script usado para manipular elementos da página payment.jsp
 
+//Método que prepara o popup de Alterar um Plano.
 function alterarPlano(numero) {
     // Pega os dados que estam no valor dos inputs hidden criados na página
     let [nome,mensalidade,armazenamento] = document.getElementById("planoAlterar"+numero).value.split(";");
@@ -15,6 +16,7 @@ function alterarPlano(numero) {
     document.getElementById("alterar").showModal();
 }
 
+//Método que prepara o popup de
 function deletarPlano(numero) {
     // Abre o dialog delete
     document.getElementById('delete').showModal();
@@ -23,13 +25,13 @@ function deletarPlano(numero) {
     document.getElementById('idPlano').value = numero;
 }
 
+//Função base de abrir popup com seu id
 function abrirPopup(idElemento) {
-    // Ele abre o dialog com o parâmetro do método
     document.getElementById(idElemento).showModal();
 }
 
+//Função base de fechar popup com seu id
 function fecharPopup(idElemento) {
-    // Ele deleta o dialog com o parâmetro do método
     document.getElementById(idElemento).close();
 }
 

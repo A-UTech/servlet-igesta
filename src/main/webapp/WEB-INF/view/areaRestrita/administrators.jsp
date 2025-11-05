@@ -1,8 +1,5 @@
-<%@ page import="com.backigesta.model.Telefone" %>
-<%@ page import="com.backigesta.model.Funcionario" %>
-<%@ page import="java.util.*" %>
 <%@ page import="com.backigesta.model.Admin" %>
-<%@ page import="com.backigesta.util.Regex" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="pt-br">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -12,7 +9,7 @@
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/logos/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/restrict-area.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/popups.css">
-    <title>Contato dos Funcionários</title>
+    <title>Administradores</title>
     <%
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
@@ -20,13 +17,7 @@
             return;
         }
 
-        HashMap<Funcionario,ArrayList<Telefone>> mapa = (HashMap<Funcionario, ArrayList<Telefone>>) request.getAttribute("contatos");
-        Map<Funcionario, ArrayList<Telefone>> contatos = new TreeMap<>(
-                Comparator.comparing(p -> p.getNome())
-        );
-        contatos.putAll(mapa);
-
-        ArrayList<Funcionario> funcionarios = (ArrayList<Funcionario>) request.getAttribute("funcionarios");
+        List<Admin> admins = (List<Admin>) request.getAttribute("admins");
 
         String adicionado = (String) request.getAttribute("adicionado");
         String alterado = (String) request.getAttribute("alterado");
@@ -37,7 +28,7 @@
     <a href="${pageContext.request.contextPath}/index.jsp" class="logo"><img src="${pageContext.request.contextPath}/assets/logos/igesta-outlined.svg"> <h2>IGesta</h2></a>
 
     <nav>
-        <a href="selectEmpresa"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresa</span></a>
+        <a href="selectEmpresa"><img src="${pageContext.request.contextPath}/assets/icons/aside-company.svg"><span>Empresas</span></a>
         <a href="selectCondena"><img src="${pageContext.request.contextPath}/assets/icons/aside-condemn.svg"><span>Condenas</span></a>
         <a href="selectPlano"><img src="${pageContext.request.contextPath}/assets/icons/aside-payment.svg"><span>Mensalidades</span></a>
         <a href="selectContato"><img src="${pageContext.request.contextPath}/assets/icons/aside-employeeContact.svg"><span>Contato dos funcionários</span></a>
@@ -48,60 +39,52 @@
         <% if (admin.getFoto() == null) { %>
             <img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
         <% } else { %>
-            <img src="getFoto?id=<%=admin.getId()%>&tipo=Admin">
+            <img class="perfil" src="getFoto?id=<%=admin.getId()%>&tipo=Admin">
         <% } %>
-        <span><%=admin.getNome()%></span>
+         <span><%=admin.getNome()%></span>
     </a>
 </aside>
 
     <main>
         <header>
-            <h1>Contato dos Funcionários</h1>
+            <h1>Administradores</h1>
             <menu>
-                <form action="selectContato" id="searchName" class="search">
-                    <input type="text" name="searchName" placeholder="Pesquisar por nome">
-                    <button type="button" onclick="enviarFormulario('buttonSearchNome','searchName')" id="buttonSearchNome" class="functions">
+                <form action="" method="get" class="search" id="procuraAdmin">
+                    <input type="text" name="search" placeholder="Pesquisar por nome ou email">
+                    <button type="button" id="buttonSearchNome" onclick="enviarFormulario('buttonSearchNome','procuraAdmin')" class="functions">
                         <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
                     </button>
                 </form>
-                <form action="selectContato" id="searchEmail" class="search">
-                    <input type="text" name="searchEmail" placeholder="Pesquisar por email">
-                    <button type="button" onclick="enviarFormulario('buttonSearchTelefone','searchEmail')" id="buttonSearchTelefone" class="functions">
-                        <img src="${pageContext.request.contextPath}/assets/icons/menu-search.svg" alt="Pesquisar">
-                    </button>
-                </form>
-                <button onclick="abrirPopup('add')" class="functions">
-                    <img src="${pageContext.request.contextPath}/assets/icons/menu-add.svg">
-                </button>
+                <button type='button' onclick="abrirPopup('add')" class="functions"><img src="${pageContext.request.contextPath}/assets/icons/menu-add.svg"></button>
             </menu>
         </header>
 
         <section>
-                <div class="table employeeContact">
+                <div class="table adm">
                     <ul>
-                        <li>Empresa</li>
                         <li>Nome</li>
                         <li>Email</li>
-                        <li>Telefone</li>
+                        <li>Senha</li>
                         <li>Ações</li>
                     </ul>
 
-                    <% for (Funcionario contato : contatos.keySet()) { %>
+                    <% for (Admin admin1 : admins) { %>
                         <ul>
-                            <li><%=contato.getNomeEmpresa()%></li>
-                            <li><%=contato.getNome()%></li>
-                            <li><%=contato.getEmail()%></li>
+                            <li><%=admin1.getNome()%></li>
+                            <li><%=admin1.getEmail()%></li>
                             <li>
-                                <select class="selectPhone" name="telefone" id="telefoneContato<%=contato.getId()%>">
-                                    <option value="" selected hidden disabled>Telefones</option>
-                                    <% for (Telefone telefone : contatos.get(contato)) { %>
-                                        <option value="<%=telefone.getId()%>"><%=Regex.formatarTelefone(telefone.getTelefone())%></option>
-                                    <% } %>
-                                </select>
+                                <div class="container">
+                                    <input type="password" id="senha<%=admin1.getId()%>" disabled value="<%=admin1.getSenha()%>">
+                                    <img onclick="mudarOlho('senha<%=admin1.getId()%>','toggleSenha<%=admin1.getId()%>',true)" src="${pageContext.request.contextPath}/assets/icons/closed_eyes_branco.png"
+                                         alt="mostrar senha"
+                                         class="eye-icon"
+                                         id="toggleSenha<%=admin1.getId()%>">
+                                </div>
                             </li>
                             <li>
-                                <a onclick='alterarContato(<%=contato.getId()%>)'><img src="${pageContext.request.contextPath}/assets/icons/edit.svg"></a>
-                                <a onclick="deletarContato(<%=contato.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/trash.svg"></a>
+                                <a onclick="alterarAdmin(<%=admin1.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/edit.svg"></a>
+                                <input type="hidden" id="alterarAdmin<%=admin1.getId()%>" value="<%=admin1.getNome()%>;<%=admin1.getEmail()%>;<%=admin1.getSenha()%>">
+                                <a onclick="deletarAdmin(<%=admin1.getId()%>)"><img src="${pageContext.request.contextPath}/assets/icons/trash.svg"></a>
                             </li>
                         </ul>
                     <% } %>
@@ -109,41 +92,51 @@
         </section>
     </main>
     <dialog id="add" class="popupInputs">
-        <h2>Adicionar contato</h2>
-        <form action="adicionarContato" method="post" autocomplete="off" id="adicionarContato">
+        <h2>Adicionar admin</h2>
+        <form action="adicionarAdmin" method="post" autocomplete="off" id="adicionarAdmin">
             <a onclick="document.getElementById('add').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
-            <select id="funcionarios" name="funcionarioId">
-                <option value="" disabled selected >Funcionário</option>
-                <% for (Funcionario funcionario : funcionarios) { %>
-                    <option value="<%=funcionario.getId()%>"><%=funcionario.getNome()%></option>
-                <% } %>
-            </select>
-            <input type="text" name="contato" placeholder="Telefone" pattern="\(?[0-9]{2}\)?\s?[0-9]{5}-?[0-9]{4}" required title="Digite um telefone no formato (11) 91234-5678 ou apenas os numeros">
-            <button type="button" id="buttonAdicionar" onclick="enviarFormulario('buttonAdicionar','adicionarContato')" >Adicionar</button>
+            <input type="text" name="nomeAdmin" placeholder="Nome" class="inputCapitalize" required>
+            <input type="email" name="emailAdmin" placeholder="Email" required>
+            <div class="input-container">
+                <input type="password" id="senhaAdd" name="senhaAdmin" placeholder="Senha" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
+                <img onclick="mudarOlho('senhaAdd','toggleSenhaAdd')" src="${pageContext.request.contextPath}/assets/icons/closed_eyes.png"
+                     alt="mostrar senha"
+                     class="eye-icon"
+                     id="toggleSenhaAdd">
+            </div>
+            <button type="button" id="buttonAdicionar" onclick="enviarFormulario('buttonAdicionar','adicionarAdmin')">Adicionar</button>
         </form>
     </dialog>
     <dialog id="delete" class="popupButtons">
         <a onclick="document.getElementById('delete').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
-        <h2>Excluir contato selecionado?</h2>
+        <h2>Excluir admin?</h2>
         <div>
             <button onclick="document.getElementById('delete').close()">Não</button>
-            <form action="deletarContato" method="post" id="deletarContato">
-                <input type="hidden" id="idContato" name="contatoId">
-                <button type="button" id="buttonDeletar" onclick="enviarFormulario('buttonDeletar','deletarContato')">Sim</button>
+            <form action="deletarAdmin" method="post" id="deletarAdmin">
+                <input type="hidden" id="IdAdmin" name="adminId">
+                <button type="button" id="buttonDeletar" onclick="enviarFormulario('buttonDeletar','deletarAdmin')">Sim</button>
             </form>
         </div>
     </dialog>
     <dialog id="alterar" class="popupInputs">
-        <h2>Alterar contato selecionado</h2>
+        <h2>Alterar admin</h2>
         <a onclick="document.getElementById('alterar').close()"><img src="${pageContext.request.contextPath}/assets/icons/arrow-left.png"></a>
-        <form action="alterarContato" method="post" id="alterarContato">
-            <input type="text" id="telefone" name="telefone" placeholder="Telefone" pattern="\(?[0-9]{2}\)?\s?[0-9]{5}-?[0-9]{4}" required class="telefone" title="Digite um telefone no formato (11) 91234-5678 ou apenas os numeros">
-            <input type="hidden" id="idTelefone" name="idTelefone" value="">
-            <button type="button" id="buttonAlterar" onclick="enviarFormulario('buttonAlterar','alterarContato')">Alterar</button>
+        <form action="alterarAdmin" method="post" id="alterarAdmin">
+            <input type="hidden" id="adminId" name="idAdmin">
+            <input type="text" id="nomeAdmin" name="nomeAdmin" placeholder="Nome" class="inputCapitalize">
+            <input type="email" id="emailAdmin" name="emailAdmin" placeholder="Email" >
+            <div class="input-container">
+                <input type="password" id="senhaAlterar" name="senhaAdmin" placeholder="Senha" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
+                <img onclick="mudarOlho('senhaAlterar','toggleSenhaAlterar')" src="${pageContext.request.contextPath}/assets/icons/closed_eyes.png"
+                     alt="mostrar senha"
+                     class="eye-icon"
+                     id="toggleSenhaAlterar">
+            </div>
+            <button type="button" id="buttonAlterar" onclick="enviarFormulario('buttonAlterar','alterarAdmin')">Alterar</button>
         </form>
     </dialog>
     <div class="overlay" id="popupOverlay">
-        <div class="popup">
+        <div class="popup" id="popupMaior">
             <div class="icon">
                 <img id="icon" src="${pageContext.request.contextPath}/assets/icons/" alt="">
             </div>
@@ -152,9 +145,10 @@
             <button onclick="fecharPopupInformacoes()">Ok</button>
         </div>
     </div>
-    <script src="${pageContext.request.contextPath}/scripts/areaRestritaContato.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/areaRestritaAdmin.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/olhinhoInputs.js"></script>
     <script>
         <% if (adicionado != null) { %>
         <%

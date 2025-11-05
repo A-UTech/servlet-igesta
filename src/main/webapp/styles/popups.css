@@ -7,6 +7,7 @@
     align-items: center;
     visibility: hidden;
     opacity: 0;
+    flex-shrink: 0;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 .overlay.active {
@@ -21,9 +22,11 @@
     color: var(--corBranco);
     padding: 60px 70px;
     border-radius: 15px;
-    text-align: center;
     width: 300px;
+    text-align: center;
     flex-shrink: 0;
+    flex-grow: 0;
+
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     font-family: 'Arial', sans-serif;
 }
@@ -63,4 +66,12 @@
 }
 .overlay .popup button:hover {
     background-color: var(--corVE);
+}
+
+#popupMaior {
+    width: 400px;
+}
+
+#popupMaior p {
+    width: 260px;
 }

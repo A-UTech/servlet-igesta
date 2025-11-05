@@ -9,17 +9,21 @@
     <title>IGesta</title>
     <%
         String loginCorreto = (String) request.getAttribute("semConta");
-        String email = (String) request.getAttribute("email");
-        String senha = (String) request.getAttribute("senha");
     %>
 </head>
 <body>
     <section>
-        <h1>Login de empresa</h1>
-        <form action="loginEmpresa" method="post" id="loginEmpresa">
-            <input type="email" name="email" placeholder="E-mail" required minlength="10" autocomplete="email" value="<%=email == null ? "" : email%>" autofocus>
-            <input type="password" name="password" placeholder="Senha" autocomplete="current-password" value="<%=senha == null ? "" : senha%>" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
-            <button type="button" onclick="enviarFormulario('buttonSubmit','loginEmpresa')" id="buttonSubmit">Entrar</button>
+        <h1>Login de administrador</h1>
+        <form action="loginAdmin" method="post" id="loginAdmin">
+            <input type="email" name="email" placeholder="E-mail" required minlength="10" autocomplete="email" autofocus>
+            <div class="input-container">
+                <input type="password" id="senha" name="password" placeholder="Senha" autocomplete="current-password" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
+                <img onclick="mudarOlho('senha','toggleSenha')" src="${pageContext.request.contextPath}/assets/icons/closed_eyes.png"
+                     alt="mostrar senha"
+                     class="eye-icon"
+                     id="toggleSenha">
+            </div>
+            <button type="button" onclick="enviarFormulario('buttonSubmit','loginAdmin')" id="buttonSubmit">Entrar</button>
         </form>
     </section>
     <div class="mens">
@@ -44,6 +48,7 @@
     </div>
     <script src="${pageContext.request.contextPath}/scripts/popupInformacoes.js"></script>
     <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/olhinhoInputs.js"></script>
     <script>
         <% if ("true".equals(loginCorreto)) { %>
             abrirPopupInformacoes("wrong.svg","Usuário ou senha incorreta","O email ou senha informado estão incorretos")

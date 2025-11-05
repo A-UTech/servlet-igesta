@@ -52,13 +52,21 @@ public class Colaborador extends HttpServlet {
         List<Funcionario> funcionarios;
         if (procura != null) {
             //Caso HOUVE pesquisa por nome:
-            funcionarios = daoFuncionarios.selecionarPorNome(procura, idEmpresa);
+            funcionarios = daoFuncionarios.selecionarPorNomeOrEmail(procura, idEmpresa);
         } else if (cargo == null || cargo.equals("")) {
             //Caso não houve o uso de filtros
             funcionarios = daoFuncionarios.selecionarTodos(idEmpresa);
         } else {
             //Caso HOUVE filtragem por cargo.
             funcionarios = daoFuncionarios.selecionarPorCargo(cargo, idEmpresa);
+        }
+
+        if ("lider".equalsIgnoreCase(cargo)) {
+            request.setAttribute("selecionado","lider");
+        } else if ("gestor".equalsIgnoreCase(cargo)) {
+            request.setAttribute("selecionado","gestor");
+        } else {
+            request.setAttribute("selecionado","todos");
         }
 
         //Definindo um HashMap, que carrega o objeto do funcionario, mais uma ArrayList de seus telefones registrados.
@@ -79,7 +87,7 @@ public class Colaborador extends HttpServlet {
         request.setAttribute("funcionarios", funcMap);
 
         //Enviando para JSP
-        request.getRequestDispatcher("/WEB-INF/view/collaborators.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/areaEmpresa/collaborators.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -186,7 +194,7 @@ public class Colaborador extends HttpServlet {
     protected void adicionarContatoEmpresa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Capturando os parâmetros de nomeCondena, tipo e descricao que estam saindo de um formulario
         int id = Integer.parseInt(request.getParameter("funcionarioId"));
-        String contato = request.getParameter("contato");
+        String contato = Regex.extrairNumero(request.getParameter("contato"));
 
         // Usando o método da classe CondenasDao para adicioanar um registro
         boolean adicionado = daoTelefones.inserir(new Telefone(contato,id));

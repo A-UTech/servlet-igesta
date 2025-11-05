@@ -7,6 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/logos/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/perfil.css">
     <title>Perfil</title>
     <%
@@ -28,15 +29,16 @@
 </head>
 <body>
     <div class="mens">
-        <% if (user.getFoto() == null) { %>
-            <img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
-        <% } else { %>
-            <img src="getFoto?id=<%=user.getId()%>&tipo=<%=tipo%>">
-        <% } %>
-
         <form action="uploadFoto" name="trocarFoto" method="post" enctype="multipart/form-data">
-            <input type="file" id="foto" name="foto" accept="image/jpeg, image/png" style="display: none">
-            <label for="foto"><img src="${pageContext.request.contextPath}/assets/icons/camera.png"></label>
+            <div>
+                <% if (user.getFoto() == null) { %>
+                <img src="${pageContext.request.contextPath}/assets/icons/aside-perfil.svg">
+                <% } else { %>
+                <img id="perfilPhoto" src="getFoto?id=<%=user.getId()%>&tipo=<%=tipo%>">
+                <% } %>
+                <input type="file" id="foto" name="foto" accept="image/jpeg, image/png" style="display: none">
+                <label for="foto"><img id="cameraPhoto" src="${pageContext.request.contextPath}/assets/icons/camera.png"></label>
+            </div>
             <input type="hidden" name="id" value="<%=user.getId()%>">
             <input type="hidden" name="tipo" value="<%=tipo%>">
         </form>
@@ -71,13 +73,20 @@
 
             <div>
                 <p>Senha:</p>
-                <input type="password" name="password" required minlength="8" autocomplete="current-password" title="Senha" value="<%=user.getSenha()%>">
+                <div class="input-container">
+                    <input type="password" id="senha" name="password" placeholder="Senha" autocomplete="current-password" value="<%=user.getSenha()%>" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S+$" title="A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e não pode conter espaços.">
+                    <img onclick="mudarOlho('senha','toggleSenha')" src="${pageContext.request.contextPath}/assets/icons/closed_eyes.png"
+                         alt="mostrar senha"
+                         class="eye-icon"
+                         id="toggleSenha">
+                </div>
             </div>
             <input type="hidden" name="id" value="<%=user.getId()%>">
             <input type="hidden" name="tipo" value="<%=tipo%>">
-            <button type="button" id="buttonPerfil" onclick="enviarFormulario('buttonPerfil','changePsswd')">Trocar senha</button>
+            <button type="button" id="buttonPerfil" onclick="enviarFormulario('buttonPerfil','changePsswd')">Atualizar</button>
         </form>
     </section>
     <script src="${pageContext.request.contextPath}/scripts/mandarFormulario.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/olhinhoInputs.js"></script>
 </body>
 </html>
