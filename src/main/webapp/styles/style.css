@@ -364,7 +364,7 @@ div#slide06 > img{
 
 div#slide07 {
     padding-top: 100px;
-    height: 330dvw;
+    height: 175vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -541,9 +541,7 @@ footer img {width: 50px}
     div#slide06 > section {width: 400px}
 
 
-    div#slide07{
-        height: 90dvw;
-    }
+
     div#slide07 img {
         width: 75dvw;
     }
